@@ -61,7 +61,7 @@ func ReadEnv() *AppConfig {
 		isRead = false
 	}
 	if val, found := os.LookupEnv("GCP_PROJECT_ID"); found {
-		app.DB_PORT = val
+		app.GCP_PROJECT_ID = val
 		isRead = false
 	}
 	if val, found := os.LookupEnv("GCP_PROJECT_NAME"); found {
