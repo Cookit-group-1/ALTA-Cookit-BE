@@ -3256,9 +3256,6 @@ paths:
                 Invalid Ingredient:
                   value:
                     message: invalid ingredient
-                Insufficient Balance:
-                  value:
-                    message: insufficient balance
                 Forbidden Request:
                   value:
                     message: forbidden request
