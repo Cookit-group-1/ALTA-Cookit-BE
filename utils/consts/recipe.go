@@ -1,5 +1,11 @@
 package consts
 
+const (
+	RECIPE_E_Original = "Original"
+	RECIPE_E_Mixed = "Mixed"
+	RECIPE_E_Cooked = "Cooked"
+)
+
 // Success
 const (
 	RECIPE_SuccessReadListOfRecipes string = "succesfully read list of recipes"
