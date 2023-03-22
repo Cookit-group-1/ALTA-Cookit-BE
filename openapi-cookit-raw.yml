@@ -1,0 +1,3316 @@
+openapi: 3.0.0
+servers:
+    # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/STARCON10_1/ALTA-Cookit-BE/1.0
+  - description: Deployed Server
+    url: https://cookit.my-extravaganza.site
+info:
+    version: '1.0'
+    title: Cookit App Project
+    description: The API for cookit app project
+tags:
+    - name: Auth
+    - name: Users
+
+paths:
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: user registration
+      description: features for user registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: 
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              username: "intanpermana12"
+              email: "intanpermana@example.com"
+              password: "ip168192"
+      responses:
+        201:
+          description: success insert data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success create account"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: login for user
+      description: feature for verifying who a user is
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              email: "intanpermana@example.com"
+              password: "ip168192"
+      responses:
+        200:
+          description: login success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 4
+                  username: "intanpermana12"
+                  email: "intanpermana@example.com"
+                  role: "user"
+                message: "login success"
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzkxOTM3MjMsInVzZXJJRCI6MX0.c1IV13-55Z6TCsRXuTCbubiwrF8NcbT72hVs-lY5E1s"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: show user profile
+      description: method and endpoint for show user profile
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: success show user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 4
+                  fullname: "intan permana"
+                  username: "intanpermana12"
+                  email: "intanpermana@example.com"
+                  role: "user"
+                  profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                message: "success show profile"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - Users
+      summary: edit profile
+      description: method and endpoint for update user profile
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                fullname:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              username: "intanpermana12"
+              fullname: "intan permana"
+              email: "intanpermana@example.com"
+              password: "ip123"
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            example:
+              profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+      responses:
+        200:
+          description: update success
+          content:
+              application/json:
+                  schema:
+                      type: object
+                  example:
+                      message: "success update profile"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - Users
+      summary: delete data user
+      description: method and enpoint delete data from user
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: success delete user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success delete user data"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users/upgrade:
+    post:
+      tags:
+        - Users
+      summary: "upgrade user to verified user"
+      description: "upgrade user to verified user"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approvement:
+                  type: string
+            example:
+              approvement: "Approve"
+      responses:
+        201:
+          description: "success upgrade user to verified user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success upgrade user to verified user"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  ####################################
+  #  FOLLOWERS
+  ####################################
+  /users/followers/followed:
+    get:
+      tags:
+        - Followers
+      summary: get list of user's followers
+      description: feature for get list of user's followers
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: success get list of user's followers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  {
+                    followers: 
+                      [
+                        {
+                          id: 1,
+                          username: "intanpermana12",
+                          user_type: "VerifiedUser",
+                          profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                          is_followed_back: false,
+                        },
+                        {
+                          id: 2,
+                          username: "rebecca027",
+                          user_type: "VerifiedUser",
+                          profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                          is_followed_back: true,
+                        },
+                        {
+                          id: 3,
+                          username: "richard49",
+                          user_type: "User",
+                          profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                          is_followed_back: false,
+                        },
+                      ],
+                    total_page: 1,
+                  }
+                message: "succesfully read followers data"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid page param:
+                  value:
+                    message: invalid page param
+                Invalid limit param:
+                  value:
+                    message: invalid limit param
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+              
+  /users/followers/following:
+    get:
+      tags:
+        - Followers
+      summary: get list of following user
+      description: feature for get list of following user
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: success get list of following user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  {
+                    followers:
+                      [
+                        {
+                          id: 1,
+                          username: "intanpermana12",
+                          user_type: "VerifiedUser",
+                          profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                        },
+                        {
+                          id: 2,
+                          username: "rebecca027",
+                          user_type: "VerifiedUser",
+                          profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                        },
+                        {
+                          id: 3,
+                          username: "richard49",
+                          user_type: "User",
+                          profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                        },
+                      ],
+                    total_page: 1,
+                  }
+                message: "succesfully read followers data"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid page param:
+                  value:
+                    message: invalid page param
+                Invalid limit param:
+                  value:
+                    message: invalid limit param
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /followers:
+    post:
+      tags:
+        - Followers
+      summary: following an user
+      description: feature for following an user
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - to_user_id
+              properties:
+                to_user_id:
+                  type: integer
+            example:
+              to_user_id: 2
+      responses:
+        201:
+          description: success following an user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully following an user"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid User:
+                  value:
+                    message: invalid user
+                Already Following:
+                  value:
+                    message: already following
+                      
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /followers/{follower_id}:
+    delete:
+      tags:
+        - Followers
+      summary: unfollowing an user
+      description: feature for unfollowing an user
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: follower_id
+          in: path
+          description: follower's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success unfollowing an user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully unfollowing an user"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+  
+  ####################################
+  #  RECIPES
+  ####################################
+  /recipes:
+    get:
+        tags:
+          - Recipes
+        summary: get list of recipes
+        description: feature for getting list of recipes
+        parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+        responses:
+          200:
+            description: success get list of recipes
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/responseObject"
+                example:
+                  data:
+                    {
+                      recipes:
+                        [
+                          {
+                            id: 1,
+                            username: "Benjamin29",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Spesial",
+                            description: "Indomie terenak sepanjang masa",
+                            type: "Original",
+                            url_image:
+                              [
+                                {
+                                  id: 1,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                          {
+                            id: 2,
+                            username: "Benjamin30",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Soto Spesial",
+                            description: "Indomie soto terenak sepanjang masa",
+                            type: "Original",
+                            url_image:
+                              [
+                                {
+                                  id: 2,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Soto%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                          {
+                            id: 3,
+                            username: "Biangkerokk77",
+                            user_type: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                            name: "Indomie Telur Spesial",
+                            description: "Indomie telur terenak sepanjang masa",
+                            type: "Mixed",
+                            url_image:
+                              [
+                                {
+                                  id: 3,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                            replied_recipe:
+                              {
+                                id: 1,
+                                username: "Benjamin29",
+                                user_type: "VerifiedUser",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                url_image:
+                                  [
+                                    {
+                                      id: 1,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
+                          },
+                          {
+                            id: 4,
+                            username: "Ronny69",
+                            user_type: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
+                            name: "Indomie Telur Spesial Ala Ronny",
+                            description: "Indomie telur terenak sepanjang masa",
+                            type: "Cooked",
+                            url_image:
+                              [
+                                {
+                                  id: 3,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
+                                }
+                              ],
+                            replied_recipe:
+                              {
+                                id: 1,
+                                username: "Benjamin29",
+                                user_type: "VerifiedUser",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                url_image:
+                                  [
+                                    {
+                                      id: 1,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
+                          },
+                        ],
+                        total_page: 1,
+                    }
+                  message: "succesfully read list of recipes"
+          400:
+            description: "bad request"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                examples:
+                  Invalid page param:
+                    value:
+                      message: invalid page param
+                  Invalid limit param:
+                    value:
+                      message: invalid limit param
+          500:
+            description: "internal server error"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                example:
+                  message: internal server error
+
+    post:
+      tags:
+        - Recipes
+      summary: insert new user's recipe
+      description: feature for insert new user's recipe
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+                - type
+                - image
+              properties:
+                recipe_id:
+                  type: integer
+                name:
+                  type: string
+                description:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - "Original"
+                    - "Mixed"
+                    - "Cooked"
+                image:
+                  type: object
+                steps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                ingredients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      price:
+                        type: integer
+                      ingredient_details:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            size:
+                              type: string
+            examples:
+              original:
+                value:
+                  data:
+                    {
+                      name: "Indomie Spesial",
+                      description: "Indomie terenak sepanjang masa",
+                      type: "Original",
+                      image: "",
+                      steps:
+                        [
+                          {
+                            name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                          },
+                          {
+                            name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                          },
+                          {
+                            name: "Setelah air mendidih, masukan mie"
+                          },
+                          {
+                            name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                          },
+                          {
+                            name: "Indomie siap disajikan"
+                          },
+                        ],
+                      ingredients:
+                      [
+                        {
+                          name: Original,
+                          price: 5000,
+                          ingredient_details:
+                            [
+                              {
+                                name: "Bumbu Indomie (Original)",
+                                size: "1pcs",
+                              },
+                              {
+                                name: "Minyak Indomie (Original)",
+                                size: "1pcs",
+                              },
+                            ]
+                        }
+                      ]
+                    }
+              mixed:
+                value:
+                  data:
+                    {
+                      name: "Indomie Telur Spesial",
+                      description: "Indomie telur terenak sepanjang masa",
+                      type: "Mixed",
+                      recipe_id: 1,
+                      image: "",
+                      steps:
+                        [
+                          {
+                            name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                          },
+                          {
+                            name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                          },
+                          {
+                            name: "Setelah air mendidih, masukan mie"
+                          },
+                          {
+                            name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                          },
+                          {
+                            name: "Indomie siap disajikan"
+                          },
+                        ],
+                      ingredients:
+                        [
+                          {
+                            name: Original,
+                            price: 11000,
+                            ingredient_details:
+                              [
+                                {
+                                  name: "Bumbu Indomie (Original)",
+                                  size: "1pcs",
+                                },
+                                {
+                                  name: "Minyak Indomie (Original)",
+                                  size: "1pcs",
+                                },
+                                {
+                                  name: "Telur",
+                                  size: "1pcs",
+                                },
+                              ],
+                          }
+                        ],
+                    }
+              cooked:
+                value:
+                  data:
+                    {
+                      name: "Indomie Telur Spesial Ala Ronny",
+                      description: "Indomie telur terenak sepanjang masa",
+                      type: "Cooked",
+                      recipe_id: 1,
+                      image: "",
+                    }
+      responses:
+        201:
+          description: success insert user's recipe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              examples:
+                original:
+                  value:
+                    data:
+                      {
+                        id: 1,
+                        username: "Benjamin29",
+                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                        name: "Indomie Spesial",
+                        description: "Indomie terenak sepanjang masa",
+                        url_image:
+                          [
+                            {
+                              id: 1,
+                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                            }
+                          ],
+                        steps:
+                          [
+                            {
+                              id: 1,
+                              name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                            },
+                            {
+                              id: 2,
+                              name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                            },
+                            {
+                              id: 3,
+                              name: "Setelah air mendidih, masukan mie"
+                            },
+                            {
+                              id: 4,
+                              name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                            },
+                            {
+                              id: 5,
+                              name: "Indomie siap disajikan"
+                            },
+                          ],
+                        ingredients:
+                        [
+                          {
+                            id: 1,
+                            name: Original,
+                            price: 5000,
+                            ingredient_details:
+                              [
+                                {
+                                  id: 1,
+                                  name: "Bumbu Indomie (Original)",
+                                  size: "1pcs",
+                                },
+                                {
+                                  id: 2,
+                                  name: "Minyak Indomie (Original)",
+                                  size: "1pcs",
+                                },
+                              ]
+                          }
+                        ]
+                      }
+                    message: "successfully insert user's recipe"
+                mixed:
+                  value:
+                    data:
+                      {
+                        id: 3,
+                        username: "Biangkerokk77",
+                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                        name: "Indomie Telur Spesial",
+                        description: "Indomie telur terenak sepanjang masa",
+                        url_image:
+                          [
+                            {
+                              id: 3,
+                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                            }
+                          ],
+                        steps:
+                          [
+                            {
+                              id: 11,
+                              name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                            },
+                            {
+                              id: 12,
+                              name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                            },
+                            {
+                              id: 13,
+                              name: "Setelah air mendidih, masukan mie"
+                            },
+                            {
+                              id: 14,
+                              name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                            },
+                            {
+                              id: 15,
+                              name: "Indomie siap disajikan"
+                            },
+                          ],
+                        ingredients:
+                          [
+                            {
+                              id: 3,
+                              name: Original,
+                              price: 11000,
+                              ingredient_details:
+                                [
+                                  {
+                                    id: 5,
+                                    name: "Bumbu Indomie (Original)",
+                                    size: "1pcs",
+                                  },
+                                  {
+                                    id: 6,
+                                    name: "Minyak Indomie (Original)",
+                                    size: "1pcs",
+                                  },
+                                  {
+                                    id: 7,
+                                    name: "Telur",
+                                    size: "1pcs",
+                                  },
+                                ],
+                            }
+                          ],
+                      }
+                    message: "successfully insert user's recipe"
+                cooked:
+                  value:
+                    data:
+                      {
+                        id: 3,
+                        username: "Ronny69",
+                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
+                        name: "Indomie Telur Spesial Ala Ronny",
+                        description: "Indomie telur terenak sepanjang masa",
+                        url_image:
+                          [
+                            {
+                              id: 3,
+                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
+                            }
+                          ],
+                        steps: [],
+                        ingredients: [],
+                      }
+                    message: "succesfully insert user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Ingredient:
+                  value:
+                    message: invalid ingredient
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /recipes/detail:
+    get:
+      tags:
+        - Recipes
+      summary: get details of recipes
+      description: feature for getting details of recipes
+      responses:
+        200:
+          description: success get details of recipes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              examples:
+                original:
+                  value:
+                    data:
+                      {
+                        id: 1,
+                        username: "Benjamin29",
+                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                        name: "Indomie Spesial",
+                        description: "Indomie terenak sepanjang masa",
+                        url_image:
+                          [
+                            {
+                              id: 1,
+                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                            }
+                          ],
+                        steps:
+                          [
+                            {
+                              id: 1,
+                              name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                            },
+                            {
+                              id: 2,
+                              name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                            },
+                            {
+                              id: 3,
+                              name: "Setelah air mendidih, masukan mie"
+                            },
+                            {
+                              id: 4,
+                              name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                            },
+                            {
+                              id: 5,
+                              name: "Indomie siap disajikan"
+                            },
+                          ],
+                        ingredients:
+                        [
+                          {
+                            id: 1,
+                            name: Original,
+                            price: 5000,
+                            ingredient_details:
+                              [
+                                {
+                                  id: 1,
+                                  name: "Bumbu Indomie (Original)",
+                                  size: "1pcs",
+                                },
+                                {
+                                  id: 2,
+                                  name: "Minyak Indomie (Original)",
+                                  size: "1pcs",
+                                },
+                              ]
+                          }
+                        ]
+                      }
+                    message: "successfully read details of recipe"
+                mixed:
+                  value:
+                    data:
+                      {
+                        id: 3,
+                        username: "Biangkerokk77",
+                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                        name: "Indomie Telur Spesial",
+                        description: "Indomie telur terenak sepanjang masa",
+                        url_image:
+                          [
+                            {
+                              id: 3,
+                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                            }
+                          ],
+                        steps:
+                          [
+                            {
+                              id: 11,
+                              name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                            },
+                            {
+                              id: 12,
+                              name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                            },
+                            {
+                              id: 13,
+                              name: "Setelah air mendidih, masukan mie"
+                            },
+                            {
+                              id: 14,
+                              name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                            },
+                            {
+                              id: 15,
+                              name: "Indomie siap disajikan"
+                            },
+                          ],
+                        ingredients:
+                          [
+                            {
+                              id: 3,
+                              name: Original,
+                              price: 11000,
+                              ingredient_details:
+                                [
+                                  {
+                                    id: 5,
+                                    name: "Bumbu Indomie (Original)",
+                                    size: "1pcs",
+                                  },
+                                  {
+                                    id: 6,
+                                    name: "Minyak Indomie (Original)",
+                                    size: "1pcs",
+                                  },
+                                  {
+                                    id: 7,
+                                    name: "Telur",
+                                    size: "1pcs",
+                                  },
+                                ],
+                            }
+                          ],
+                        replied_recipe:
+                          {
+                            id: 1,
+                            username: "Benjamin29",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Spesial",
+                            description: "Indomie terenak sepanjang masa",
+                            url_image:
+                              [
+                                {
+                                  id: 1,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                            steps:
+                              [
+                                {
+                                  id: 1,
+                                  name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                                },
+                                {
+                                  id: 2,
+                                  name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                                },
+                                {
+                                  id: 3,
+                                  name: "Setelah air mendidih, masukan mie"
+                                },
+                                {
+                                  id: 4,
+                                  name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                                },
+                                {
+                                  id: 5,
+                                  name: "Indomie siap disajikan"
+                                },
+                              ],
+                            ingredients:
+                              [
+                                {
+                                  id: 1,
+                                  name: Original,
+                                  price: 5000,
+                                  ingredient_details:
+                                    [
+                                      {
+                                        id: 1,
+                                        name: "Bumbu Indomie (Original)",
+                                        size: "1pcs",
+                                      },
+                                      {
+                                        id: 2,
+                                        name: "Minyak Indomie (Original)",
+                                        size: "1pcs",
+                                      },
+                                    ],
+                                }
+                              ],
+                          }
+                      }
+                    message: "successfully get details of recipe"
+                cooked:
+                  value:
+                    data:
+                      {
+                        id: 3,
+                        username: "Ronny69",
+                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
+                        name: "Indomie Telur Spesial Ala Ronny",
+                        description: "Indomie telur terenak sepanjang masa",
+                        url_image:
+                          [
+                            {
+                              id: 3,
+                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
+                            }
+                          ],
+                        steps: [],
+                        ingredients: [],
+                        replied_recipe:
+                          {
+                            id: 1,
+                            username: "Benjamin29",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Spesial",
+                            description: "Indomie terenak sepanjang masa",
+                            url_image:
+                              [
+                                {
+                                  id: 1,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                            steps:
+                              [
+                                {
+                                  id: 1,
+                                  name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                                },
+                                {
+                                  id: 2,
+                                  name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                                },
+                                {
+                                  id: 3,
+                                  name: "Setelah air mendidih, masukan mie"
+                                },
+                                {
+                                  id: 4,
+                                  name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                                },
+                                {
+                                  id: 5,
+                                  name: "Indomie siap disajikan"
+                                },
+                              ],
+                            ingredients:
+                              [
+                                {
+                                  id: 1,
+                                  name: Original,
+                                  price: 5000,
+                                  ingredient_details:
+                                    [
+                                      {
+                                        id: 1,
+                                        name: "Bumbu Indomie (Original)",
+                                        size: "1pcs",
+                                      },
+                                      {
+                                        id: 2,
+                                        name: "Minyak Indomie (Original)",
+                                        size: "1pcs",
+                                      },
+                                    ],
+                                }
+                              ],
+                          }
+                      }
+                    message: "succesfully read details of recipe"
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+  
+  /recipes/{recipe_id}:
+    put:
+      tags:
+        - Recipes
+      summary: update user's recipe
+      description: feature for updating user's recipe
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                image:
+                  type: object
+            example:
+              name: "Indomie Telur Spesial"
+              description: "Indomie telur terenak sepanjang masa"
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success updating user's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully update user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+    delete:
+      tags:
+        - Recipes
+      summary: delete user's recipe
+      description: feature for deleting user's recipe
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting user's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+  
+  ####################################
+  #  IMAGES
+  ####################################
+  /images:
+    post:
+      tags:
+        - Images
+      summary: insert new recipe's image
+      description: feature for insert new recipe's image
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - recipe_id
+                - image
+              properties:
+                recipe_id:
+                  type: integer
+                image:
+                  type: object
+            example:
+              recipe_id: 1
+              image: ""
+      responses:
+        201:
+          description: success insert recipe's image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/rawon.jpg"
+                message: "succesfully insert recipe's image"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Recipe:
+                  value:
+                    message: invalid recipe
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /images/{image_id}:
+    put:
+      tags:
+        - Images
+      summary: update recipe's image
+      description: feature for updating recipe's image
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: object
+            example:
+              image: ""
+      parameters:
+        - name: image_id
+          in: path
+          description: image's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success updating recipe's image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Soto%20rawon.jpg"
+                message: "succesfully update recipe's image"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+    delete:
+      tags:
+        - Images
+      summary: delete recipe's image
+      description: feature for deleting recipe's image
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: image_id
+          in: path
+          description: image's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting recipe's image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's image"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  COMMENTS
+  ####################################
+  /recipes/{recipe_id}/comments:
+    get:
+      tags:
+        - Comments
+      summary: get list of recipe's comment
+      description: feature for getting list of recipe's comment
+      parameters:
+        - name: recipe_id
+          in: path
+          description: comments of recipe's id to looked for
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: success get list of recipe's comment
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                    message:
+                      type: string
+              example:
+                data:
+                  {
+                    comments:
+                      [
+                        {
+                          id: 1,
+                          username: "Hijack099",
+                          user_type: "VerifiedUser",
+                          profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cyber.jpg,
+                          comment: "Emang mantep si ini resepnya",
+                        },
+                        {
+                          id: 2,
+                          username: "Beluga077",
+                          user_type: "VerifiedUser",
+                          profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Green%20Tea.jpg,
+                          comment: "The best resepnya",
+                        },
+                        {
+                          id: 3,
+                          username: "Norrikembung057",
+                          user_type: "User",
+                          profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Saber.jpg,
+                          comment: "Enak, tapi agak kurang kalo di saya. Beda selera mungkin",
+                        },
+                      ],
+                    total_page: 1,
+                  }
+                message: "succesfully read list of recipe's comments"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid page param:
+                  value:
+                    message: invalid page param
+                Invalid limit param:
+                  value:
+                    message: invalid limit param
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /comments:
+    post:
+      tags:
+        - Comments
+      summary: insert new recipe's comment
+      description: feature for insert new recipe's comment
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recipe_id
+                - comment
+              properties:
+                recipe_id:
+                  type: integer
+                comment:
+                  type: string
+            example:
+              recipe_id: 1
+              comment: "Udah di coba, dan ternyata emang se enak itu racikannya"
+      responses:
+        201:
+          description: success insert recipe's comment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  comment: "Udah di coba, dan ternyata emang se enak itu racikannya"
+                message: "succesfully insert recipe's comment"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Recipe:
+                  value:
+                    message: invalid recipe
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /comments/{comment_id}:
+    put:
+      tags:
+        - Comments
+      summary: update recipe's comment
+      description: feature for updating recipe's comment
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - comment
+              properties:
+                comment:
+                  type: string
+            example:
+              name: "Setelah nyobain bereksperimen di resep ini, ternyata bagian krusial nya ada pas mixing bahan nya"
+      parameters:
+        - name: comment_id
+          in: path
+          description: comment's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success updating recipe's comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully update recipe's comment"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+    delete:
+      tags:
+        - Comments
+      summary: delete recipe's comment
+      description: feature for deleting recipe's comment
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: comment_id
+          in: path
+          description: comment's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting recipe's comment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's comment"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  LIKES
+  ####################################
+  /likes:
+    post:
+      tags:
+        - Likes
+      summary: like user's recipe
+      description: feature for liking user's recipe
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recipe_id
+              properties:
+                recipe_id:
+                  type: integer
+            example:
+              recipe_id: 1
+      responses:
+        201:
+          description: success like user's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully like user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Recipe:
+                  value:
+                    message: invalid recipe
+                Already Liked:
+                  value:
+                    message: already liked
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /likes/{like_id}:
+    delete:
+      tags:
+        - Likes
+      summary: unlike someone's recipe
+      description: feature for unlike someone's recipe
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: like_id
+          in: path
+          description: like's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success unlike someone's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully unlike someone's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  STEPS
+  ####################################
+  /steps:
+    post:
+      tags:
+        - Steps
+      summary: insert new recipe's step
+      description: feature for insert new recipe's step
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recipe_id
+                - name
+              properties:
+                recipe_id:
+                  type: integer
+                name:
+                  type: string
+            example:
+              recipe_id: 2
+              name: Siapkan alat dan bahan
+      responses:
+        201:
+          description: success insert recipe's step
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Siapkan alat dan bahan"
+                message: "succesfully insert recipe's step"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Recipe:
+                  value:
+                    message: invalid recipe
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /steps/{step_id}:
+    put:
+      tags:
+        - Steps
+      summary: update recipe's step
+      description: feature for updating recipe's step
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+            example:
+              name: Siapkan alat dan bahan
+      parameters:
+        - name: step_id
+          in: path
+          description: step's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success updating recipe's step
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully update recipe's step"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+    delete:
+      tags:
+        - Steps
+      summary: delete recipe's step
+      description: feature for deleting recipe's step
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: step_id
+          in: path
+          description: step's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting recipe's step
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's step"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  INGREDIENTS
+  ####################################
+  /ingredients:
+    post:
+      tags:
+        - Ingredients
+      summary: insert new recipe's ingredient
+      description: feature for insert new recipe's ingredient
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - recipe_id
+                - name
+                - price
+              properties:
+                recipe_id:
+                  type: integer
+                name:
+                  type: string
+                price:
+                  type: integer
+            example:
+              recipe_id: 1
+              name: "Paket Couple"
+              price: 125000
+
+      responses:
+        201:
+          description: success insert recipe's ingredient
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Paket Couple"
+                  price: 125000
+                message: "succesfully insert recipe's ingredient"
+        400:
+          description: "bad request"
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                examples:
+                  Invalid Input:
+                    value:
+                      message: invalid input
+                  Invalid Recipe:
+                    value:
+                      message: invalid recipe
+                  Forbidden Request:
+                    value:
+                      message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+              application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                  example:
+                      message: internal server error
+
+  /ingredients/{ingredient_id}:
+    put:
+      tags:
+        - Ingredients
+      summary: update recipe's ingredient
+      description: feature for updating recipe's ingredient
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ingredient_id
+          in: path
+          description: ingredient's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - price
+              properties:
+                name:
+                  type: string
+                price:
+                  type: integer
+            example:
+              name: "Paket Couple"
+              price: 125000
+      responses:
+        201:
+          description: success updating recipe's ingredient
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully update recipe's ingredient"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+    delete:
+      tags:
+        - Ingredients
+      summary: delete recipe's ingredient
+      description: feature for deleting recipe's ingredient
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ingredient_id
+          in: path
+          description: ingredient's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting recipe's ingredient
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's ingredient"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                example:
+                  message: internal server error
+
+  ####################################
+  #  INGREDIENTS DETAILS
+  ####################################
+  /ingredientDetails:
+    post:
+      tags:
+        - Ingredient Details
+      summary: insert new ingredient's detail
+      description: feature for insert new ingredient's detail
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ingredient_id
+                - name
+                - size
+              properties:
+                recipe_id:
+                  type: integer
+                name:
+                  type: string
+                size:
+                  type: string
+            example:
+              ingredient_id: 1
+              name: "Gula Pasir"
+              size: "100g"
+
+      responses:
+        201:
+          description: success insert ingredient's detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Gula Pasir"
+                  size: "100g"
+                message: "succesfully insert ingredient's detail"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Ingredient:
+                  value:
+                    message: invalid ingredient
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /ingredientDetails/{ingredient_detail_id}:
+    put:
+      tags:
+        - Ingredient Details
+      summary: update ingredient's detail
+      description: feature for updating ingredient's detail
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ingredient_detail_id
+          in: path
+          description: ingredient_detail's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - size
+              properties:
+                name:
+                  type: string
+                size:
+                  type: string
+            example:
+              name: "Gula Aren"
+              price: 50g
+      responses:
+        201:
+          description: success updating ingredient's detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully update ingredient's detail"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+    delete:
+      tags:
+        - Ingredient Details
+      summary: delete ingredient's detail
+      description: feature for deleting ingredient's detail
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: ingredient_detail_id
+          in: path
+          description: ingredient_detail's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting ingredient's detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete ingredient's detail"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  CARTS
+  ####################################
+  /users/carts:
+    get:
+      tags:
+        - Carts
+      summary: get list of user's carts
+      description: feature for getting list of user's carts
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: success get list of user's carts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                    message:
+                      type: string
+              example:
+                data:
+                  {
+                    carts:
+                      [
+                        {
+                          id: 1,
+                          recipe_name: "Soto Rawon",
+                          ingredient_name: "Paket Couple",
+                          price: 100000,
+                          quantity: 1,
+                        },
+                        {
+                          id: 2,
+                          recipe_name: "Soto Rawon",
+                          ingredient_name: "Paket 5 Orang",
+                          price: 350000,
+                          quantity: 1,
+                        },
+                      ],
+                    total_page: 1,
+                  }
+                message: "succesfully read list of user's carts"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid page param:
+                  value:
+                    message: invalid page param
+                Invalid limit param:
+                  value:
+                    message: invalid limit param
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /carts:
+    post:
+      tags:
+        - Carts
+      summary: insert new user's cart
+      description: feature for insert new user's cart
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ingredient_id
+                - quantity
+              properties:
+                ingredient_id:
+                  type: integer
+                quantity:
+                  type: integer
+            example:
+              ingredient_id: 1
+              quantity: 2
+      responses:
+        201:
+          description: success insert user's cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  recipe_name: "Soto Rawon"
+                  ingredient_name: "Paket 5 Orang"
+                  price: 700000
+                  quantity: 2
+                message: "succesfully insert user's cart"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Ingredient:
+                  value:
+                    message: invalid ingredient
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /carts/{cart_id}:
+    put:
+      tags:
+        - Carts
+      summary: update user's cart
+      description: feature for updating user's cart
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quantity
+              properties:
+                quantity:
+                  type: string
+            example:
+              quantity: 1
+      parameters:
+        - name: cart_id
+          in: path
+          description: cart's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success updating user's cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  price: 350000
+                  quantity: 1
+                message: "succesfully update user's cart"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+    delete:
+      tags:
+        - Carts
+      summary: delete user's cart
+      description: feature for deleting user's cart
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: cart_id
+          in: path
+          description: cart's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting user's cart
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete user's cart"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  Transactions
+  ####################################
+  /users/transactions:
+    get:
+      tags:
+        - Transactions
+      summary: get list of user's transactions
+      description: feature for getting list of user's transactions
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: success get list of user's transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                    message:
+                      type: string
+              example:
+                data:
+                  {
+                    transactions:
+                      [
+                        {
+                          transaction_details:
+                            [
+                              {
+                              id: 1,
+                              recipe_name: "Soto Rawon",
+                              ingredient_name: "Paket Couple",
+                              price: 100000,
+                              quantity: 1,
+                              },
+                              {
+                                id: 2,
+                                recipe_name: "Soto Rawon",
+                                ingredient_name: "Paket 5 Orang",
+                                price: 350000,
+                                quantity: 1,
+                              },
+                            ],
+                          total_price: 450000,
+                          created_at: "23-03-2023",
+                        },
+                        {
+                          transaction_details:
+                            [
+                              {
+                              id: 1,
+                              recipe_name: "Milky Cheese Cake",
+                              ingredient_name: "Paket Mini",
+                              price: 75000,
+                              quantity: 1,
+                              },
+                              {
+                                id: 2,
+                                recipe_name: "Milky Cheese Cake",
+                                ingredient_name: "Paket Original",
+                                price: 225000,
+                                quantity: 1,
+                              },
+                            ],
+                          total_price: 300000,
+                          created_at: "24-03-2023",
+                        },
+                      ],
+                    total_page: 1,
+                  }
+                message: "succesfully read list of user's transactions"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid page param:
+                  value:
+                    message: invalid page param
+                Invalid limit param:
+                  value:
+                    message: invalid limit param
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /transactions:
+    post:
+      tags:
+        - Transactions
+      summary: insert new user's transaction
+      description: feature for insert new user's transaction
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - ingredient_id
+                  - quantity
+                properties:
+                  ingredient_id:
+                    type: integer
+                  quantity:
+                    type: integer
+            example:
+              {
+                transaction_details:
+                  [
+                    {
+                      ingredient_id: 1,
+                      quantity: 1
+                    },
+                    {
+                      ingredient_id: 2,
+                      quantity: 1
+                    },
+                  ]
+              }
+      responses:
+        201:
+          description: success insert user's transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  {
+                    transaction_details:
+                      [
+                        {
+                        id: 1,
+                        recipe_name: "Soto Rawon",
+                        ingredient_name: "Paket Couple",
+                        price: 100000,
+                        quantity: 1,
+                        },
+                        {
+                          id: 2,
+                          recipe_name: "Soto Rawon",
+                          ingredient_name: "Paket 5 Orang",
+                          price: 350000,
+                          quantity: 1,
+                        },
+                      ],
+                    total_price: 450000,
+                    created_at: "23-03-2023",
+                  }
+                message: "succesfully insert user's transaction"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Invalid Ingredient:
+                  value:
+                    message: invalid ingredient
+                Insufficient Balance:
+                  value:
+                    message: insufficient balance
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+####################################
+#  COMPONENTS
+####################################
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    responseObject:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+  responses:
+    400:
+      description: "error from user"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "bad request"
+    500:
+      description: "error from server"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "internal server error"
