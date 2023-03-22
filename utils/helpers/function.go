@@ -1,9 +1,10 @@
 package helpers
 
 import (
-	"alta-co-be/utils/consts"
+	"alta-cookit-be/utils/consts"
 	"errors"
 	"mime/multipart"
+	"net/url"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -40,15 +41,15 @@ func ExtractPageLimit(c echo.Context) (page int, limit int, err error) {
 	return page, limit, nil
 }
 
-// func ExtractQueryParams(queryParams url.Values) map[string]interface{} {
-// 	extractedQueryParams := make(map[string]interface{})
-// 	for key, val := range queryParams {
-// 		if key != "page" && key != "limit"{
-// 			extractedQueryParams[key]=val[0]
-// 		}
-// 	}
-// 	return extractedQueryParams
-// }
+func ExtractQueryParams(queryParams url.Values) map[string]interface{} {
+	extractedQueryParams := make(map[string]interface{})
+	for key, val := range queryParams {
+		if key != "page" && key != "limit"{
+			extractedQueryParams[key]=val[0]
+		}
+	}
+	return extractedQueryParams
+}
 
 func ExtractImage(c echo.Context, key string) (multipart.File, string, error) {
 	f, err := c.FormFile(key)
