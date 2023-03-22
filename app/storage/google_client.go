@@ -9,6 +9,7 @@ import (
 	"alta-cookit-be/app/config"
 
 	"cloud.google.com/go/storage"
+	"google.golang.org/api/option"
 )
 
 var (
@@ -26,7 +27,7 @@ var clientUploader *ClientUploader
 
 func GetStorageClient() *ClientUploader {
 	if clientUploader == nil {
-		client, err := storage.NewClient(context.Background())
+		client, err := storage.NewClient(context.Background(), option.WithoutAuthentication())
 		if err != nil {
 			log.Fatalf("Failed to create client: %v", err)
 		}
