@@ -23,8 +23,8 @@ func (d *IngredientDetailData) InsertIngredientDetail(entity *ingredient_details
 	gorm := ConvertToGorm(entity)
 	tx := d.db.Create(gorm)
 	if tx.Error != nil {
-		if strings.Contains(tx.Error.Error(), "recipe_id") {
-			return nil, errors.New(consts.RECIPE_InvalidRecipe)
+		if strings.Contains(tx.Error.Error(), "ingredient_id") {
+			return nil, errors.New(consts.INGREDIENT_InvalidIngredient)
 		}
 		return nil, tx.Error
 	}
