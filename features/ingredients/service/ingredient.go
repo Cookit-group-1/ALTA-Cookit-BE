@@ -21,39 +21,39 @@ func New(ingredientData ingredients.IngredientData_) ingredients.IngredientServi
 	}
 }
 
-func (s *IngredientService) InsertIngredient(ingredientEntity *ingredients.IngredientEntity) (*ingredients.IngredientEntity, error) {
-	err := s.validate.Struct(ingredientEntity)
+func (s *IngredientService) InsertIngredient(entity *ingredients.IngredientEntity) (*ingredients.IngredientEntity, error) {
+	err := s.validate.Struct(entity)
 	if err != nil {
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	output, err := s.ingredientData.InsertIngredient(ingredientEntity)
+	output, err := s.ingredientData.InsertIngredient(entity)
 	if err != nil {
 		return nil, err
 	}
 	return output, nil
 }
 
-func (s *IngredientService) UpdateIngredientById(ingredientEntity *ingredients.IngredientEntity) error {
-	err := s.validate.Struct(ingredientEntity)
+func (s *IngredientService) UpdateIngredientById(entity *ingredients.IngredientEntity) error {
+	err := s.validate.Struct(entity)
 	if err != nil {
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	err = s.ingredientData.UpdateIngredientById(ingredientEntity)
+	err = s.ingredientData.UpdateIngredientById(entity)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *IngredientService) DeleteIngredientById(ingredientEntity *ingredients.IngredientEntity) error {
-	err := s.validate.Struct(ingredientEntity)
+func (s *IngredientService) DeleteIngredientById(entity *ingredients.IngredientEntity) error {
+	err := s.validate.Struct(entity)
 	if err != nil {
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	err = s.ingredientData.DeleteIngredientById(ingredientEntity)
+	err = s.ingredientData.DeleteIngredientById(entity)
 	if err != nil {
 		return err
 	}
