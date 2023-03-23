@@ -8,6 +8,7 @@ const (
 	ECHO_P_IngredientId = "ingredient_id"
 	ECHO_P_IngredientDetailId = "ingredient_detail_id"
 	ECHO_P_CartId = "cart_id"
+	ECHO_P_StepId = "step_id"
 )
 
 const (
