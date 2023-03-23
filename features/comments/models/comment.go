@@ -9,4 +9,5 @@ type Comment struct {
 	UserID   uint
 	RecipeID uint
 	Comment  string `gorm:"not null;type:text"`
+	UrlImage string `gorm:"not null;type:text"`
 }
