@@ -6,6 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	_stepData "alta-cookit-be/features/steps/data"
+	_stepDelivery "alta-cookit-be/features/steps/delivery"
+	_stepService "alta-cookit-be/features/steps/service"
 	_ingredientData "alta-cookit-be/features/ingredients/data"
 	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
 	_ingredientService "alta-cookit-be/features/ingredients/service"
@@ -30,6 +33,16 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
 }
 
+func initStepRouter(db *gorm.DB, e *echo.Echo) {
+	data := _stepData.New(db)
+	service := _stepService.New(data)
+	handler := _stepDelivery.New(service)
+
+	e.POST(fmt.Sprintf("/recipes/:%s/steps", consts.ECHO_P_RecipeId), handler.InsertStep)
+	e.PUT(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.UpdateStepById)
+	e.DELETE(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.DeleteStepById)
+}
+
 func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
 	data := _ingredientData.New(db)
 	service := _ingredientService.New(data)
@@ -51,6 +64,7 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
+	initStepRouter(db, e)
 	initIngredientRouter(db, e)
 	initIngredientDetailRouter(db, e)
 }
