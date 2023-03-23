@@ -66,14 +66,14 @@ func ExtractFile(c echo.Context, key string) (multipart.File, string, error) {
 	return blobFile, f.Filename, nil
 }
 
-func MultipleFile(c echo.Context, key string) ([]multipart.File, []string, error) {
+func ExtractMultipleFiles(c echo.Context, key string) ([]multipart.File, []string, error) {
 	blobFiles, fileNames := []multipart.File{}, []string{}
 
 	form, err := c.MultipartForm()
 	if err != nil {
 		return nil, nil, err
 	}
-	files := form.File["files"]
+	files := form.File[key]
 
 	for _, file := range files {
 		blobFile, err := file.Open()
