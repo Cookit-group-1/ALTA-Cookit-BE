@@ -89,7 +89,7 @@ paths:
                   id: 4
                   username: "intanpermana12"
                   email: "intanpermana@example.com"
-                  role: "user"
+                  role: "User"
                 message: "login success"
                 token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzkxOTM3MjMsInVzZXJJRCI6MX0.c1IV13-55Z6TCsRXuTCbubiwrF8NcbT72hVs-lY5E1s"
         400:
@@ -129,7 +129,7 @@ paths:
                   fullname: "intan permana"
                   username: "intanpermana12"
                   email: "intanpermana@example.com"
-                  role: "user"
+                  role: "User"
                   profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                 message: "success show profile"
         404:
@@ -611,6 +611,9 @@ paths:
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
                             type: "Original",
+                            status: "OpenForSale",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -627,6 +630,9 @@ paths:
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
                             type: "Original",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -643,6 +649,9 @@ paths:
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
                             type: "Mixed",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -658,6 +667,9 @@ paths:
                                 profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
+                                status: "OpenForSale",
+                                total_like: 79,
+                                total_comment : 117,
                                 url_image:
                                   [
                                     {
@@ -728,7 +740,7 @@ paths:
                   type: string
                   enum:
                     - "Original"
-                    - "Remix"
+                    - "Mixed"
                     - "Cooked"
                 image:
                   type: object
@@ -1055,7 +1067,7 @@ paths:
                     type: string
               example:
                 message: internal server error
-                  
+
   /recipes:
     get:
         tags:
@@ -1074,9 +1086,34 @@ paths:
           schema:
             type: integer
             example: 2
+        - name: name
+          in: query
+          description: recipe's name
+          schema:
+            type: string
+            example: "Soto Rawon"
+        - name: type
+          in: query
+          description: recipe's type
+          schema:
+            type: string
+            enum:
+              - Original
+              - Mixed
+              - Cooked
+            example: "Original"
+        - name: status
+          in: query
+          description: recipe's status
+          schema:
+            type: string
+            enum:
+              - None
+              - OpenForSale
+            example: "None"
         responses:
           200:
-            description: success get list of recipes
+            description: success get timeline of recipes
             content:
               application/json:
                 schema:
@@ -1094,6 +1131,9 @@ paths:
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
                             type: "Original",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -1110,6 +1150,128 @@ paths:
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
                             type: "Original",
+                            status: "OpenForSale",
+                            total_like: 79,
+                            total_comment : 117,
+                            url_image:
+                              [
+                                {
+                                  id: 2,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Soto%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                          {
+                            id: 3,
+                            username: "Biangkerokk77",
+                            user_type: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                            name: "Indomie Telur Spesial",
+                            description: "Indomie telur terenak sepanjang masa",
+                            type: "Original",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
+                            url_image:
+                              [
+                                {
+                                  id: 3,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                        ],
+                        total_page: 1,
+                    }
+                  message: "succesfully read list of recipes"
+          400:
+            description: "bad request"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                examples:
+                  Invalid page param:
+                    value:
+                      message: invalid page param
+                  Invalid limit param:
+                    value:
+                      message: invalid limit param
+          500:
+            description: "internal server error"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                example:
+                  message: internal server error
+                  
+  /recipes/timeline:
+    get:
+        tags:
+          - Recipes
+        summary: get timeline of recipes
+        description: feature for getting timeline of recipes
+        parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+        responses:
+          200:
+            description: success get timeline of recipes
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/responseObject"
+                example:
+                  data:
+                    {
+                      recipes:
+                        [
+                          {
+                            id: 1,
+                            username: "Benjamin29",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Spesial",
+                            description: "Indomie terenak sepanjang masa",
+                            type: "Original",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
+                            url_image:
+                              [
+                                {
+                                  id: 1,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                          {
+                            id: 2,
+                            username: "Benjamin30",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Soto Spesial",
+                            description: "Indomie soto terenak sepanjang masa",
+                            type: "Original",
+                            status: "OpenForSale",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -1126,6 +1288,9 @@ paths:
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
                             type: "Mixed",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -1141,6 +1306,10 @@ paths:
                                 profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
+                                type: "Original",
+                                status: "None",
+                                total_like: 79,
+                                total_comment : 117,
                                 url_image:
                                   [
                                     {
@@ -1158,6 +1327,9 @@ paths:
                             name: "Indomie Telur Spesial Ala Ronny",
                             description: "Indomie telur terenak sepanjang masa",
                             type: "Cooked",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
                             url_image:
                               [
                                 {
@@ -1173,6 +1345,10 @@ paths:
                                 profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
+                                type: "Original",
+                                status: "None",
+                                total_like: 79,
+                                total_comment : 117,
                                 url_image:
                                   [
                                     {
@@ -1238,6 +1414,7 @@ paths:
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                         name: "Indomie Spesial",
                         description: "Indomie terenak sepanjang masa",
+                        status: "None",
                         total_like: 79,
                         total_comment : 117,
                         url_image:
@@ -1513,7 +1690,7 @@ paths:
               example:
                 message: internal server error
   
-  /recipes/{recipe_id}:
+  /users/recipes/{recipe_id}:
     put:
       tags:
         - Recipes
@@ -1541,9 +1718,17 @@ paths:
                     - OpenForSale
                 description:
                   type: string
-            example:
-              name: "Indomie Telur Spesial"
-              description: "Indomie telur terenak sepanjang masa"
+            examples:
+              Not For Sale:
+                value:
+                  name: "Indomie Telur Spesial"
+                  status: "None"
+                  description: "Indomie telur terenak sepanjang masa"
+              Open For Sale:
+                value:
+                  name: "Indomie Telur Spesial"
+                  status: "OpenForSale"
+                  description: "Indomie telur terenak sepanjang masa"
       parameters:
         - name: recipe_id
           in: path
@@ -1719,8 +1904,8 @@ paths:
     delete:
       tags:
         - Recipes
-      summary: unlike someone's recipe
-      description: feature for unlike someone's recipe
+      summary: unlike user's recipe
+      description: feature for unlike user's recipe
       security:
         - JWTAuth: []
       parameters:
@@ -1740,7 +1925,7 @@ paths:
             example: 1
       responses:
         201:
-          description: success unlike someone's recipe
+          description: success unlike user's recipe
           content:
             application/json:
               schema:
