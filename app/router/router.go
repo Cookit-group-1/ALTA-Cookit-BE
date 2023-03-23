@@ -9,6 +9,9 @@ import (
 	_ingredientData "alta-cookit-be/features/ingredients/data"
 	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
 	_ingredientService "alta-cookit-be/features/ingredients/service"
+	_ingredientDetailData "alta-cookit-be/features/ingredient_details/data"
+	_ingredientDetailDelivery "alta-cookit-be/features/ingredient_details/delivery"
+	_ingredientDetailService "alta-cookit-be/features/ingredient_details/service"
 	"alta-cookit-be/utils/consts"
 )
 
@@ -37,6 +40,17 @@ func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
 	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.DeleteIngredientById)
 }
 
+func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
+	data := _ingredientDetailData.New(db)
+	service := _ingredientDetailService.New(data)
+	handler := _ingredientDetailDelivery.New(service)
+
+	e.POST(fmt.Sprintf("/ingredients/:%s/ingredientDetails", consts.ECHO_P_IngredientId), handler.InsertIngredientDetail)
+	e.PUT(fmt.Sprintf("/ingredients/:%s/ingredientDetails/:%s", consts.ECHO_P_IngredientId, consts.ECHO_P_IngredientDetailId), handler.UpdateIngredientDetailById)
+	e.DELETE(fmt.Sprintf("/ingredients/:%s/ingredientDetails/:%s", consts.ECHO_P_IngredientId, consts.ECHO_P_IngredientDetailId), handler.DeleteIngredientDetailById)
+}
+
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initIngredientRouter(db, e)
+	initIngredientDetailRouter(db, e)
 }
