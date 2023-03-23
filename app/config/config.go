@@ -79,6 +79,21 @@ func ReadEnv() *AppConfig {
 	// 	isRead = false
 	// }
 
+	// looking image env for aws s3 bucket
+	if val, found := os.LookupEnv("AWS_REGION"); found {
+		app.AWS_REGION = val
+		isRead = false
+	}
+	if val, found := os.LookupEnv("ACCESS_KEY_ID"); found {
+		// cnv, _ := strconv.Atoi(val)
+		app.ACCESS_KEY_ID = val
+		isRead = false
+	}
+	if val, found := os.LookupEnv("ACCESS_KEY_SECRET"); found {
+		app.ACCESS_KEY_SECRET = val
+		isRead = false
+	}
+
 	if isRead {
 		viper.AddConfigPath(".")
 		viper.SetConfigName("local")
@@ -97,6 +112,9 @@ func ReadEnv() *AppConfig {
 		app.DB_NAME = viper.Get("DB_NAME").(string)
 		app.GCP_PROJECT_ID = (viper.Get("GCP_PROJECT_ID").(string))
 		app.GCP_BUCKET_NAME = viper.Get("GCP_BUCKET_NAME").(string)
+		app.AWS_REGION = viper.Get("AWS_REGION").(string)
+		app.ACCESS_KEY_ID = viper.Get("ACCESS_KEY_ID").(string)
+		app.ACCESS_KEY_SECRET = viper.Get("ACCESS_KEY_SECRET").(string)
 		// app.MIDTRANS_SERVER_KEY = viper.Get("MIDTRANS_SERVER_KEY").(string)
 
 	}
@@ -104,6 +122,9 @@ func ReadEnv() *AppConfig {
 	SECRET_JWT = app.JWT_KEY
 	GCP_PROJECT_ID = app.GCP_PROJECT_ID
 	GCP_BUCKET_NAME = app.GCP_BUCKET_NAME
+	AWS_REGION = app.AWS_REGION
+	ACCESS_KEY_ID = app.ACCESS_KEY_ID
+	ACCESS_KEY_SECRET = app.ACCESS_KEY_SECRET
 	// MIDTRANS_SERVER_KEY = app.MIDTRANS_SERVER_KEY
 	return &app
 }
