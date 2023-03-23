@@ -18,8 +18,8 @@ func LimitOffsetConvert(page, limit int) (int, int) {
 	return limit, offset
 }
 
-func ExtractIDParam(c echo.Context) (uint, error) {
-	idStr := c.Param("id")
+func ExtractIDParam(c echo.Context, pathName string) (uint, error) {
+	idStr := c.Param(pathName)
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		return 0, errors.New(consts.ECHO_InvaildIdParam)
