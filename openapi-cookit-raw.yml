@@ -238,46 +238,10 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /users/upgrade:
-    post:
-      tags:
-        - Users
-      summary: "upgrade user to verified user"
-      description: "upgrade user to verified user"
-      security:
-        - JWTAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                approvement:
-                  type: string
-            example:
-              approvement: "Approve"
-      responses:
-        201:
-          description: "success upgrade user to verified user"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/responseObject"
-              example:
-                message: "success upgrade user to verified user"
-        400:
-          $ref: "#/components/responses/400"
-        500:
-          $ref: "#/components/responses/500"
-
-  ####################################
-  #  FOLLOWERS
-  ####################################
-  /users/followers/followed:
+  /users/followed:
     get:
       tags:
-        - Followers
+        - Users
       summary: get list of user's followers
       description: feature for get list of user's followers
       security:
@@ -359,10 +323,10 @@ paths:
               example:
                 message: internal server error
               
-  /users/followers/following:
+  /users/following:
     get:
       tags:
-        - Followers
+        - Users
       summary: get list of following user
       description: feature for get list of following user
       security:
@@ -389,7 +353,7 @@ paths:
               example:
                 data:
                   {
-                    followers:
+                    following:
                       [
                         {
                           id: 1,
@@ -441,7 +405,43 @@ paths:
               example:
                 message: internal server error
 
-  /followers:
+  /users/upgrade:
+    post:
+      tags:
+        - Users
+      summary: "upgrade user to verified user"
+      description: "upgrade user to verified user"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approvement:
+                  type: string
+            example:
+              approvement: "Approve"
+      responses:
+        201:
+          description: "success upgrade user to verified user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success upgrade user to verified user"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  ####################################
+  #  FOLLOWERS
+  ####################################
+  /users/followers:
     post:
       tags:
         - Followers
@@ -503,7 +503,7 @@ paths:
               example:
                 message: internal server error
 
-  /followers/{follower_id}:
+  /users/followers/{follower_id}:
     delete:
       tags:
         - Followers
@@ -565,12 +565,14 @@ paths:
   ####################################
   #  RECIPES
   ####################################
-  /recipes:
+  /users/recipes:
     get:
         tags:
           - Recipes
-        summary: get list of recipes
-        description: feature for getting list of recipes
+        summary: get list of user's recipes
+        description: feature for getting list of user's recipes
+        security:
+        - JWTAuth: []
         parameters:
         - name: page
           in: query
@@ -585,7 +587,7 @@ paths:
             example: 2
         responses:
           200:
-            description: success get list of recipes
+            description: success get list of user's recipes
             content:
               application/json:
                 schema:
@@ -613,7 +615,7 @@ paths:
                           },
                           {
                             id: 2,
-                            username: "Benjamin30",
+                            username: "Benjamin29",
                             user_type: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Soto Spesial",
@@ -628,64 +630,32 @@ paths:
                               ],
                           },
                           {
-                            id: 3,
-                            username: "Biangkerokk77",
-                            user_type: "User",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                            id: 4,
+                            username: "Benjamin29",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
                             type: "Mixed",
                             url_image:
                               [
                                 {
-                                  id: 3,
+                                  id: 4,
                                   url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
                                 }
                               ],
                             replied_recipe:
                               {
-                                id: 1,
-                                username: "Benjamin29",
-                                user_type: "VerifiedUser",
-                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                id: 3,
+                                username: "Ronny69",
+                                user_type: "Ronny69",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
                                 url_image:
                                   [
                                     {
-                                      id: 1,
-                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
-                                    }
-                                  ],
-                              }
-                          },
-                          {
-                            id: 4,
-                            username: "Ronny69",
-                            user_type: "User",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
-                            name: "Indomie Telur Spesial Ala Ronny",
-                            description: "Indomie telur terenak sepanjang masa",
-                            type: "Cooked",
-                            url_image:
-                              [
-                                {
-                                  id: 3,
-                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
-                                }
-                              ],
-                            replied_recipe:
-                              {
-                                id: 1,
-                                username: "Benjamin29",
-                                user_type: "VerifiedUser",
-                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
-                                name: "Indomie Spesial",
-                                description: "Indomie terenak sepanjang masa",
-                                url_image:
-                                  [
-                                    {
-                                      id: 1,
+                                      id: 3,
                                       url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
                                     }
                                   ],
@@ -694,7 +664,7 @@ paths:
                         ],
                         total_page: 1,
                     }
-                  message: "succesfully read list of recipes"
+                  message: "succesfully read list of user's recipes"
           400:
             description: "bad request"
             content:
@@ -901,6 +871,7 @@ paths:
                       {
                         id: 1,
                         username: "Benjamin29",
+                        user_type: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                         name: "Indomie Spesial",
                         description: "Indomie terenak sepanjang masa",
@@ -963,6 +934,7 @@ paths:
                       {
                         id: 3,
                         username: "Biangkerokk77",
+                        user_type: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                         name: "Indomie Telur Spesial",
                         description: "Indomie telur terenak sepanjang masa",
@@ -1030,6 +1002,7 @@ paths:
                       {
                         id: 3,
                         username: "Ronny69",
+                        user_type: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                         name: "Indomie Telur Spesial Ala Ronny",
                         description: "Indomie telur terenak sepanjang masa",
@@ -1074,6 +1047,164 @@ paths:
                     type: string
               example:
                 message: internal server error
+                  
+  /recipes:
+    get:
+        tags:
+          - Recipes
+        summary: get list of recipes
+        description: feature for getting list of recipes
+        parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          description: limit data for each page
+          schema:
+            type: integer
+            example: 2
+        responses:
+          200:
+            description: success get list of recipes
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/responseObject"
+                example:
+                  data:
+                    {
+                      recipes:
+                        [
+                          {
+                            id: 1,
+                            username: "Benjamin29",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Spesial",
+                            description: "Indomie terenak sepanjang masa",
+                            type: "Original",
+                            url_image:
+                              [
+                                {
+                                  id: 1,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                          {
+                            id: 2,
+                            username: "Benjamin30",
+                            user_type: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            name: "Indomie Soto Spesial",
+                            description: "Indomie soto terenak sepanjang masa",
+                            type: "Original",
+                            url_image:
+                              [
+                                {
+                                  id: 2,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Soto%20Spesial.jpg"
+                                }
+                              ],
+                          },
+                          {
+                            id: 3,
+                            username: "Biangkerokk77",
+                            user_type: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                            name: "Indomie Telur Spesial",
+                            description: "Indomie telur terenak sepanjang masa",
+                            type: "Mixed",
+                            url_image:
+                              [
+                                {
+                                  id: 3,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                }
+                              ],
+                            replied_recipe:
+                              {
+                                id: 1,
+                                username: "Benjamin29",
+                                user_type: "VerifiedUser",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                url_image:
+                                  [
+                                    {
+                                      id: 1,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
+                          },
+                          {
+                            id: 4,
+                            username: "Ronny69",
+                            user_type: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
+                            name: "Indomie Telur Spesial Ala Ronny",
+                            description: "Indomie telur terenak sepanjang masa",
+                            type: "Cooked",
+                            url_image:
+                              [
+                                {
+                                  id: 3,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
+                                }
+                              ],
+                            replied_recipe:
+                              {
+                                id: 1,
+                                username: "Benjamin29",
+                                user_type: "VerifiedUser",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                url_image:
+                                  [
+                                    {
+                                      id: 1,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
+                          },
+                        ],
+                        total_page: 1,
+                    }
+                  message: "succesfully read list of recipes"
+          400:
+            description: "bad request"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                examples:
+                  Invalid page param:
+                    value:
+                      message: invalid page param
+                  Invalid limit param:
+                    value:
+                      message: invalid limit param
+          500:
+            description: "internal server error"
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                example:
+                  message: internal server error
 
   /recipes/detail:
     get:
@@ -1095,6 +1226,7 @@ paths:
                       {
                         id: 1,
                         username: "Benjamin29",
+                        user_type: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                         name: "Indomie Spesial",
                         description: "Indomie terenak sepanjang masa",
@@ -1157,6 +1289,7 @@ paths:
                       {
                         id: 3,
                         username: "Biangkerokk77",
+                        user_type: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                         name: "Indomie Telur Spesial",
                         description: "Indomie telur terenak sepanjang masa",
@@ -1220,6 +1353,7 @@ paths:
                           {
                             id: 1,
                             username: "Benjamin29",
+                            user_type: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
@@ -1283,6 +1417,7 @@ paths:
                       {
                         id: 3,
                         username: "Ronny69",
+                        user_type: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                         name: "Indomie Telur Spesial Ala Ronny",
                         description: "Indomie telur terenak sepanjang masa",
@@ -1506,11 +1641,136 @@ paths:
                     type: string
               example:
                 message: internal server error
+
+  /recipes/{recipe_id}/likes:
+    post:
+      tags:
+        - Recipes
+      summary: like user's recipe
+      description: feature for liking user's recipe
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be liked for
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success like user's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully like user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Recipe:
+                  value:
+                    message: invalid recipe
+                Already Liked:
+                  value:
+                    message: already liked
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /recipes/{recipe_id}/likes/{like_id}:
+    delete:
+      tags:
+        - Recipes
+      summary: unlike someone's recipe
+      description: feature for unlike someone's recipe
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be unlike for
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: like_id
+          in: path
+          description: like's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success unlike someone's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully unlike user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
   
   ####################################
   #  IMAGES
   ####################################
-  /images:
+  /recipes/{recipe_id}/images:
     post:
       tags:
         - Images
@@ -1525,16 +1785,20 @@ paths:
             schema:
               type: object
               required:
-                - recipe_id
                 - image
               properties:
-                recipe_id:
-                  type: integer
                 image:
                   type: object
             example:
-              recipe_id: 1
               image: ""
+      parameters:
+        - name: recipe_id
+          in: path
+          description: image of recipe's id to be inserted
+          required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         201:
           description: success insert recipe's image
@@ -1578,7 +1842,7 @@ paths:
               example:
                 message: internal server error
 
-  /images/{image_id}:
+  /recipes/{recipe_id}/images/{image_id}:
     put:
       tags:
         - Images
@@ -1600,6 +1864,13 @@ paths:
             example:
               image: ""
       parameters:
+        - name: recipe_id
+          in: path
+          description: image of recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: image_id
           in: path
           description: image's id to be updated
@@ -1658,6 +1929,13 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: recipe_id
+          in: path
+          description: image of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: image_id
           in: path
           description: image's id to be deleted
@@ -1805,7 +2083,6 @@ paths:
               example:
                 message: internal server error
 
-  /comments:
     post:
       tags:
         - Comments
@@ -1820,16 +2097,20 @@ paths:
             schema:
               type: object
               required:
-                - recipe_id
                 - comment
               properties:
-                recipe_id:
-                  type: integer
                 comment:
                   type: string
             example:
-              recipe_id: 1
               comment: "Udah di coba, dan ternyata emang se enak itu racikannya"
+      parameters:
+        - name: recipe_id
+          in: path
+          description: comments of recipe's id to looked for
+          required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         201:
           description: success insert recipe's comment
@@ -1873,7 +2154,7 @@ paths:
               example:
                 message: internal server error
 
-  /comments/{comment_id}:
+  /recipes/{recipe_id}/comments/{comment_id}:
     put:
       tags:
         - Comments
@@ -1895,6 +2176,13 @@ paths:
             example:
               name: "Setelah nyobain bereksperimen di resep ini, ternyata bagian krusial nya ada pas mixing bahan nya"
       parameters:
+        - name: recipe_id
+          in: path
+          description: comments of recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: comment_id
           in: path
           description: comment's id to be updated
@@ -1956,6 +2244,13 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: recipe_id
+          in: path
+          description: comments of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: comment_id
           in: path
           description: comment's id to be deleted
@@ -2007,135 +2302,9 @@ paths:
                 message: internal server error
 
   ####################################
-  #  LIKES
-  ####################################
-  /likes:
-    post:
-      tags:
-        - Likes
-      summary: like user's recipe
-      description: feature for liking user's recipe
-      security:
-        - JWTAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - recipe_id
-              properties:
-                recipe_id:
-                  type: integer
-            example:
-              recipe_id: 1
-      responses:
-        201:
-          description: success like user's recipe
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "succesfully like user's recipe"
-        400:
-          description: "bad request"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              examples:
-                Invalid Recipe:
-                  value:
-                    message: invalid recipe
-                Already Liked:
-                  value:
-                    message: already liked
-                Forbidden Request:
-                  value:
-                    message: forbidden request
-        500:
-          description: "internal server error"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: internal server error
-
-  /likes/{like_id}:
-    delete:
-      tags:
-        - Likes
-      summary: unlike someone's recipe
-      description: feature for unlike someone's recipe
-      security:
-        - JWTAuth: []
-      parameters:
-        - name: like_id
-          in: path
-          description: like's id to be deleted
-          required: true
-          schema:
-            type: integer
-            example: 1
-      responses:
-        201:
-          description: success unlike someone's recipe
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "succesfully unlike someone's recipe"
-        400:
-          description: "bad request"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              examples:
-                Invalid Id param:
-                  value:
-                    message: invalid id param
-                Record Not Found:
-                  value:
-                    message: record not found
-                Foridden Request:
-                  value:
-                    message: forbidden request
-        500:
-          description: "internal server error"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: internal server error
-
-  ####################################
   #  STEPS
   ####################################
-  /steps:
+  /recipes/{recipe_id}/steps:
     post:
       tags:
         - Steps
@@ -2143,6 +2312,14 @@ paths:
       description: feature for insert new recipe's step
       security:
         - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be inserted
+          required: true
+          schema:
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -2150,15 +2327,11 @@ paths:
             schema:
               type: object
               required:
-                - recipe_id
                 - name
               properties:
-                recipe_id:
-                  type: integer
                 name:
                   type: string
             example:
-              recipe_id: 2
               name: Siapkan alat dan bahan
       responses:
         201:
@@ -2203,7 +2376,7 @@ paths:
               example:
                 message: internal server error
 
-  /steps/{step_id}:
+  /recipes/{recipe_id}/steps/{step_id}:
     put:
       tags:
         - Steps
@@ -2225,6 +2398,13 @@ paths:
             example:
               name: Siapkan alat dan bahan
       parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: step_id
           in: path
           description: step's id to be updated
@@ -2286,6 +2466,13 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: step_id
           in: path
           description: step's id to be deleted
@@ -2339,7 +2526,7 @@ paths:
   ####################################
   #  INGREDIENTS
   ####################################
-  /ingredients:
+  /recipes/{recipe_id}/ingredients:
     post:
       tags:
         - Ingredients
@@ -2347,6 +2534,14 @@ paths:
       description: feature for insert new recipe's ingredient
       security:
         - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -2354,18 +2549,14 @@ paths:
             schema:
               type: object
               required:
-                - recipe_id
                 - name
                 - price
               properties:
-                recipe_id:
-                  type: integer
                 name:
                   type: string
                 price:
                   type: integer
             example:
-              recipe_id: 1
               name: "Paket Couple"
               price: 125000
 
@@ -2413,7 +2604,7 @@ paths:
                   example:
                       message: internal server error
 
-  /ingredients/{ingredient_id}:
+  /recipes/{recipe_id}/ingredients/{ingredient_id}:
     put:
       tags:
         - Ingredients
@@ -2422,6 +2613,13 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: ingredient_id
           in: path
           description: ingredient's id to be updated
@@ -2499,6 +2697,13 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: ingredient_id
           in: path
           description: ingredient's id to be deleted
@@ -2552,7 +2757,7 @@ paths:
   ####################################
   #  INGREDIENTS DETAILS
   ####################################
-  /ingredientDetails:
+  /ingredients/{ingredient_id}/ingredientDetails:
     post:
       tags:
         - Ingredient Details
@@ -2560,6 +2765,14 @@ paths:
       description: feature for insert new ingredient's detail
       security:
         - JWTAuth: []
+      parameters:
+        - name: ingredient_id
+          in: path
+          description: ingredient details of ingredient's id to be inserted
+          required: true
+          schema:
+            type: integer
+            example: 1
       requestBody:
         required: true
         content:
@@ -2567,18 +2780,14 @@ paths:
             schema:
               type: object
               required:
-                - ingredient_id
                 - name
                 - size
               properties:
-                recipe_id:
-                  type: integer
                 name:
                   type: string
                 size:
                   type: string
             example:
-              ingredient_id: 1
               name: "Gula Pasir"
               size: "100g"
 
@@ -2626,7 +2835,7 @@ paths:
               example:
                 message: internal server error
 
-  /ingredientDetails/{ingredient_detail_id}:
+  /ingredient/{ingredient_id}/ingredientDetails/{ingredient_detail_id}:
     put:
       tags:
         - Ingredient Details
@@ -2635,9 +2844,16 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: ingredient_id
+          in: path
+          description: ingredient details of ingredient's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: ingredient_detail_id
           in: path
-          description: ingredient_detail's id to be updated
+          description: ingredient detail's id to be updated
           required: true
           schema:
             type: integer
@@ -2712,9 +2928,16 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: ingredient_id
+          in: path
+          description: ingredient details of ingredient's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: ingredient_detail_id
           in: path
-          description: ingredient_detail's id to be deleted
+          description: ingredient detail's id to be deleted
           required: true
           schema:
             type: integer
@@ -2849,8 +3072,7 @@ paths:
                     type: string
               example:
                 message: internal server error
-
-  /carts:
+    
     post:
       tags:
         - Carts
@@ -2921,7 +3143,7 @@ paths:
               example:
                 message: internal server error
 
-  /carts/{cart_id}:
+  /users/carts/{cart_id}:
     put:
       tags:
         - Carts
@@ -3171,7 +3393,6 @@ paths:
               example:
                 message: internal server error
 
-  /transactions:
     post:
       tags:
         - Transactions
