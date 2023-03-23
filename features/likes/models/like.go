@@ -6,6 +6,6 @@ import (
 
 type Like struct {
 	gorm.Model
-	UserID   uint
-	RecipeID *uint
+	UserID   uint `gorm:"uniqueIndex:idx_user_recipe"`
+	RecipeID uint `gorm:"uniqueIndex:idx_user_recipe"`
 }

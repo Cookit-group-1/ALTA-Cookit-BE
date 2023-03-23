@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type Follower struct {
 	gorm.Model
-	FromUserID uint
-	ToUserID uint
+	FromUserID uint `gorm:"uniqueIndex:idx_user"`
+	ToUserID   uint `gorm:"uniqueIndex:idx_user"`
 }
