@@ -585,6 +585,12 @@ paths:
           schema:
             type: integer
             example: 2
+        - name: type
+          in: query
+          description: type of recipes ('Original', 'Mixed', 'Cooked')
+          schema:
+            type: integer
+            example: 2
         responses:
           200:
             description: success get list of user's recipes
@@ -722,7 +728,7 @@ paths:
                   type: string
                   enum:
                     - "Original"
-                    - "Mixed"
+                    - "Remix"
                     - "Cooked"
                 image:
                   type: object
@@ -749,7 +755,9 @@ paths:
                           properties:
                             name:
                               type: string
-                            size:
+                            quantity:
+                              type: integer
+                            unit:
                               type: string
             examples:
               original:
@@ -1230,6 +1238,8 @@ paths:
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                         name: "Indomie Spesial",
                         description: "Indomie terenak sepanjang masa",
+                        total_like: 79,
+                        total_comment : 117,
                         url_image:
                           [
                             {
@@ -1519,14 +1529,18 @@ paths:
               type: object
               required:
                 - name
+                - status
                 - description
               properties:
                 name:
                   type: string
+                status:
+                  type: string
+                  enum:
+                    - None
+                    - OpenForSale
                 description:
                   type: string
-                image:
-                  type: object
             example:
               name: "Indomie Telur Spesial"
               description: "Indomie telur terenak sepanjang masa"
@@ -2106,7 +2120,7 @@ paths:
       parameters:
         - name: recipe_id
           in: path
-          description: comments of recipe's id to looked for
+          description: comments of recipe's id to be inserted
           required: true
           schema:
             type: integer
@@ -2537,7 +2551,7 @@ paths:
       parameters:
         - name: recipe_id
           in: path
-          description: steps of recipe's id to be updated
+          description: ingredient of recipe's id to be inserted
           required: true
           schema:
             type: integer
@@ -2615,7 +2629,7 @@ paths:
       parameters:
         - name: recipe_id
           in: path
-          description: steps of recipe's id to be updated
+          description: ingredient of recipe's id to be updated
           required: true
           schema:
             type: integer
@@ -2699,7 +2713,7 @@ paths:
       parameters:
         - name: recipe_id
           in: path
-          description: steps of recipe's id to be deleted
+          description: ingredient of recipe's id to be deleted
           required: true
           schema:
             type: integer
@@ -2781,15 +2795,19 @@ paths:
               type: object
               required:
                 - name
-                - size
+                - quantity
+                - unit
               properties:
                 name:
                   type: string
                 size:
+                  type: integer
+                unit:
                   type: string
             example:
               name: "Gula Pasir"
-              size: "100g"
+              quantity: 100
+              unit: "g"
 
       responses:
         201:
@@ -2802,7 +2820,8 @@ paths:
                 data:
                   id: 1
                   name: "Gula Pasir"
-                  size: "100g"
+                  quantity: 100
+                  unit: "g"
                 message: "succesfully insert ingredient's detail"
         400:
           description: "bad request"
@@ -3344,14 +3363,14 @@ paths:
                           transaction_details:
                             [
                               {
-                              id: 1,
-                              recipe_name: "Milky Cheese Cake",
-                              ingredient_name: "Paket Mini",
-                              price: 75000,
-                              quantity: 1,
+                                id: 3,
+                                recipe_name: "Milky Cheese Cake",
+                                ingredient_name: "Paket Mini",
+                                price: 75000,
+                                quantity: 1,
                               },
                               {
-                                id: 2,
+                                id: 4,
                                 recipe_name: "Milky Cheese Cake",
                                 ingredient_name: "Paket Original",
                                 price: 225000,
