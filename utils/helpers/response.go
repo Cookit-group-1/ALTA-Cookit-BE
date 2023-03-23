@@ -21,54 +21,54 @@ func ResponseWithData(message string, data any) map[string]any {
 	}
 }
 
-func ValidateBadResponse(e echo.Context, err error) (codeStatus int, failedMessage string) {
+func ReturnBadResponse(e echo.Context, err error) error {
 	switch err.Error() {
 		case consts.JWT_InvalidJwtToken:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.JWT_FailedCastingJwtToken:
-			return http.StatusInternalServerError, err.Error()
+			return e.JSON(http.StatusInternalServerError, Response(err.Error()))
 
 		case consts.ECHO_ErrorBindData:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusInternalServerError, Response(err.Error()))
 
 		case consts.ECHO_InvaildIdParam:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.ECHO_InvaildPageParam:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.ECHO_InvaildLimitParam:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.VALIDATION_InvalidInput:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.FOLLOWER_AlreadyFollowing:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.INGREDIENT_InvalidIngredient:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.LIKE_AlreadyLiked:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.RECIPE_InvalidRecipe:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.USER_InvalidUser:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case gorm.ErrRecordNotFound.Error():
-			return http.StatusBadRequest, consts.GORM_RecordNotFound
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 		case consts.SERVER_ForbiddenRequest:
-			return http.StatusBadRequest, err.Error()
+			return e.JSON(http.StatusBadRequest, Response(err.Error()))
 			
 		case consts.SERVER_InternalServerError:
-			return http.StatusInternalServerError, err.Error()
+			return e.JSON(http.StatusInternalServerError, Response(err.Error()))
 		
 		default:
-			return http.StatusInternalServerError, err.Error()
+			return e.JSON(http.StatusInternalServerError, Response(err.Error()))
 	}
 }
