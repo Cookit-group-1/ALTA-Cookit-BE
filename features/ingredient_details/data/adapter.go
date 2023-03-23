@@ -12,6 +12,9 @@ func ConvertToGorm(entity *ingredient_details.IngredientDetailEntity) *_ingredie
 		Quantity:     entity.Quantity,
 		Unit:         entity.Unit,
 	}
+	if entity.ID != 0 {
+		gorm.ID = entity.ID
+	}
 	return &gorm
 }
 
