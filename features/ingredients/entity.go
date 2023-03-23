@@ -5,17 +5,17 @@ import "github.com/labstack/echo/v4"
 type IngredientEntity struct {
 	ID       uint
 	UserID   uint
-	UserRole uint
+	UserRole string
 	RecipeID uint
 	Name     string
 	Price    float64
 }
 
 type IngredientRequest struct {
-	ID       uint    `json:"id"`
-	UserID   uint    `json:"user_id"`
-	UserRole uint    `json:"user_role"`
-	RecipeID uint    `json:"recipe_id"`
+	ID       uint    
+	UserID   uint    
+	UserRole string  
+	RecipeID uint    
 	Name     string  `json:"name"`
 	Price    float64 `json:"price"`
 }
