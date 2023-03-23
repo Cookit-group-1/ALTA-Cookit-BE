@@ -51,7 +51,7 @@ func ExtractQueryParams(queryParams url.Values) map[string]interface{} {
 	return extractedQueryParams
 }
 
-func ExtractImage(c echo.Context, key string) (multipart.File, string, error) {
+func ExtractFile(c echo.Context, key string) (multipart.File, string, error) {
 	f, err := c.FormFile(key)
 	if err != nil {
 		return nil, "", err
@@ -66,7 +66,7 @@ func ExtractImage(c echo.Context, key string) (multipart.File, string, error) {
 	return blobFile, f.Filename, nil
 }
 
-func MultipleImage(c echo.Context, key string) ([]multipart.File, []string, error) {
+func MultipleFile(c echo.Context, key string) ([]multipart.File, []string, error) {
 	blobFiles, fileNames := []multipart.File{}, []string{}
 
 	form, err := c.MultipartForm()
