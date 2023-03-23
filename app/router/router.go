@@ -3,6 +3,10 @@ package router
 import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+
+	_ingredientData "alta-cookit-be/features/ingredients/data"
+	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
+	_ingredientService "alta-cookit-be/features/ingredients/service"
 )
 
 func initUserRouter(db *gorm.DB, e *echo.Echo) {
@@ -20,6 +24,16 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
 }
 
+func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
+	data := _ingredientData.New(db)
+	service := _ingredientService.New(data)
+	handler := _ingredientDelivery.New(service)
+
+	e.POST("/ingredients", handler.InsertIngredient)
+	e.PUT("/ingredients/:id", handler.UpdateIngredientById)
+	e.DELETE("/ingredients/:id", handler.DeleteIngredientById)
+}
+
 func InitRouter(db *gorm.DB, e *echo.Echo) {
-	// initUserRouter(db, e)
+	initIngredientRouter(db, e)
 }

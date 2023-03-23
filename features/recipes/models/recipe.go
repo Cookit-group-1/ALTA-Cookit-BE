@@ -16,6 +16,7 @@ type Recipe struct {
 	RecipeID    *uint
 	Recipe      *Recipe
 	Type        string                        `gorm:"not null;type:enum('Original', 'Mixed', 'Cooked');default:'Original'"`
+	Status      string                        `gorm:"not null;type:enum('None', 'OpenForSale');default:'None'"`
 	Name        string                        `gorm:"not null;type:VARCHAR(50)"`
 	Description string                        `gorm:"not null;type:text"`
 	Steps       []_stepModel.Step             `gorm:"constraint:OnDelete:CASCADE;"`
