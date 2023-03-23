@@ -3,6 +3,7 @@ package main
 import (
 	"alta-cookit-be/app/config"
 	"alta-cookit-be/app/database"
+	"alta-cookit-be/app/router"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -19,7 +20,7 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}` + "\n",
 	}))
-	// router.InitRouter(db, e)
+	router.InitRouter(db, e)
 
 	e.Logger.Fatal(e.Start(":8083"))
 }
