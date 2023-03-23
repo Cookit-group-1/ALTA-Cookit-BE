@@ -9,21 +9,27 @@ import (
 )
 
 var (
-	SECRET_JWT      string = ""
-	GCP_PROJECT_ID  string = ""
-	GCP_BUCKET_NAME string = ""
+	SECRET_JWT        string = ""
+	GCP_PROJECT_ID    string = ""
+	GCP_BUCKET_NAME   string = ""
+	AWS_REGION               = ""
+	ACCESS_KEY_ID            = ""
+	ACCESS_KEY_SECRET        = ""
 	// MIDTRANS_SERVER_KEY string = ""
 )
 
 type AppConfig struct {
-	DB_USERNAME     string
-	DB_PASSWORD     string
-	DB_HOSTNAME     string
-	DB_PORT         int
-	DB_NAME         string
-	JWT_KEY         string
-	GCP_PROJECT_ID  string
-	GCP_BUCKET_NAME string
+	DB_USERNAME       string
+	DB_PASSWORD       string
+	DB_HOSTNAME       string
+	DB_PORT           int
+	DB_NAME           string
+	JWT_KEY           string
+	GCP_PROJECT_ID    string
+	GCP_BUCKET_NAME   string
+	AWS_REGION        string
+	ACCESS_KEY_ID     string
+	ACCESS_KEY_SECRET string
 	// MIDTRANS_SERVER_KEY string
 }
 
