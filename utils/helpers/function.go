@@ -65,3 +65,26 @@ func ExtractImage(c echo.Context, key string) (multipart.File, string, error) {
 
 	return blobFile, f.Filename, nil
 }
+
+func MultipleImage(c echo.Context, key string) ([]multipart.File, []string, error) {
+	blobFiles, fileNames := []multipart.File{}, []string{}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		return nil, nil, err
+	}
+	files := form.File["files"]
+
+	for _, file := range files {
+		blobFile, err := file.Open()
+		if err != nil {
+			return nil, nil, err
+		}
+		defer blobFile.Close()
+
+		blobFiles = append(blobFiles, blobFile)
+		fileNames = append(fileNames, file.Filename)
+	}
+
+	return blobFiles, fileNames, nil
+}
