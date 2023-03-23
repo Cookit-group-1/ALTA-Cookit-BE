@@ -587,10 +587,14 @@ paths:
             example: 2
         - name: type
           in: query
-          description: type of recipes ('Original', 'Mixed', 'Cooked')
+          description: recipe's type
           schema:
-            type: integer
-            example: 2
+            type: string
+            enum:
+              - Original
+              - Mixed
+              - Cooked
+            example: "Original"
         responses:
           200:
             description: success get list of user's recipes
@@ -2235,6 +2239,7 @@ paths:
                           user_type: "VerifiedUser",
                           profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cyber.jpg,
                           comment: "Emang mantep si ini resepnya",
+                          comment_image:  https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cyber.jpg,
                         },
                         {
                           id: 2,
@@ -2242,6 +2247,7 @@ paths:
                           user_type: "VerifiedUser",
                           profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Green%20Tea.jpg,
                           comment: "The best resepnya",
+                          comment_image:  "",
                         },
                         {
                           id: 3,
@@ -2249,6 +2255,7 @@ paths:
                           user_type: "User",
                           profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Saber.jpg,
                           comment: "Enak, tapi agak kurang kalo di saya. Beda selera mungkin",
+                          comment_image:  "",
                         },
                       ],
                     total_page: 1,
@@ -2292,14 +2299,17 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               required:
                 - comment
+                - image
               properties:
                 comment:
                   type: string
+                image:
+                  type: object
             example:
               comment: "Udah di coba, dan ternyata emang se enak itu racikannya"
       parameters:
@@ -2320,6 +2330,7 @@ paths:
               example:
                 data:
                   id: 1
+                  comment_image: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cyber.jpg,
                   comment: "Udah di coba, dan ternyata emang se enak itu racikannya"
                 message: "succesfully insert recipe's comment"
         400:
@@ -2364,14 +2375,17 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               required:
                 - comment
+                - image
               properties:
                 comment:
                   type: string
+                image:
+                  type: object
             example:
               name: "Setelah nyobain bereksperimen di resep ini, ternyata bagian krusial nya ada pas mixing bahan nya"
       parameters:
