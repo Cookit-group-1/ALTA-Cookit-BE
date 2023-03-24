@@ -6,15 +6,18 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	_stepData "alta-cookit-be/features/steps/data"
-	_stepDelivery "alta-cookit-be/features/steps/delivery"
-	_stepService "alta-cookit-be/features/steps/service"
-	_ingredientData "alta-cookit-be/features/ingredients/data"
-	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
-	_ingredientService "alta-cookit-be/features/ingredients/service"
+	_commentData "alta-cookit-be/features/comments/data"
+	_commentDelivery "alta-cookit-be/features/comments/delivery"
+	_commentService "alta-cookit-be/features/comments/service"
 	_ingredientDetailData "alta-cookit-be/features/ingredient_details/data"
 	_ingredientDetailDelivery "alta-cookit-be/features/ingredient_details/delivery"
 	_ingredientDetailService "alta-cookit-be/features/ingredient_details/service"
+	_ingredientData "alta-cookit-be/features/ingredients/data"
+	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
+	_ingredientService "alta-cookit-be/features/ingredients/service"
+	_stepData "alta-cookit-be/features/steps/data"
+	_stepDelivery "alta-cookit-be/features/steps/delivery"
+	_stepService "alta-cookit-be/features/steps/service"
 	"alta-cookit-be/utils/consts"
 )
 
@@ -31,6 +34,16 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// e.DELETE("/users", userHandler.RemoveAccount, middlewares.JWTMiddleware())
 	// e.GET("/users/balances", userHandler.GetUserBalance, middlewares.JWTMiddleware())
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
+}
+
+func initCommentRouter(db *gorm.DB, e *echo.Echo) {
+	data := _commentData.New(db)
+	service := _commentService.New(data)
+	handler := _commentDelivery.New(service)
+
+	e.POST(fmt.Sprintf("/recipes/:%s/comments", consts.ECHO_P_RecipeId), handler.InsertComment)
+	e.PUT(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.UpdateCommentById)
+	e.DELETE(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.DeleteCommentById)
 }
 
 func initStepRouter(db *gorm.DB, e *echo.Echo) {
@@ -64,6 +77,7 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
+	initCommentRouter(db, e)
 	initStepRouter(db, e)
 	initIngredientRouter(db, e)
 	initIngredientDetailRouter(db, e)
