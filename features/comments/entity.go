@@ -32,7 +32,7 @@ type CommentRequest struct {
 type CommentResponse struct {
 	ID             uint   `json:"id,omitempty"`
 	UserName       string `json:"username,omitempty"`
-	UserRole       string `json:"user_type,omitempty"`
+	UserRole       string `json:"user_role,omitempty"`
 	ProfilePicture string `json:"profile_picture,omitempty"`
 	Comment        string `json:"comment,omitempty"`
 	UrlImage       string `json:"comment_image,omitempty"`
