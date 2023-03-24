@@ -15,11 +15,11 @@ type IngredientDetailEntity struct {
 type IngredientDetailRequest struct {
 	ID           uint `json:"id"`
 	UserID       uint
-	UserRole     string `json:"user_role"`
+	UserRole     string
 	IngredientID uint
-	Name         string `json:"name"`
-	Quantity     int    `json:"quantity"`
-	Unit         string `json:"unit"`
+	Name         string `json:"name" form:"name"`
+	Quantity     int    `json:"quantity" form:"quantity"`
+	Unit         string `json:"unit" form:"unit"`
 }
 
 type IngredientDetailResponse struct {
