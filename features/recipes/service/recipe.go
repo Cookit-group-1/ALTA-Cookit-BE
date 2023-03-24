@@ -32,3 +32,24 @@ func (s *RecipeService) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Rec
 	}
 	return output, nil
 }
+
+func (s *RecipeService) UpdateRecipeById(entity *recipes.RecipeEntity) error {
+	err := s.validate.Struct(entity)
+	if err != nil {
+		return errors.New(consts.VALIDATION_InvalidInput)
+	}
+
+	err = s.recipeData.UpdateRecipeById(entity)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *RecipeService) DeleteRecipeById(entity *recipes.RecipeEntity) error {
+	err := s.recipeData.DeleteRecipeById(entity)
+	if err != nil {
+		return err
+	}
+	return nil
+}
