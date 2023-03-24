@@ -26,9 +26,11 @@ func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	file, fileName, _ := helpers.ExtractFile(e, "image")
-	recipeRequest.Image = file
-	recipeRequest.ImageName = fileName
+	files, fileNames, _ := helpers.ExtractMultipleFiles(e, "image")
+	for index, file := range files {
+		recipeRequest.Image = append(recipeRequest.Image, file)
+		recipeRequest.ImageName = append(recipeRequest.ImageName, fileNames[index])
+	}
 
 	output, err := d.recipeService.InsertRecipe(ConvertToEntity(&recipeRequest))
 	if err != nil {

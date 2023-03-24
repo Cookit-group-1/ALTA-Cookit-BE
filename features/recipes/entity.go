@@ -16,8 +16,8 @@ type RecipeEntity struct {
 	UserRole           string
 	ProfilePicture     string
 	RecipeID           uint
-	Image              multipart.File
-	ImageName          string
+	Image              []multipart.File
+	ImageName          []string
 	Recipe             *RecipeEntity
 	UrlImage           string
 	Type               string
@@ -36,8 +36,8 @@ type RecipeRequest struct {
 	UserID             uint `json:"user_id" form:"user_id"`
 	UserRole           string
 	RecipeID           uint `json:"recipe_id" form:"recipe_id"`
-	Image              multipart.File
-	ImageName          string
+	Image              []multipart.File
+	ImageName          []string
 	Type               string                          `json:"type" form:"type"`
 	Status             string                          `json:"status" form:"status"`
 	Name               string                          `json:"name" form:"name"`

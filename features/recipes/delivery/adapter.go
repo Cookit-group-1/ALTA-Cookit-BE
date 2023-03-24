@@ -13,6 +13,8 @@ func ConvertToEntity(request *recipes.RecipeRequest) *recipes.RecipeEntity {
 		UserID:             request.UserID,
 		UserRole:           request.UserRole,
 		RecipeID:           request.RecipeID,
+		Image:              request.Image,
+		ImageName:          request.ImageName,
 		Type:               request.Type,
 		Status:             request.Status,
 		Name:               request.Name,
@@ -34,6 +36,7 @@ func ConvertToResponse(entity *recipes.RecipeEntity) *recipes.RecipeResponse {
 	response := recipes.RecipeResponse{
 		ID:                  entity.ID,
 		UserID:              entity.UserID,
+		UserName:            entity.UserName,
 		UserRole:            entity.UserRole,
 		ProfilePicture:      entity.ProfilePicture,
 		RecipeID:            entity.RecipeID,
