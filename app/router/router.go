@@ -6,6 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	_recipeData "alta-cookit-be/features/recipes/data"
+	_recipeDelivery "alta-cookit-be/features/recipes/delivery"
+	_recipeService "alta-cookit-be/features/recipes/service"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
@@ -38,6 +41,14 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// e.DELETE("/users", userHandler.RemoveAccount, middlewares.JWTMiddleware())
 	// e.GET("/users/balances", userHandler.GetUserBalance, middlewares.JWTMiddleware())
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
+}
+
+func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
+	data := _recipeData.New(db)
+	service := _recipeService.New(data)
+	handler := _recipeDelivery.New(service)
+
+	e.POST("/recipes", handler.InsertRecipe)
 }
 
 func initImageRouter(db *gorm.DB, e *echo.Echo) {
@@ -93,6 +104,7 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
+	initRecipeRouter(db, e)
 	initImageRouter(db, e)
 	initCommentRouter(db, e)
 	initStepRouter(db, e)
