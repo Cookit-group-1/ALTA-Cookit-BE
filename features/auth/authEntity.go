@@ -10,3 +10,8 @@ type Core struct {
 	Password       string `validate:"required,min=3"`
 }
 
+type AuthHandler interface {
+	Register() echo.HandlerFunc
+	Login() echo.HandlerFunc
+}
+
