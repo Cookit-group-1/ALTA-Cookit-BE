@@ -26,3 +26,11 @@ func ConvertToResponse (entity *comments.CommentEntity) comments.CommentResponse
 		UrlImage:       entity.UrlImage,
 	}
 }
+
+func ConvertToResponses (entities *[]comments.CommentEntity) []comments.CommentResponse {
+	responses := []comments.CommentResponse{}
+	for _, entity := range *entities {
+		responses = append(responses, ConvertToResponse(&entity))
+	}
+	return responses
+}

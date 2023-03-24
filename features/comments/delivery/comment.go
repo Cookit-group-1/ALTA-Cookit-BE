@@ -20,6 +20,26 @@ func New(commentService comments.CommentService_) comments.CommentDelivery_ {
 	}
 }
 
+func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
+	if err != nil {
+		return errors.New(consts.ECHO_InvaildIdParam)
+	}
+
+	commentRequest := comments.CommentRequest{}
+	err = e.Bind(&commentRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	commentRequest.RecipeID = recipeId
+
+	output, err := d.commentService.SelectCommentsByRecipeId(ConvertToEntity(&commentRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.COMMENT_SuccessReadRecipeCommentList, ConvertToResponses(output)))
+}
+
 func (d *CommentDelivery) InsertComment(e echo.Context) error {
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
@@ -32,7 +52,7 @@ func (d *CommentDelivery) InsertComment(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	file, fileName, err := helpers.ExtractFile(e, "image")
+	file, fileName, _ := helpers.ExtractFile(e, "image")
 	commentRequest.RecipeID = recipeId
 	commentRequest.Image = file
 	commentRequest.ImageName = fileName
@@ -61,7 +81,7 @@ func (d *CommentDelivery) UpdateCommentById(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	file, fileName, err := helpers.ExtractFile(e, "image")
+	file, fileName, _ := helpers.ExtractFile(e, "image")
 	commentRequest.ID = id
 	commentRequest.RecipeID = recipeId
 	commentRequest.Image = file

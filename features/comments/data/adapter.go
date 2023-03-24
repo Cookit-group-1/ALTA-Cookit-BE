@@ -3,6 +3,7 @@ package data
 import (
 	"alta-cookit-be/features/comments"
 	_commentModel "alta-cookit-be/features/comments/models"
+	_userModel "alta-cookit-be/features/users/models"
 )
 
 func ConvertToGorm(entity *comments.CommentEntity) *_commentModel.Comment {
@@ -18,12 +19,18 @@ func ConvertToGorm(entity *comments.CommentEntity) *_commentModel.Comment {
 	return &gorm
 }
 
-func ConvertToEntity(gorm *_commentModel.Comment) *comments.CommentEntity {
-	return &comments.CommentEntity{
+func ConvertToEntity(gorm *_commentModel.Comment, userGorm ...*_userModel.User) *comments.CommentEntity {
+	entity := comments.CommentEntity{
 		ID:       gorm.ID,
 		UserID:   gorm.UserID,
 		RecipeID: gorm.RecipeID,
 		Comment:  gorm.Comment,
 		UrlImage: gorm.UrlImage,
 	}
+	if len(userGorm) != 0 {
+		entity.UserName = userGorm[0].Username
+		entity.UserRole = userGorm[0].Role
+		entity.ProfilePicture = userGorm[0].ProfilePicture
+	}
+	return &entity
 }

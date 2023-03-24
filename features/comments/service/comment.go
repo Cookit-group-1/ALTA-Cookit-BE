@@ -21,6 +21,14 @@ func New(commentData comments.CommentData_) comments.CommentService_ {
 	}
 }
 
+func (s *CommentService) SelectCommentsByRecipeId(entity *comments.CommentEntity) (*[]comments.CommentEntity, error) {
+	output, err := s.commentData.SelectCommentsByRecipeId(entity)
+	if err != nil {
+		return nil, err
+	}
+	return output, nil
+}
+
 func (s *CommentService) InsertComment(entity *comments.CommentEntity) (*comments.CommentEntity, error) {
 	err := s.validate.Struct(entity)
 	if err != nil {
