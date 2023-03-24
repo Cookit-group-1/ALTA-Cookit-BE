@@ -20,7 +20,6 @@ type User struct {
 	Email          string                          `gorm:"unique;not null;type:VARCHAR(100)"`
 	GoogleId       string                          `gorm:"unique;type:text"`
 	Password       string                          `gorm:"not null;type:text"`
-	Balance        float64                         `gorm:"not null;default:2000000"`
 	FromFollowers  []_followerModel.Follower       `gorm:"foreignKey:FromUserID;constraint:OnDelete:CASCADE;"`
 	ToFollowers    []_followerModel.Follower       `gorm:"foreignKey:ToUserID;constraint:OnDelete:CASCADE;"`
 	Recipe         []_recipeModel.Recipe           `gorm:"constraint:OnDelete:CASCADE;"`
