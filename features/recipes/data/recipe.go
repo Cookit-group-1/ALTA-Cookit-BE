@@ -3,6 +3,7 @@ package data
 import (
 	"alta-cookit-be/app/storage"
 	"alta-cookit-be/features/recipes"
+	"alta-cookit-be/features/users"
 	"alta-cookit-be/utils/consts"
 	"errors"
 	"strings"
@@ -13,12 +14,14 @@ import (
 )
 
 type RecipeData struct {
-	db *gorm.DB
+	db       *gorm.DB
+	userData users.UserData_
 }
 
-func New(db *gorm.DB) recipes.RecipeData_ {
+func New(db *gorm.DB, userData users.UserData_) recipes.RecipeData_ {
 	return &RecipeData{
-		db: db,
+		db:       db,
+		userData: userData,
 	}
 }
 
@@ -39,13 +42,12 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 		return nil, tx.Error
 	}
 
-	if entity.Image != nil {
-		urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+	for index, file := range entity.Image {
+		urlImage, err := storage.GetStorageClient().UploadFile(file, entity.ImageName[index])
 		if err != nil {
 			return nil, err
 		}
 		gorm.Images = append(gorm.Images, _imageModel.Image{
-			RecipeID: *gorm.RecipeID,
 			UrlImage: urlImage,
 		})
 	}
@@ -55,5 +57,7 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 		tx.Rollback()
 		return nil, errors.New(consts.SERVER_InternalServerError)
 	}
-	return ConvertToEntity(&gorm), nil
+
+	userGorm := d.userData.SelectUserById(entity.UserID)
+	return ConvertToEntity(&gorm, userGorm), nil
 }
