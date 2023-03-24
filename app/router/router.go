@@ -45,11 +45,14 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
 	userData := _userData.New(db)
-	data := _recipeData.New(db, userData)
+	imageData := _imageData.New(db)
+	data := _recipeData.New(db, userData, imageData)
 	service := _recipeService.New(data)
 	handler := _recipeDelivery.New(service)
 
 	e.POST("/recipes", handler.InsertRecipe)
+	e.PUT(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.UpdateRecipeById)
+	e.DELETE(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.DeleteRecipeById)
 }
 
 func initImageRouter(db *gorm.DB, e *echo.Echo) {
