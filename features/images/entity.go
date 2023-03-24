@@ -25,7 +25,7 @@ type ImageRequest struct {
 
 type ImageResponse struct {
 	ID             uint   `json:"id,omitempty"`
-	UrlImage       string `json:"comment_image,omitempty"`
+	UrlImage       string `json:"url_image,omitempty"`
 }
 
 type ImageDelivery_ interface {
