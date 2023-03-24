@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"mime/multipart"
+	"strings"
 
 	"alta-cookit-be/app/config"
 
@@ -63,7 +64,7 @@ func (c *ClientUploader) UploadFile(file multipart.File, objectName string) (fil
 func (c *ClientUploader) DeleteFile(objectName string) error {
 	ctx := context.Background()
 
-	wc := c.storageClient.Bucket(c.bucketName).Object(c.uploadPath + objectName)
+	wc := c.storageClient.Bucket(c.bucketName).Object(strings.Replace(objectName, DEFAULT_GCS_LINK, "", 1))
 	if err := wc.Delete(ctx); err != nil {
 		return err
 	}
