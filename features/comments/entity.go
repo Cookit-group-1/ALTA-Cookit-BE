@@ -39,18 +39,21 @@ type CommentResponse struct {
 }
 
 type CommentDelivery_ interface {
+	SelectCommentsByRecipeId(e echo.Context) error
 	InsertComment(e echo.Context) error
 	UpdateCommentById(e echo.Context) error
 	DeleteCommentById(e echo.Context) error
 }
 
 type CommentService_ interface {
+	SelectCommentsByRecipeId(commentEntity *CommentEntity) (*[]CommentEntity, error)
 	InsertComment(commentEntity *CommentEntity) (*CommentEntity, error)
 	UpdateCommentById(commentEntity *CommentEntity) (*CommentEntity, error)
 	DeleteCommentById(commentEntity *CommentEntity) error
 }
 
 type CommentData_ interface {
+	SelectCommentsByRecipeId(commentEntity *CommentEntity) (*[]CommentEntity, error)
 	InsertComment(commentEntity *CommentEntity) (*CommentEntity, error)
 	UpdateCommentById(commentEntity *CommentEntity) (*CommentEntity, error)
 	DeleteCommentById(commentEntity *CommentEntity) error

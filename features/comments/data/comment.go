@@ -4,6 +4,7 @@ import (
 	"alta-cookit-be/app/storage"
 	"alta-cookit-be/features/comments"
 	_commentModel "alta-cookit-be/features/comments/models"
+	"alta-cookit-be/features/users"
 	"alta-cookit-be/utils/consts"
 	"errors"
 	"strings"
@@ -13,11 +14,13 @@ import (
 
 type CommentData struct {
 	db *gorm.DB
+	userData users.UserData_
 }
 
-func New(db *gorm.DB) comments.CommentData_ {
+func New(db *gorm.DB, userData users.UserData_) comments.CommentData_ {
 	return &CommentData{
 		db: db,
+		userData: userData,
 	}
 }
 
@@ -31,7 +34,24 @@ func (d *CommentData) SelectCommentById(id, recipe_id uint) *_commentModel.Comme
 	return &tempGorm
 }
 
-func (d *CommentData) InsertComment (entity *comments.CommentEntity) (*comments.CommentEntity, error) {
+func (d *CommentData) SelectCommentsByRecipeId(entity *comments.CommentEntity) (*[]comments.CommentEntity, error) {
+	gorms := []_commentModel.Comment{}
+	
+	tx := d.db.Where("recipe_id = ?", entity.RecipeID).Find(&gorms)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	entities := []comments.CommentEntity{}
+	for _, comment := range gorms {
+		userGorm := d.userData.SelectUserById(comment.UserID)
+		entities = append(entities, *ConvertToEntity(&comment, userGorm))
+	}
+
+	return &entities, nil
+}
+
+func (d *CommentData) InsertComment(entity *comments.CommentEntity) (*comments.CommentEntity, error) {
 	gorm := ConvertToGorm(entity)
 
 	if entity.Image != nil {
@@ -62,9 +82,11 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 		return nil, errors.New(consts.GORM_RecordNotFound)
 	}
 	if entity.Image != nil {
-		err := storage.GetStorageClient().DeleteFile(tempGorm.UrlImage)
-		if err != nil {
-			return nil, err
+		if tempGorm.UrlImage != "" {
+			err := storage.GetStorageClient().DeleteFile(tempGorm.UrlImage)
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
@@ -83,6 +105,9 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 			return nil, errors.New(consts.RECIPE_InvalidRecipe)
 		}
 		return nil, tx.Error
+	}
+	if tx.RowsAffected == 0{
+		return nil, errors.New(consts.GORM_RecordNotFound)
 	}
 	return ConvertToEntity(gorm), nil
 }
