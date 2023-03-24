@@ -1,29 +1,36 @@
 package ingredients
 
-import "github.com/labstack/echo/v4"
+import (
+	"alta-cookit-be/features/ingredient_details"
+
+	"github.com/labstack/echo/v4"
+)
 
 type IngredientEntity struct {
-	ID       uint
-	UserID   uint
-	UserRole string
-	RecipeID uint
-	Name     string
-	Price    float64
+	ID                       uint
+	UserID                   uint
+	UserRole                 string
+	RecipeID                 uint
+	Name                     string
+	Price                    float64
+	IngredientDetailEntities []ingredient_details.IngredientDetailEntity
 }
 
 type IngredientRequest struct {
-	ID       uint    
-	UserID   uint    
-	UserRole string  
-	RecipeID uint    
-	Name     string  `json:"name"`
-	Price    float64 `json:"price"`
+	ID                       uint
+	UserID                   uint
+	UserRole                 string
+	RecipeID                 uint
+	Name                     string                                       `json:"name" form:"name"`
+	Price                    float64                                      `json:"price" form:"price"`
+	IngredientDetailRequests []ingredient_details.IngredientDetailRequest `form:"ingredient_details"`
 }
 
 type IngredientResponse struct {
-	ID    uint    `json:"id,omitempty"`
-	Name  string  `json:"name,omitempty"`
-	Price float64 `json:"price,omitempty"`
+	ID                        uint                                          `json:"id,omitempty"`
+	Name                      string                                        `json:"name,omitempty"`
+	Price                     float64                                       `json:"price,omitempty"`
+	IngredientDetailResponses []ingredient_details.IngredientDetailResponse `json:"ingredient_details,omitempty"`
 }
 
 type IngredientDelivery_ interface {
