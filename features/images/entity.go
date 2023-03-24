@@ -3,6 +3,8 @@ package images
 import (
 	"mime/multipart"
 
+	_imageModel "alta-cookit-be/features/images/models"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -41,6 +43,7 @@ type ImageService_ interface {
 }
 
 type ImageData_ interface {
+	SelectImagesByRecipeId(recipeId uint) *[]_imageModel.Image
 	InsertImage(imageEntity *[]ImageEntity) (*[]ImageEntity, error)
 	UpdateImageById(imageEntity *ImageEntity) (*ImageEntity, error)
 	DeleteImageById(imageEntity *ImageEntity) error

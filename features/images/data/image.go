@@ -3,6 +3,7 @@ package data
 import (
 	"alta-cookit-be/app/storage"
 	"alta-cookit-be/features/images"
+	_imageModel "alta-cookit-be/features/images/models"
 	"alta-cookit-be/utils/consts"
 	"errors"
 	"strings"
@@ -18,6 +19,13 @@ func New(db *gorm.DB) images.ImageData_ {
 	return &ImageData{
 		db: db,
 	}
+}
+
+func (d *ImageData) SelectImagesByRecipeId(recipeId uint) *[]_imageModel.Image {
+	tempGorms := []_imageModel.Image{}
+	d.db.Where("recipe_id = ?", recipeId).Find(&tempGorms)
+	
+	return &tempGorms
 }
 
 func (d *ImageData) InsertImage(entities *[]images.ImageEntity) (*[]images.ImageEntity, error) {
