@@ -15,7 +15,7 @@ type StepRequest struct {
 	UserID   uint    
 	UserRole string  
 	RecipeID uint    
-	Name     string  `json:"name"`
+	Name     string  `json:"name" form:"name"`
 }
 
 type StepResponse struct {
