@@ -8,6 +8,7 @@ type Core struct {
 	Username       string `validate:"required"`
 	Email          string `validate:"required,email"`
 	Password       string `validate:"required,min=3"`
+	Role           string `validate:"required"`
 }
 
 type AuthHandler interface {
@@ -16,6 +17,11 @@ type AuthHandler interface {
 }
 
 type AuthService interface {
-	Register(token interface{}, newUser Core) (Core, error)
-	Login(usernam, password string) (string, Core, error)
+	Register(newUser Core) (Core, error)
+	Login(username, password string) (string, Core, error)
+}
+
+type AuthData interface {
+	Register(newUser Core) (Core, error)
+	Login(username string) (Core, error)
 }
