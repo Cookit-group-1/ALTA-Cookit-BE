@@ -44,7 +44,8 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
-	data := _recipeData.New(db)
+	userData := _userData.New(db)
+	data := _recipeData.New(db, userData)
 	service := _recipeService.New(data)
 	handler := _recipeDelivery.New(service)
 
