@@ -68,12 +68,18 @@ type RecipeResponse struct {
 
 type RecipeDelivery_ interface {
 	InsertRecipe(e echo.Context) error
+	UpdateRecipeById(e echo.Context) error
+	DeleteRecipeById(e echo.Context) error
 }
 
 type RecipeService_ interface {
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
+	UpdateRecipeById(entity *RecipeEntity) error
+	DeleteRecipeById(entity *RecipeEntity) error
 }
 
 type RecipeData_ interface {
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
+	UpdateRecipeById(entity *RecipeEntity) error
+	DeleteRecipeById(entity *RecipeEntity) error
 }
