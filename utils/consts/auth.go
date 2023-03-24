@@ -6,7 +6,7 @@ const (
 	AUTH_ErrorHash            string = "error hash password"
 	AUTH_ErrorComparePassword string = "password not matched"
 	AUTH_ErrorCreateToken     string = "error create token"
-	AUTH_ErrorRole            string = "role must be student or mentor"
+	AUTH_ErrorRole            string = "role must be VerifiedUser"
 )
 
 // Success Response
