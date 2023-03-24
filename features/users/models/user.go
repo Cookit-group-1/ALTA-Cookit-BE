@@ -18,7 +18,7 @@ type User struct {
 	Username       string                          `gorm:"unique;not null;type:VARCHAR(50)"`
 	Role           string                          `gorm:"not null;type:enum('Admin', 'User', 'VerifiedUser');default:'User'"`
 	Email          string                          `gorm:"unique;not null;type:VARCHAR(100)"`
-	GoogleId       string                          `gorm:"unique;type:text"`
+	GoogleId       string                          `gorm:"type:text"`
 	Password       string                          `gorm:"not null;type:text"`
 	FromFollowers  []_followerModel.Follower       `gorm:"foreignKey:FromUserID;constraint:OnDelete:CASCADE;"`
 	ToFollowers    []_followerModel.Follower       `gorm:"foreignKey:ToUserID;constraint:OnDelete:CASCADE;"`
