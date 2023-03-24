@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	_userData "alta-cookit-be/features/users/data"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
@@ -37,10 +38,12 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initCommentRouter(db *gorm.DB, e *echo.Echo) {
-	data := _commentData.New(db)
+	userData := _userData.New(db)
+	data := _commentData.New(db, userData)
 	service := _commentService.New(data)
 	handler := _commentDelivery.New(service)
 
+	e.GET(fmt.Sprintf("/recipes/:%s/comments", consts.ECHO_P_RecipeId), handler.SelectCommentsByRecipeId)
 	e.POST(fmt.Sprintf("/recipes/:%s/comments", consts.ECHO_P_RecipeId), handler.InsertComment)
 	e.PUT(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.UpdateCommentById)
 	e.DELETE(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.DeleteCommentById)
