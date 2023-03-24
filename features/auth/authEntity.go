@@ -15,3 +15,7 @@ type AuthHandler interface {
 	Login() echo.HandlerFunc
 }
 
+type AuthService interface {
+	Register(token interface{}, newUser Core) (Core, error)
+	Login(usernam, password string) (string, Core, error)
+}
