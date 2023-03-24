@@ -6,10 +6,12 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	_userData "alta-cookit-be/features/users/data"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
+	_imageData "alta-cookit-be/features/images/data"
+	_imageDelivery "alta-cookit-be/features/images/delivery"
+	_imageService "alta-cookit-be/features/images/service"
 	_ingredientDetailData "alta-cookit-be/features/ingredient_details/data"
 	_ingredientDetailDelivery "alta-cookit-be/features/ingredient_details/delivery"
 	_ingredientDetailService "alta-cookit-be/features/ingredient_details/service"
@@ -19,6 +21,7 @@ import (
 	_stepData "alta-cookit-be/features/steps/data"
 	_stepDelivery "alta-cookit-be/features/steps/delivery"
 	_stepService "alta-cookit-be/features/steps/service"
+	_userData "alta-cookit-be/features/users/data"
 	"alta-cookit-be/utils/consts"
 )
 
@@ -35,6 +38,16 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// e.DELETE("/users", userHandler.RemoveAccount, middlewares.JWTMiddleware())
 	// e.GET("/users/balances", userHandler.GetUserBalance, middlewares.JWTMiddleware())
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
+}
+
+func initImageRouter(db *gorm.DB, e *echo.Echo) {
+	data := _imageData.New(db)
+	service := _imageService.New(data)
+	handler := _imageDelivery.New(service)
+
+	e.POST(fmt.Sprintf("/recipes/:%s/images", consts.ECHO_P_RecipeId), handler.InsertImage)
+	e.PUT(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.UpdateImageById)
+	e.DELETE(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.DeleteImageById)
 }
 
 func initCommentRouter(db *gorm.DB, e *echo.Echo) {
@@ -80,6 +93,7 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
+	initImageRouter(db, e)
 	initCommentRouter(db, e)
 	initStepRouter(db, e)
 	initIngredientRouter(db, e)
