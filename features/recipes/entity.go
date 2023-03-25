@@ -68,6 +68,7 @@ type RecipeResponse struct {
 
 type RecipeDelivery_ interface {
 	SelectRecipesByUserId(e echo.Context) error
+	SelectRecipeDetailById(e echo.Context) error
 	InsertRecipe(e echo.Context) error
 	UpdateRecipeById(e echo.Context) error
 	DeleteRecipeById(e echo.Context) error
@@ -75,6 +76,7 @@ type RecipeDelivery_ interface {
 
 type RecipeService_ interface {
 	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
+	SelectRecipeDetailById(entity *RecipeEntity) (*RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error
@@ -82,6 +84,7 @@ type RecipeService_ interface {
 
 type RecipeData_ interface {
 	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
+	SelectRecipeDetailById(entity *RecipeEntity) (*RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error

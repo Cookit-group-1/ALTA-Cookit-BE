@@ -30,6 +30,32 @@ func New(db *gorm.DB, userData users.UserData_, imageData images.ImageData_) rec
 	}
 }
 
+func (d *RecipeData) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
+	gorm := _recipeModel.Recipe{}
+
+	tx := d.db.Preload("Recipe").Preload("Steps").Preload("Ingredients").Preload("Ingredients.IngredientDetails").Where("id = ?", entity.ID).First(&gorm)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	userGorm := d.userData.SelectUserById(gorm.UserID)
+	fmt.Println(userGorm)
+	entity = ConvertToEntity(&gorm, userGorm)
+
+	subUserGorm := d.userData.SelectUserById(entity.Recipe.UserID)
+	entity.Recipe.UserName = subUserGorm.Username
+	entity.Recipe.UserRole = subUserGorm.Role
+	entity.Recipe.ProfilePicture = subUserGorm.ProfilePicture
+
+	d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entity.ID).Find(&entity.TotalLike)
+	d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entity.Recipe.ID).Find(&entity.Recipe.TotalLike)
+
+	d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(cs.recipe_id) as total_comment").Joins("left join comments cs on cs.recipe_id = recipes.id").Where("cs.recipe_id = ?", entity.ID).Find(&entity.TotalComment)
+	d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(cs.recipe_id) as total_comment").Joins("left join comments cs on cs.recipe_id = recipes.id").Where("cs.recipe_id = ?", entity.Recipe.ID).Find(&entity.Recipe.TotalComment)
+
+	return entity, nil
+}
+
 func (d *RecipeData) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	gorms := []_recipeModel.Recipe{}
 
