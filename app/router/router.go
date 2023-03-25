@@ -6,9 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	_recipeData "alta-cookit-be/features/recipes/data"
-	_recipeDelivery "alta-cookit-be/features/recipes/delivery"
-	_recipeService "alta-cookit-be/features/recipes/service"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
@@ -21,10 +18,14 @@ import (
 	_ingredientData "alta-cookit-be/features/ingredients/data"
 	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
 	_ingredientService "alta-cookit-be/features/ingredients/service"
+	_recipeData "alta-cookit-be/features/recipes/data"
+	_recipeDelivery "alta-cookit-be/features/recipes/delivery"
+	_recipeService "alta-cookit-be/features/recipes/service"
 	_stepData "alta-cookit-be/features/steps/data"
 	_stepDelivery "alta-cookit-be/features/steps/delivery"
 	_stepService "alta-cookit-be/features/steps/service"
 	_userData "alta-cookit-be/features/users/data"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
 
@@ -50,9 +51,9 @@ func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
 	service := _recipeService.New(data)
 	handler := _recipeDelivery.New(service)
 
-	e.POST("/recipes", handler.InsertRecipe)
-	e.PUT(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.UpdateRecipeById)
-	e.DELETE(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.DeleteRecipeById)
+	e.POST("/recipes", handler.InsertRecipe, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.UpdateRecipeById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.DeleteRecipeById, middlewares.JWTMiddleware())
 }
 
 func initImageRouter(db *gorm.DB, e *echo.Echo) {
@@ -60,9 +61,9 @@ func initImageRouter(db *gorm.DB, e *echo.Echo) {
 	service := _imageService.New(data)
 	handler := _imageDelivery.New(service)
 
-	e.POST(fmt.Sprintf("/recipes/:%s/images", consts.ECHO_P_RecipeId), handler.InsertImage)
-	e.PUT(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.UpdateImageById)
-	e.DELETE(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.DeleteImageById)
+	e.POST(fmt.Sprintf("/recipes/:%s/images", consts.ECHO_P_RecipeId), handler.InsertImage, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.UpdateImageById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.DeleteImageById, middlewares.JWTMiddleware())
 }
 
 func initCommentRouter(db *gorm.DB, e *echo.Echo) {
@@ -72,9 +73,9 @@ func initCommentRouter(db *gorm.DB, e *echo.Echo) {
 	handler := _commentDelivery.New(service)
 
 	e.GET(fmt.Sprintf("/recipes/:%s/comments", consts.ECHO_P_RecipeId), handler.SelectCommentsByRecipeId)
-	e.POST(fmt.Sprintf("/recipes/:%s/comments", consts.ECHO_P_RecipeId), handler.InsertComment)
-	e.PUT(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.UpdateCommentById)
-	e.DELETE(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.DeleteCommentById)
+	e.POST(fmt.Sprintf("/recipes/:%s/comments", consts.ECHO_P_RecipeId), handler.InsertComment, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.UpdateCommentById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/comments/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_CommentId), handler.DeleteCommentById, middlewares.JWTMiddleware())
 }
 
 func initStepRouter(db *gorm.DB, e *echo.Echo) {
@@ -82,9 +83,9 @@ func initStepRouter(db *gorm.DB, e *echo.Echo) {
 	service := _stepService.New(data)
 	handler := _stepDelivery.New(service)
 
-	e.POST(fmt.Sprintf("/recipes/:%s/steps", consts.ECHO_P_RecipeId), handler.InsertStep)
-	e.PUT(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.UpdateStepById)
-	e.DELETE(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.DeleteStepById)
+	e.POST(fmt.Sprintf("/recipes/:%s/steps", consts.ECHO_P_RecipeId), handler.InsertStep, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.UpdateStepById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.DeleteStepById, middlewares.JWTMiddleware())
 }
 
 func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
@@ -92,9 +93,9 @@ func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
 	service := _ingredientService.New(data)
 	handler := _ingredientDelivery.New(service)
 
-	e.POST(fmt.Sprintf("/recipes/:%s/ingredients", consts.ECHO_P_RecipeId), handler.InsertIngredient)
-	e.PUT(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.UpdateIngredientById)
-	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.DeleteIngredientById)
+	e.POST(fmt.Sprintf("/recipes/:%s/ingredients", consts.ECHO_P_RecipeId), handler.InsertIngredient, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.UpdateIngredientById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.DeleteIngredientById, middlewares.JWTMiddleware())
 }
 
 func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
@@ -102,9 +103,9 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 	service := _ingredientDetailService.New(data)
 	handler := _ingredientDetailDelivery.New(service)
 
-	e.POST(fmt.Sprintf("/ingredients/:%s/ingredientDetails", consts.ECHO_P_IngredientId), handler.InsertIngredientDetail)
-	e.PUT(fmt.Sprintf("/ingredients/:%s/ingredientDetails/:%s", consts.ECHO_P_IngredientId, consts.ECHO_P_IngredientDetailId), handler.UpdateIngredientDetailById)
-	e.DELETE(fmt.Sprintf("/ingredients/:%s/ingredientDetails/:%s", consts.ECHO_P_IngredientId, consts.ECHO_P_IngredientDetailId), handler.DeleteIngredientDetailById)
+	e.POST(fmt.Sprintf("/recipes/:%s/ingredients/ingredientDetails", consts.ECHO_P_IngredientId), handler.InsertIngredientDetail, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/recipes/:%s/ingredients/ingredientDetails/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientDetailId), handler.UpdateIngredientDetailById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients/ingredientDetails/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientDetailId), handler.DeleteIngredientDetailById, middlewares.JWTMiddleware())
 }
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
