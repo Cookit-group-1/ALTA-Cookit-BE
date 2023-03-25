@@ -23,7 +23,7 @@ func CreateToken(userId int, userRole string) (string, error) {
 	claims[consts.JWT_Authorized] = true
 	claims[consts.JWT_UserId] = userId
 	claims[consts.JWT_Role] = userRole
-	claims[consts.JWT_ExpiredTime] = time.Now().Add(time.Hour * 1).Unix()
+	claims[consts.JWT_ExpiredTime] = time.Now().Add(time.Hour * 900).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(config.SECRET_JWT))
