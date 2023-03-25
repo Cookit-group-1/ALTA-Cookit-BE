@@ -15,12 +15,12 @@ type RecipeEntity struct {
 	UserName           string
 	UserRole           string
 	ProfilePicture     string
-	RecipeID           uint `validate:"required"`
+	RecipeID           uint
 	Image              []multipart.File
 	ImageName          []string
 	Recipe             *RecipeEntity
 	UrlImage           string
-	Type               string `validate:"required"`
+	Type               string
 	Status             string `validate:"required"`
 	Name               string `validate:"required"`
 	Description        string `validate:"required"`
