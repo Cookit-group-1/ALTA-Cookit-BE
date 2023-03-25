@@ -25,17 +25,19 @@ import (
 	_stepDelivery "alta-cookit-be/features/steps/delivery"
 	_stepService "alta-cookit-be/features/steps/service"
 	_userData "alta-cookit-be/features/users/data"
+	_userService "alta-cookit-be/features/users/services"
+	_userDelivery "alta-cookit-be/features/users/handler"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
 
 func initUserRouter(db *gorm.DB, e *echo.Echo) {
-	// userData := _userData.New(db)
-	// userService := _userService.New(userData)
-	// userHandler := _userDelivery.New(userService)
+	userData := _userData.New(db)
+	userService := _userService.New(userData)
+	userHandler := _userDelivery.New(userService)
 
-	// e.POST("/login", userHandler.Login)
-	// e.POST("/users", userHandler.Register)
+	e.POST("/login", userHandler.Login())
+	e.POST("/users", userHandler.Register())
 	// e.GET("/users", userHandler.GetUserData, middlewares.JWTMiddleware())
 	// e.PUT("/users", userHandler.UpdateAccount, middlewares.JWTMiddleware())
 	// e.PUT("/users/password", userHandler.UpdatePassword, middlewares.JWTMiddleware())
