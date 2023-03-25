@@ -39,8 +39,10 @@ func ConvertToEntity(gorm *_ingredientModel.Ingredient) *ingredients.IngredientE
 
 func ConvertToEntities(gorms *[]_ingredientModel.Ingredient) *[]ingredients.IngredientEntity {
 	entities := []ingredients.IngredientEntity{}
-	for _, gorm := range *gorms {
-		entities = append(entities, *ConvertToEntity(&gorm))
+	if gorms != nil {
+		for _, gorm := range *gorms {
+			entities = append(entities, *ConvertToEntity(&gorm))
+		}
 	}
 	return &entities
 }
