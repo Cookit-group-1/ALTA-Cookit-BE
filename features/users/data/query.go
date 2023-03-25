@@ -32,6 +32,7 @@ func (uq *UserQuery) Register(newUser users.Core) (users.Core, error) {
 		return users.Core{}, errors.New("username duplicated")
 	}
 
+	newUser.ProfilePicture = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
 	cnv := CoreToModel(newUser)
 	err = uq.db.Create(&cnv).Error
 	if err != nil {
