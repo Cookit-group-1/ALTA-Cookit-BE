@@ -95,24 +95,24 @@ func (us *userService) Profile(userID uint) (users.Core, error) {
 	return res, nil
 }
 
-// // Update implements users.UserService
-// func (us *userService) Update(userID uint, fileData multipart.FileHeader, updateData users.Core) (users.Core, error) {
-// 	url, err := helpers.GetUrlImagesFromAWS(fileData, int(1))
-// 	if err != nil {
-// 		return users.Core{}, errors.New("validate: " + err.Error())
-// 	}
-// 	updateData.ProfilePicture = url
-// 	res, err := us.qry.Update(uint(userID), updateData)
-// 	if err != nil {
-// 		msg := ""
-// 		if strings.Contains(err.Error(), "not found") {
-// 			msg = "account not registered"
-// 		} else if strings.Contains(err.Error(), "email") {
-// 			msg = "email duplicated"
-// 		} else if strings.Contains(err.Error(), "access denied") {
-// 			msg = "access denied"
-// 		}
-// 		return users.Core{}, errors.New(msg)
-// 	}
-// 	return res, nil
-// }
+// Update implements users.UserService
+func (us *userService) Update(userID uint, fileData multipart.FileHeader, updateData users.Core) (users.Core, error) {
+	url, err := helpers.GetUrlImagesFromAWS(fileData, int(1))
+	if err != nil {
+		return users.Core{}, errors.New("validate: " + err.Error())
+	}
+	updateData.ProfilePicture = url
+	res, err := us.qry.Update(uint(userID), updateData)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "account not registered"
+		} else if strings.Contains(err.Error(), "email") {
+			msg = "email duplicated"
+		} else if strings.Contains(err.Error(), "access denied") {
+			msg = "access denied"
+		}
+		return users.Core{}, errors.New(msg)
+	}
+	return res, nil
+}
