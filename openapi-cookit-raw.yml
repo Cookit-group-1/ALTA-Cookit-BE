@@ -75,7 +75,7 @@ paths:
                   type: string
                   format: password
             example:
-              email: "intanpermana@example.com"
+              username: "intanpermana12"
               password: "ip168192"
       responses:
         200:
@@ -88,10 +88,9 @@ paths:
                 data:
                   id: 4
                   username: "intanpermana12"
-                  email: "intanpermana@example.com"
                   role: "User"
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzkxOTM3MjMsInVzZXJJRCI6MX0.c1IV13-55Z6TCsRXuTCbubiwrF8NcbT72hVs-lY5E1s"
                 message: "login success"
-                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NzkxOTM3MjMsInVzZXJJRCI6MX0.c1IV13-55Z6TCsRXuTCbubiwrF8NcbT72hVs-lY5E1s"
         400:
           $ref: "#/components/responses/400"
         404:
@@ -126,9 +125,8 @@ paths:
               example:
                 data:
                   id: 4
-                  fullname: "intan permana"
                   username: "intanpermana12"
-                  email: "intanpermana@example.com"
+                  bio: "I love cooking"
                   role: "User"
                   profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                 message: "success show profile"
@@ -161,7 +159,7 @@ paths:
               properties:
                 username:
                   type: string
-                fullname:
+                bio:
                   type: string
                 email:
                   type: string
@@ -171,7 +169,7 @@ paths:
                   format: password
             example:
               username: "intanpermana12"
-              fullname: "intan permana"
+              bio: "I love cooking"
               email: "intanpermana@example.com"
               password: "ip123"
           multipart/form-data:
