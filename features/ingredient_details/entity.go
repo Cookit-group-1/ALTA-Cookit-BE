@@ -4,8 +4,8 @@ import "github.com/labstack/echo/v4"
 
 type IngredientDetailEntity struct {
 	ID           uint
-	UserID       uint `validate:"required"`
-	RecipeID     uint `validate:"required"`
+	UserID       uint
+	RecipeID     uint
 	IngredientID uint
 	Name         string `validate:"required"`
 	Quantity     int

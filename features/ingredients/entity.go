@@ -8,9 +8,9 @@ import (
 
 type IngredientEntity struct {
 	ID                       uint
-	UserID                   uint   `validate:"required"`
-	UserRole                 string `validate:"required"`
-	RecipeID                 uint   `validate:"required"`
+	UserID                   uint   
+	UserRole                 string 
+	RecipeID                 uint   
 	Name                     string `validate:"required"`
 	Price                    float64
 	IngredientDetailEntities []ingredient_details.IngredientDetailEntity
@@ -23,7 +23,7 @@ type IngredientRequest struct {
 	RecipeID                 uint
 	Name                     string                                       `json:"name" form:"name"`
 	Price                    float64                                      `json:"price" form:"price"`
-	IngredientDetailRequests []ingredient_details.IngredientDetailRequest `form:"ingredient_details"`
+	IngredientDetailRequests []ingredient_details.IngredientDetailRequest `json:"ingredient_details" form:"ingredient_details"`
 }
 
 type IngredientResponse struct {
