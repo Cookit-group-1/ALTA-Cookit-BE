@@ -7,9 +7,11 @@ import (
 	"alta-cookit-be/features/users"
 	"alta-cookit-be/utils/consts"
 	"errors"
+	"fmt"
 	"strings"
 
 	_imageModel "alta-cookit-be/features/images/models"
+	_recipeModel "alta-cookit-be/features/recipes/models"
 
 	"gorm.io/gorm"
 )
@@ -26,6 +28,43 @@ func New(db *gorm.DB, userData users.UserData_, imageData images.ImageData_) rec
 		userData:  userData,
 		imageData: imageData,
 	}
+}
+
+func (d *RecipeData) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	gorms := []_recipeModel.Recipe{}
+
+	tx := d.db.Preload("Recipe").Where("user_id = ?", entity.UserID).Find(&gorms)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	entities := []recipes.RecipeEntity{}
+	userGorm := d.userData.SelectUserById(entity.UserID)
+	for index, gorm := range gorms {
+		entities = append(entities, *ConvertToEntity(&gorm, userGorm))
+		if entities[index].Recipe != nil {
+			subUserGorm := d.userData.SelectUserById(entities[index].Recipe.UserID)
+			entities[index].Recipe.UserName = subUserGorm.Username
+			entities[index].Recipe.UserRole = subUserGorm.Role
+			entities[index].Recipe.ProfilePicture = subUserGorm.ProfilePicture
+		}
+	}
+
+	for index, entity := range entities {
+		d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entity.ID).Find(&entities[index].TotalLike)
+		if entities[index].Recipe != nil {
+			d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entities[index].Recipe.ID).Find(&entities[index].Recipe.TotalLike)
+		}
+	}
+
+	for index, entity := range entities {
+		d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(cs.recipe_id) as total_comment").Joins("left join comments cs on cs.recipe_id = recipes.id").Where("cs.recipe_id = ?", entity.ID).Find(&entities[index].TotalComment)
+		if entities[index].Recipe != nil {
+			d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(cs.recipe_id) as total_comment").Joins("left join comments cs on cs.recipe_id = recipes.id").Where("cs.recipe_id = ?", entities[index].Recipe.ID).Find(&entities[index].Recipe.TotalComment)
+		}
+		fmt.Println(entity.TotalComment)
+	}
+	return &entities, nil
 }
 
 func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
