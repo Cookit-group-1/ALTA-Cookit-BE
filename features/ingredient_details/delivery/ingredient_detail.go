@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"alta-cookit-be/features/ingredient_details"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
@@ -21,6 +22,7 @@ func New(ingredientDetailService ingredient_details.IngredientDetailService_) in
 }
 
 func (d *IngredientDetailDelivery) InsertIngredientDetail (e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	ingredientId, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -32,6 +34,7 @@ func (d *IngredientDetailDelivery) InsertIngredientDetail (e echo.Context) error
 		return helpers.ReturnBadResponse(e, err)
 	}
 	ingredientDetailRequest.IngredientID = ingredientId
+	ingredientDetailRequest.UserID = userId
 
 	output, err := d.ingredientDetailService.InsertIngredientDetail(ConvertToEntity(&ingredientDetailRequest))
 	if err != nil {
@@ -41,12 +44,12 @@ func (d *IngredientDetailDelivery) InsertIngredientDetail (e echo.Context) error
 }
 
 func (d *IngredientDetailDelivery) UpdateIngredientDetailById (e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientDetailId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
-	ingredientId, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientId)
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
@@ -57,7 +60,8 @@ func (d *IngredientDetailDelivery) UpdateIngredientDetailById (e echo.Context) e
 		return helpers.ReturnBadResponse(e, err)
 	}
 	ingredientDetailRequest.ID = id
-	ingredientDetailRequest.IngredientID = ingredientId
+	ingredientDetailRequest.RecipeID = recipeId
+	ingredientDetailRequest.UserID = userId
 
 	err = d.ingredientDetailService.UpdateIngredientDetailById(ConvertToEntity(&ingredientDetailRequest))
 	if err != nil {
@@ -67,12 +71,12 @@ func (d *IngredientDetailDelivery) UpdateIngredientDetailById (e echo.Context) e
 }
 
 func (d *IngredientDetailDelivery) DeleteIngredientDetailById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientDetailId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
-	ingredientId, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientId)
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
@@ -83,7 +87,8 @@ func (d *IngredientDetailDelivery) DeleteIngredientDetailById(e echo.Context) er
 		return helpers.ReturnBadResponse(e, err)
 	}
 	ingredientDetailRequest.ID = id
-	ingredientDetailRequest.IngredientID = ingredientId
+	ingredientDetailRequest.RecipeID = recipeId
+	ingredientDetailRequest.UserID = userId
 
 	err = d.ingredientDetailService.DeleteIngredientDetailById(ConvertToEntity(&ingredientDetailRequest))
 	if err != nil {

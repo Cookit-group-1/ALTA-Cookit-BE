@@ -48,12 +48,7 @@ func (s *IngredientDetailService) UpdateIngredientDetailById(entity *ingredient_
 }
 
 func (s *IngredientDetailService) DeleteIngredientDetailById(entity *ingredient_details.IngredientDetailEntity) error {
-	err := s.validate.Struct(entity)
-	if err != nil {
-		return errors.New(consts.VALIDATION_InvalidInput)
-	}
-
-	err = s.ingredientDetailData.DeleteIngredientDetailById(entity)
+	err := s.ingredientDetailData.DeleteIngredientDetailById(entity)
 	if err != nil {
 		return err
 	}
