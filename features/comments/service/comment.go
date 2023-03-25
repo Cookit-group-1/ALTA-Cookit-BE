@@ -56,12 +56,7 @@ func (s *CommentService) UpdateCommentById(entity *comments.CommentEntity) (*com
 }
 
 func (s *CommentService) DeleteCommentById(entity *comments.CommentEntity) error {
-	err := s.validate.Struct(entity)
-	if err != nil {
-		return errors.New(consts.VALIDATION_InvalidInput)
-	}
-
-	err = s.commentData.DeleteCommentById(entity)
+	err := s.commentData.DeleteCommentById(entity)
 	if err != nil {
 		return err
 	}
