@@ -56,7 +56,7 @@ func (d *ImageData) InsertImage(entities *[]images.ImageEntity) (*[]images.Image
 func (d *ImageData) UpdateImageById(entity *images.ImageEntity) (*images.ImageEntity, error) {
 	gorm := ConvertToGorm(entity)
 
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Find(&gorm)
+	tx := d.db.Where("id = ?", entity.ID).Find(&gorm)
 	if tx.RowsAffected == 0 {
 		return nil, errors.New(consts.GORM_RecordNotFound)
 	}
@@ -76,7 +76,7 @@ func (d *ImageData) UpdateImageById(entity *images.ImageEntity) (*images.ImageEn
 		gorm.UrlImage = urlImage
 	}
 
-	tx = d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Updates(&gorm)
+	tx = d.db.Where("id = ?", entity.ID).Updates(&gorm)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -84,7 +84,7 @@ func (d *ImageData) UpdateImageById(entity *images.ImageEntity) (*images.ImageEn
 }
 
 func (d *ImageData) DeleteImageById(entity *images.ImageEntity) error {
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Delete(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

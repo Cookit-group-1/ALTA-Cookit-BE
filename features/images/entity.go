@@ -10,8 +10,8 @@ import (
 
 type ImageEntity struct {
 	ID             uint
-	UserID         uint
-	RecipeID       uint
+	UserID         uint `validate:"required"`
+	RecipeID       uint `validate:"required"`
 	Image          multipart.File
 	ImageName      string
 	UrlImage       string
