@@ -236,6 +236,119 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
+  /users/search:
+    get:
+      tags:
+        - "Users"
+      summary: search user by username
+      description: search spesific user by username
+      security:
+        - JWTAuth: []
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: the numbers of result user
+        - in: query
+          name: q
+          schema:
+            type: string
+          examples:
+            username:
+              value: "udin"
+          required: true
+      responses:
+        200:
+          description: "search user by username"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 1
+                    profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    username: "udin adun"
+                    bio: "saya cinta makan pedas"
+                  - id: 2
+                    profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    username: "kamarudin"
+                    bio: "food heal your body"
+                message: "success find user"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users/password:
+    put:
+      tags:
+        - "Users"
+      summary: edit users password
+      description: endpoint for update user password
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  format: password
+                new_password:
+                  type: string
+                  format: password
+                password_confirmation:
+                  type: string
+                  format: password
+            example:
+              old_password: "1234"
+              new_password: "5678"
+              password_confirmation: "5678"
+      responses:
+        200:
+          description: success update password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success update password"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
+
+
   /users/followed:
     get:
       tags:
