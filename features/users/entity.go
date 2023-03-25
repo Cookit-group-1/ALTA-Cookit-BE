@@ -25,6 +25,7 @@ type UserService interface {
 }
 
 type UserData interface {
+	SelectUserById(existUser Core) *Core
 	Register(newUser Core) (Core, error)
 	Login(username string) (Core, error)
 }
