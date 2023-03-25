@@ -45,5 +45,16 @@ func (uq *UserQuery) Register(newUser users.Core) (users.Core, error) {
 
 // Login implements users.UserData
 func (uq *UserQuery) Login(username string) (users.Core, error) {
-	panic("unimplemented")
+	if username == "" {
+		log.Println("data empty, query error")
+		return users.Core{}, errors.New("username is empty")
+	}
+
+	res := User{}
+	if err := uq.db.Where("username = ?", username).First(&res).Error; err != nil {
+		log.Println("login query error", err.Error())
+		return users.Core{}, errors.New("data not found")
+	}
+
+	return ModelToCore(res), nil
 }
