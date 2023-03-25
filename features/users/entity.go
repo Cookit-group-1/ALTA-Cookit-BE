@@ -27,9 +27,9 @@ type UserHandler interface {
 type UserService interface {
 	Register(newUser Core) (Core, error)
 	Login(username, password string) (string, Core, error)
-	Profile(token interface{}) (Core, error)
-	Update(token interface{}, fileData multipart.FileHeader, updateData Core) (Core, error)
-	Deactive(token interface{}) error
+	Profile(userID uint) (Core, error)
+	Update(userID uint, fileData multipart.FileHeader, updateData Core) (Core, error)
+	Deactive(userID uint) error
 }
 
 type UserData interface {

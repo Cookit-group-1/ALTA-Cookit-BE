@@ -6,6 +6,7 @@ import (
 	"alta-cookit-be/utils/helpers"
 	"errors"
 	"log"
+	"mime/multipart"
 	"strings"
 )
 
@@ -72,3 +73,46 @@ func (us *userService) Register(newUser users.Core) (users.Core, error) {
 
 	return res, nil
 }
+
+// Deactive implements users.UserService
+func (us *userService) Deactive(userID uint) error {
+	err := us.qry.Deactive(uint(userID))
+	if err != nil {
+		log.Println("query error", err.Error())
+		return errors.New("query error, delete account fail")
+	}
+	return nil
+}
+
+// Profile implements users.UserService
+// func (us *userService) Profile(userID uint) (users.Core, error) {
+// 	res, err := us.qry.Profile(userID)
+// 	if err != nil {
+// 		log.Println("data not found")
+// 		return users.Core{}, errors.New("query error, problem with server")
+// 	}
+
+// 	return res, nil
+// }
+
+// // Update implements users.UserService
+// func (us *userService) Update(userID uint, fileData multipart.FileHeader, updateData users.Core) (users.Core, error) {
+// 	url, err := helpers.GetUrlImagesFromAWS(fileData, int(1))
+// 	if err != nil {
+// 		return users.Core{}, errors.New("validate: " + err.Error())
+// 	}
+// 	updateData.ProfilePicture = url
+// 	res, err := us.qry.Update(uint(userID), updateData)
+// 	if err != nil {
+// 		msg := ""
+// 		if strings.Contains(err.Error(), "not found") {
+// 			msg = "account not registered"
+// 		} else if strings.Contains(err.Error(), "email") {
+// 			msg = "email duplicated"
+// 		} else if strings.Contains(err.Error(), "access denied") {
+// 			msg = "access denied"
+// 		}
+// 		return users.Core{}, errors.New(msg)
+// 	}
+// 	return res, nil
+// }
