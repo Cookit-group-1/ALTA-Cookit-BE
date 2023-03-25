@@ -25,7 +25,7 @@ func (uq *UserQuery) SelectUserById(user users.Core) *users.Core {
 	if existUser.Username == "" {
 		return nil
 	}
-	
+
 	user = ModelToCore(existUser)
 	return &user
 }
@@ -70,4 +70,56 @@ func (uq *UserQuery) Login(username string) (users.Core, error) {
 	}
 
 	return ModelToCore(res), nil
+}
+
+// Deactive implements users.UserData
+func (uq *UserQuery) Deactive(userID uint) error {
+	res := User{}
+	qry := uq.db.Delete(&res, userID)
+
+	rowAffect := qry.RowsAffected
+	if rowAffect <= 0 {
+		log.Println("no data processed")
+		return errors.New("no user has delete")
+	}
+
+	err := qry.Error
+	if err != nil {
+		log.Println("delete query error", err.Error())
+		return errors.New("delete account fail")
+	}
+
+	return nil
+}
+
+// Profile implements users.UserData
+func (uq *UserQuery) Profile(userID uint) (users.Core, error) {
+	res := User{}
+	err := uq.db.Where("id = ?", userID).First(&res).Error
+	if err != nil {
+		log.Println("get profile query error", err.Error())
+		return users.Core{}, errors.New("account not found")
+	}
+	return ModelToCore(res), nil
+}
+
+// Update implements users.UserData
+func (uq *UserQuery) Update(userID uint, updateData users.Core) (users.Core, error) {
+	cnv := CoreToModel(updateData)
+	res := User{}
+	qry := uq.db.Model(&res).Where("id = ?", userID).Updates(&cnv)
+
+	affrows := qry.RowsAffected
+	if affrows == 0 {
+		log.Println("no rows affected")
+		return users.Core{}, errors.New("no data updated")
+	}
+
+	err := qry.Error
+	if err != nil {
+		log.Println("update user query error", err.Error())
+		return users.Core{}, err
+	}
+
+	return ModelToCore(cnv), nil
 }
