@@ -25,8 +25,8 @@ import (
 	_stepDelivery "alta-cookit-be/features/steps/delivery"
 	_stepService "alta-cookit-be/features/steps/service"
 	_userData "alta-cookit-be/features/users/data"
-	_userService "alta-cookit-be/features/users/services"
 	_userDelivery "alta-cookit-be/features/users/handler"
+	_userService "alta-cookit-be/features/users/services"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
@@ -119,4 +119,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initStepRouter(db, e)
 	initIngredientRouter(db, e)
 	initIngredientDetailRouter(db, e)
+	initUserRouter(db, e)
 }
