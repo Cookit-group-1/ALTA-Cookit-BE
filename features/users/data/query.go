@@ -74,7 +74,22 @@ func (uq *UserQuery) Login(username string) (users.Core, error) {
 
 // Deactive implements users.UserData
 func (uq *UserQuery) Deactive(userID uint) error {
-	panic("unimplemented")
+	res := User{}
+	qry := uq.db.Delete(&res, userID)
+
+	rowAffect := qry.RowsAffected
+	if rowAffect <= 0 {
+		log.Println("no data processed")
+		return errors.New("no user has delete")
+	}
+
+	err := qry.Error
+	if err != nil {
+		log.Println("delete query error", err.Error())
+		return errors.New("delete account fail")
+	}
+
+	return nil
 }
 
 // Profile implements users.UserData
