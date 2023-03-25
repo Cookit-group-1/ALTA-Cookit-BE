@@ -843,15 +843,16 @@ paths:
               required:
                 - name
                 - description
-                - type
               properties:
                 recipe_id:
+                  description: "Replied recipe's id"
                   type: integer
                 name:
                   type: string
                 description:
                   type: string
                 type:
+                  description: "By default 'Original'"
                   type: string
                   enum:
                     - "Original"
@@ -922,11 +923,13 @@ paths:
                             [
                               {
                                 name: "Bumbu Indomie (Original)",
-                                size: "1pcs",
+                                quantity: 1,
+                                uint: "pcs",
                               },
                               {
                                 name: "Minyak Indomie (Original)",
-                                size: "1pcs",
+                                quantity: 1,
+                                uint: "pcs",
                               },
                             ]
                         }
@@ -968,15 +971,18 @@ paths:
                               [
                                 {
                                   name: "Bumbu Indomie (Original)",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                                 {
                                   name: "Minyak Indomie (Original)",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                                 {
                                   name: "Telur",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                               ],
                           }
@@ -1051,12 +1057,14 @@ paths:
                                 {
                                   id: 1,
                                   name: "Bumbu Indomie (Original)",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                                 {
                                   id: 2,
                                   name: "Minyak Indomie (Original)",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                               ]
                           }
@@ -1114,17 +1122,20 @@ paths:
                                   {
                                     id: 5,
                                     name: "Bumbu Indomie (Original)",
-                                    size: "1pcs",
+                                    quantity: 1,
+                                    uint: "pcs",
                                   },
                                   {
                                     id: 6,
                                     name: "Minyak Indomie (Original)",
-                                    size: "1pcs",
+                                    quantity: 1,
+                                    uint: "pcs",
                                   },
                                   {
                                     id: 7,
                                     name: "Telur",
-                                    size: "1pcs",
+                                    quantity: 1,
+                                    uint: "pcs",
                                   },
                                 ],
                             }
@@ -1582,12 +1593,14 @@ paths:
                                 {
                                   id: 1,
                                   name: "Bumbu Indomie (Original)",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                                 {
                                   id: 2,
                                   name: "Minyak Indomie (Original)",
-                                  size: "1pcs",
+                                  quantity: 1,
+                                  uint: "pcs",
                                 },
                               ]
                           }
@@ -1645,17 +1658,20 @@ paths:
                                   {
                                     id: 5,
                                     name: "Bumbu Indomie (Original)",
-                                    size: "1pcs",
+                                    quantity: 1,
+                                    uint: "pcs",
                                   },
                                   {
                                     id: 6,
                                     name: "Minyak Indomie (Original)",
-                                    size: "1pcs",
+                                    quantity: 1,
+                                    uint: "pcs",
                                   },
                                   {
                                     id: 7,
                                     name: "Telur",
-                                    size: "1pcs",
+                                    quantity: 1,
+                                    uint: "pcs",
                                   },
                                 ],
                             }
@@ -1709,12 +1725,14 @@ paths:
                                       {
                                         id: 1,
                                         name: "Bumbu Indomie (Original)",
-                                        size: "1pcs",
+                                        quantity: 1,
+                                        uint: "pcs",
                                       },
                                       {
                                         id: 2,
                                         name: "Minyak Indomie (Original)",
-                                        size: "1pcs",
+                                        quantity: 1,
+                                        uint: "pcs",
                                       },
                                     ],
                                 }
@@ -1789,12 +1807,14 @@ paths:
                                       {
                                         id: 1,
                                         name: "Bumbu Indomie (Original)",
-                                        size: "1pcs",
+                                        quantity: 1,
+                                        uint: "pcs",
                                       },
                                       {
                                         id: 2,
                                         name: "Minyak Indomie (Original)",
-                                        size: "1pcs",
+                                        quantity: 1,
+                                        uint: "pcs",
                                       },
                                     ],
                                 }
@@ -3119,7 +3139,7 @@ paths:
               properties:
                 name:
                   type: string
-                size:
+                quantity:
                   type: integer
                 unit:
                   type: string
@@ -3204,11 +3224,14 @@ paths:
               type: object
               required:
                 - name
-                - size
+                - quantity
+                - unit
               properties:
                 name:
                   type: string
-                size:
+                quantity:
+                  type: integer
+                unit:
                   type: string
             example:
               name: "Gula Aren"
