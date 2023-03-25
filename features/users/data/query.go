@@ -79,16 +79,32 @@ func (uq *UserQuery) Deactive(userID uint) error {
 
 // Profile implements users.UserData
 func (uq *UserQuery) Profile(userID uint) (users.Core, error) {
-	panic("unimplemented")
+	res := User{}
+	err := uq.db.Where("id = ?", userID).First(&res).Error
+	if err != nil {
+		log.Println("get profile query error", err.Error())
+		return users.Core{}, errors.New("account not found")
+	}
+	return ModelToCore(res), nil
 }
 
 // Update implements users.UserData
 func (uq *UserQuery) Update(userID uint, updateData users.Core) (users.Core, error) {
+	cnv := CoreToModel(updateData)
 	res := User{}
-	err := uq.db.Where("id = ?", userID).First(&res).Error
-	if err != nil {
-		log.Println("query err", err.Error())
-		return users.Core{}, errors.New("account not found")
+	qry := uq.db.Model(&res).Where("id = ?", userID).Updates(&cnv)
+
+	affrows := qry.RowsAffected
+	if affrows == 0 {
+		log.Println("no rows affected")
+		return users.Core{}, errors.New("no data updated")
 	}
-	return ModelToCore(res), nil
+
+	err := qry.Error
+	if err != nil {
+		log.Println("update user query error", err.Error())
+		return users.Core{}, err
+	}
+
+	return ModelToCore(cnv), nil
 }
