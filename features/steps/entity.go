@@ -4,8 +4,8 @@ import "github.com/labstack/echo/v4"
 
 type StepEntity struct {
 	ID       uint
-	UserID   uint   `validate:"required"`
-	RecipeID uint   `validate:"required"`
+	UserID   uint   
+	RecipeID uint   
 	Name     string `validate:"required"`
 }
 

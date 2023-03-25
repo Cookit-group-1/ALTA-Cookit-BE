@@ -11,7 +11,7 @@ import (
 
 type RecipeEntity struct {
 	ID                 uint
-	UserID             uint `validate:"required"`
+	UserID             uint 
 	UserName           string
 	UserRole           string
 	ProfilePicture     string

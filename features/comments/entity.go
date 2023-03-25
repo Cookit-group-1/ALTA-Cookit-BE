@@ -8,11 +8,11 @@ import (
 
 type CommentEntity struct {
 	ID             uint
-	UserID         uint `validate:"required"`
+	UserID         uint 
 	UserName       string
 	UserRole       string
 	ProfilePicture string
-	RecipeID       uint   `validate:"required"`
+	RecipeID       uint   
 	Comment        string `validate:"required"`
 	Image          multipart.File
 	ImageName      string
