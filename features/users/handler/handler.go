@@ -2,6 +2,7 @@ package handler
 
 import (
 	"alta-cookit-be/features/users"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"log"
@@ -59,4 +60,26 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 		log.Println(res)
 		return c.JSON(http.StatusCreated, helpers.Response(consts.AUTH_SuccessCreate))
 	}
+}
+
+// Deactive implements users.UserHandler
+func (uh *userHandler) Deactive() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userID, _, _ := middlewares.ExtractToken(c)
+		err := uh.srv.Deactive(userID)
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		return c.JSON(http.StatusOK, helpers.Response(consts.AUTH_ErrorBind))
+	}
+}
+
+// Profile implements users.UserHandler
+func (uh *userHandler) Profile() echo.HandlerFunc {
+	panic("unimplemented")
+}
+
+// Update implements users.UserHandler
+func (uh *userHandler) Update() echo.HandlerFunc {
+	panic("unimplemented")
 }
