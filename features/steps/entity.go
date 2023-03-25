@@ -4,23 +4,21 @@ import "github.com/labstack/echo/v4"
 
 type StepEntity struct {
 	ID       uint
-	UserID   uint
-	UserRole string
-	RecipeID uint
-	Name     string
+	UserID   uint   `validate:"required"`
+	RecipeID uint   `validate:"required"`
+	Name     string `validate:"required"`
 }
 
 type StepRequest struct {
-	ID       uint    
-	UserID   uint    
-	UserRole string  
-	RecipeID uint    
-	Name     string  `json:"name" form:"name"`
+	ID       uint
+	UserID   uint
+	RecipeID uint
+	Name     string `json:"name" form:"name"`
 }
 
 type StepResponse struct {
-	ID    uint    `json:"id,omitempty"`
-	Name  string  `json:"name,omitempty"`
+	ID   uint   `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
 }
 
 type StepDelivery_ interface {

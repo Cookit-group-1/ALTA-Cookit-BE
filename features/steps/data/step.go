@@ -32,7 +32,7 @@ func (d *StepData) InsertStep (entity *steps.StepEntity) (*steps.StepEntity, err
 }
 
 func (d *StepData) UpdateStepById(entity *steps.StepEntity) error {
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Updates(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -43,7 +43,7 @@ func (d *StepData) UpdateStepById(entity *steps.StepEntity) error {
 }
 
 func (d *StepData) DeleteStepById(entity *steps.StepEntity) error {
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Delete(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

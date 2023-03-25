@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"alta-cookit-be/features/steps"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
@@ -21,6 +22,7 @@ func New(stepService steps.StepService_) steps.StepDelivery_ {
 }
 
 func (d *StepDelivery) InsertStep(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -32,6 +34,7 @@ func (d *StepDelivery) InsertStep(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 	stepRequest.RecipeID = recipeId
+	stepRequest.UserID = userId
 
 	output, err := d.stepService.InsertStep(ConvertToEntity(&stepRequest))
 	if err != nil {
@@ -41,11 +44,11 @@ func (d *StepDelivery) InsertStep(e echo.Context) error {
 }
 
 func (d *StepDelivery) UpdateStepById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_StepId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -58,6 +61,7 @@ func (d *StepDelivery) UpdateStepById(e echo.Context) error {
 	}
 	stepRequest.ID = id
 	stepRequest.RecipeID = recipeId
+	stepRequest.UserID = userId
 
 	err = d.stepService.UpdateStepById(ConvertToEntity(&stepRequest))
 	if err != nil {
@@ -67,11 +71,11 @@ func (d *StepDelivery) UpdateStepById(e echo.Context) error {
 }
 
 func (d *StepDelivery) DeleteStepById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_StepId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -83,6 +87,7 @@ func (d *StepDelivery) DeleteStepById(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 	stepRequest.ID = id
+	stepRequest.UserID = userId
 	stepRequest.RecipeID = recipeId
 
 	err = d.stepService.DeleteStepById(ConvertToEntity(&stepRequest))
