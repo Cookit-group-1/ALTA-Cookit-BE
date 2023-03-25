@@ -19,7 +19,7 @@ type ImageEntity struct {
 
 type ImageRequest struct {
 	ID        uint
-	UserID    uint `form:"user_id"`
+	UserID    uint
 	RecipeID  uint
 	Image     multipart.File
 	ImageName string

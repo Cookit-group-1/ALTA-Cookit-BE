@@ -21,7 +21,7 @@ type CommentEntity struct {
 
 type CommentRequest struct {
 	ID        uint
-	UserID    uint `form:"user_id"`
+	UserID    uint
 	UserRole  string
 	RecipeID  uint
 	Comment   string `form:"comment"`
