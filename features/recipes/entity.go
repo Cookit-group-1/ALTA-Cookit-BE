@@ -20,8 +20,8 @@ type RecipeEntity struct {
 	ImageName          []string
 	Recipe             *RecipeEntity
 	UrlImage           string
-	Type               string
-	Status             string `validate:"required"`
+	Type               string 
+	Status             string 
 	Name               string `validate:"required"`
 	Description        string `validate:"required"`
 	TotalLike          int
