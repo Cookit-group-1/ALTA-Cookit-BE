@@ -85,15 +85,15 @@ func (us *userService) Deactive(userID uint) error {
 }
 
 // Profile implements users.UserService
-// func (us *userService) Profile(userID uint) (users.Core, error) {
-// 	res, err := us.qry.Profile(userID)
-// 	if err != nil {
-// 		log.Println("data not found")
-// 		return users.Core{}, errors.New("query error, problem with server")
-// 	}
+func (us *userService) Profile(userID uint) (users.Core, error) {
+	res, err := us.qry.Profile(userID)
+	if err != nil {
+		log.Println("data not found")
+		return users.Core{}, errors.New("query error, problem with server")
+	}
 
-// 	return res, nil
-// }
+	return res, nil
+}
 
 // // Update implements users.UserService
 // func (us *userService) Update(userID uint, fileData multipart.FileHeader, updateData users.Core) (users.Core, error) {
