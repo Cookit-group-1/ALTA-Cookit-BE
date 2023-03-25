@@ -4,18 +4,18 @@ import "github.com/labstack/echo/v4"
 
 type IngredientDetailEntity struct {
 	ID           uint
-	UserID       uint
-	UserRole     string
+	UserID       uint `validate:"required"`
+	RecipeID     uint `validate:"required"`
 	IngredientID uint
-	Name         string
+	Name         string `validate:"required"`
 	Quantity     int
-	Unit         string
+	Unit         string `validate:"required"`
 }
 
 type IngredientDetailRequest struct {
 	ID           uint `json:"id"`
 	UserID       uint
-	UserRole     string
+	RecipeID     uint
 	IngredientID uint
 	Name         string `json:"name" form:"name"`
 	Quantity     int    `json:"quantity" form:"quantity"`
