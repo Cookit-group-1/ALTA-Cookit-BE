@@ -11,19 +11,19 @@ import (
 
 type RecipeEntity struct {
 	ID                 uint
-	UserID             uint
+	UserID             uint `validate:"required"`
 	UserName           string
 	UserRole           string
 	ProfilePicture     string
-	RecipeID           uint
+	RecipeID           uint `validate:"required"`
 	Image              []multipart.File
 	ImageName          []string
 	Recipe             *RecipeEntity
 	UrlImage           string
-	Type               string
-	Status             string
-	Name               string
-	Description        string
+	Type               string `validate:"required"`
+	Status             string `validate:"required"`
+	Name               string `validate:"required"`
+	Description        string `validate:"required"`
 	TotalLike          int
 	TotalComment       int
 	StepEntities       []steps.StepEntity
