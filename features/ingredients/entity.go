@@ -8,10 +8,10 @@ import (
 
 type IngredientEntity struct {
 	ID                       uint
-	UserID                   uint
-	UserRole                 string
-	RecipeID                 uint
-	Name                     string
+	UserID                   uint   `validate:"required"`
+	UserRole                 string `validate:"required"`
+	RecipeID                 uint   `validate:"required"`
+	Name                     string `validate:"required"`
 	Price                    float64
 	IngredientDetailEntities []ingredient_details.IngredientDetailEntity
 }

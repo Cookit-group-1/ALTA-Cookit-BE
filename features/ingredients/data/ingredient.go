@@ -32,7 +32,7 @@ func (d *IngredientData) InsertIngredient (entity *ingredients.IngredientEntity)
 }
 
 func (d *IngredientData) UpdateIngredientById(entity *ingredients.IngredientEntity) error {
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Updates(ConvertToGorm(entity))
+	tx := d.db.Debug().Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -43,7 +43,7 @@ func (d *IngredientData) UpdateIngredientById(entity *ingredients.IngredientEnti
 }
 
 func (d *IngredientData) DeleteIngredientById(entity *ingredients.IngredientEntity) error {
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Delete(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
