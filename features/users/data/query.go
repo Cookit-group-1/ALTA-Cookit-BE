@@ -25,7 +25,7 @@ func (uq *UserQuery) SelectUserById(user users.Core) *users.Core {
 	if existUser.Username == "" {
 		return nil
 	}
-	
+
 	user = ModelToCore(existUser)
 	return &user
 }
@@ -69,5 +69,26 @@ func (uq *UserQuery) Login(username string) (users.Core, error) {
 		return users.Core{}, errors.New("data not found")
 	}
 
+	return ModelToCore(res), nil
+}
+
+// Deactive implements users.UserData
+func (uq *UserQuery) Deactive(userID uint) error {
+	panic("unimplemented")
+}
+
+// Profile implements users.UserData
+func (uq *UserQuery) Profile(userID uint) (users.Core, error) {
+	panic("unimplemented")
+}
+
+// Update implements users.UserData
+func (uq *UserQuery) Update(userID uint, updateData users.Core) (users.Core, error) {
+	res := User{}
+	err := uq.db.Where("id = ?", userID).First(&res).Error
+	if err != nil {
+		log.Println("query err", err.Error())
+		return users.Core{}, errors.New("account not found")
+	}
 	return ModelToCore(res), nil
 }
