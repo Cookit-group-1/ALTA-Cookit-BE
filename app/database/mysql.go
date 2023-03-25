@@ -6,7 +6,6 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 
 	"alta-cookit-be/app/config"
 	_cartModel "alta-cookit-be/features/carts/models"
