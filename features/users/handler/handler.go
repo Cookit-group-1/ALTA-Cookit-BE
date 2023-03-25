@@ -22,7 +22,25 @@ func New(srv users.UserService) users.UserHandler {
 
 // Login implements users.UserHandler
 func (uh *userHandler) Login() echo.HandlerFunc {
-	panic("unimplemented")
+	return func(c echo.Context) error {
+		input := LoginReq{}
+		errBind := c.Bind(&input)
+		if errBind != nil {
+			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
+		}
+
+		token, res, errLogin := uh.srv.Login(input.Username, input.Password)
+		if errLogin != nil {
+			return c.JSON(helpers.ErrorResponse(errLogin))
+		}
+		dataResponse := map[string]any{
+			"id":       res.ID,
+			"username": res.Username,
+			"role":     res.Role,
+			"token":    token,
+		}
+		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.AUTH_SuccessLogin, dataResponse))
+	}
 }
 
 // Register implements users.UserHandler
