@@ -273,21 +273,21 @@ paths:
                         {
                           id: 1,
                           username: "intanpermana12",
-                          user_type: "VerifiedUser",
+                          user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                           is_followed_back: false,
                         },
                         {
                           id: 2,
                           username: "rebecca027",
-                          user_type: "VerifiedUser",
+                          user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                           is_followed_back: true,
                         },
                         {
                           id: 3,
                           username: "richard49",
-                          user_type: "User",
+                          user_role: "User",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                           is_followed_back: false,
                         },
@@ -358,19 +358,19 @@ paths:
                         {
                           id: 1,
                           username: "intanpermana12",
-                          user_type: "VerifiedUser",
+                          user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                         },
                         {
                           id: 2,
                           username: "rebecca027",
-                          user_type: "VerifiedUser",
+                          user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                         },
                         {
                           id: 3,
                           username: "richard49",
-                          user_type: "User",
+                          user_role: "User",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                         },
                       ],
@@ -610,7 +610,7 @@ paths:
                           {
                             id: 1,
                             username: "Benjamin29",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
@@ -618,7 +618,7 @@ paths:
                             status: "OpenForSale",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 1,
@@ -629,7 +629,7 @@ paths:
                           {
                             id: 2,
                             username: "Benjamin29",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
@@ -637,7 +637,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 2,
@@ -648,7 +648,7 @@ paths:
                           {
                             id: 4,
                             username: "Benjamin29",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
@@ -656,7 +656,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 4,
@@ -667,14 +667,14 @@ paths:
                               {
                                 id: 3,
                                 username: "Ronny69",
-                                user_type: "Ronny69",
+                                user_role: "Ronny69",
                                 profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
                                 status: "OpenForSale",
                                 total_like: 79,
                                 total_comment : 117,
-                                url_image:
+                                images:
                                   [
                                     {
                                       id: 3,
@@ -715,6 +715,7 @@ paths:
                 example:
                   message: internal server error
 
+  /recipes:
     post:
       tags:
         - Recipes
@@ -732,7 +733,6 @@ paths:
                 - name
                 - description
                 - type
-                - image
               properties:
                 recipe_id:
                   type: integer
@@ -895,11 +895,11 @@ paths:
                       {
                         id: 1,
                         username: "Benjamin29",
-                        user_type: "VerifiedUser",
+                        user_role: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                         name: "Indomie Spesial",
                         description: "Indomie terenak sepanjang masa",
-                        url_image:
+                        images:
                           [
                             {
                               id: 1,
@@ -958,11 +958,11 @@ paths:
                       {
                         id: 3,
                         username: "Biangkerokk77",
-                        user_type: "VerifiedUser",
+                        user_role: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                         name: "Indomie Telur Spesial",
                         description: "Indomie telur terenak sepanjang masa",
-                        url_image:
+                        images:
                           [
                             {
                               id: 3,
@@ -1026,11 +1026,11 @@ paths:
                       {
                         id: 3,
                         username: "Ronny69",
-                        user_type: "VerifiedUser",
+                        user_role: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                         name: "Indomie Telur Spesial Ala Ronny",
                         description: "Indomie telur terenak sepanjang masa",
-                        url_image:
+                        images:
                           [
                             {
                               id: 3,
@@ -1071,8 +1071,7 @@ paths:
                     type: string
               example:
                 message: internal server error
-
-  /recipes:
+                
     get:
         tags:
           - Recipes
@@ -1117,7 +1116,7 @@ paths:
             example: "None"
         responses:
           200:
-            description: success get timeline of recipes
+            description: success get list of recipes
             content:
               application/json:
                 schema:
@@ -1130,7 +1129,7 @@ paths:
                           {
                             id: 1,
                             username: "Benjamin29",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
@@ -1138,7 +1137,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 1,
@@ -1149,7 +1148,7 @@ paths:
                           {
                             id: 2,
                             username: "Benjamin30",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
@@ -1157,7 +1156,7 @@ paths:
                             status: "OpenForSale",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 2,
@@ -1168,7 +1167,7 @@ paths:
                           {
                             id: 3,
                             username: "Biangkerokk77",
-                            user_type: "User",
+                            user_role: "User",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
@@ -1176,7 +1175,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 3,
@@ -1222,6 +1221,8 @@ paths:
           - Recipes
         summary: get timeline of recipes
         description: feature for getting timeline of recipes
+        security:
+        - JWTAuth: []
         parameters:
         - name: page
           in: query
@@ -1249,7 +1250,7 @@ paths:
                           {
                             id: 1,
                             username: "Benjamin29",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
@@ -1257,7 +1258,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 1,
@@ -1268,7 +1269,7 @@ paths:
                           {
                             id: 2,
                             username: "Benjamin30",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
@@ -1276,7 +1277,7 @@ paths:
                             status: "OpenForSale",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 2,
@@ -1287,7 +1288,7 @@ paths:
                           {
                             id: 3,
                             username: "Biangkerokk77",
-                            user_type: "User",
+                            user_role: "User",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
@@ -1295,7 +1296,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 3,
@@ -1306,7 +1307,7 @@ paths:
                               {
                                 id: 1,
                                 username: "Benjamin29",
-                                user_type: "VerifiedUser",
+                                user_role: "VerifiedUser",
                                 profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
@@ -1314,7 +1315,7 @@ paths:
                                 status: "None",
                                 total_like: 79,
                                 total_comment : 117,
-                                url_image:
+                                images:
                                   [
                                     {
                                       id: 1,
@@ -1326,7 +1327,7 @@ paths:
                           {
                             id: 4,
                             username: "Ronny69",
-                            user_type: "User",
+                            user_role: "User",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                             name: "Indomie Telur Spesial Ala Ronny",
                             description: "Indomie telur terenak sepanjang masa",
@@ -1334,7 +1335,7 @@ paths:
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 3,
@@ -1345,7 +1346,7 @@ paths:
                               {
                                 id: 1,
                                 username: "Benjamin29",
-                                user_type: "VerifiedUser",
+                                user_role: "VerifiedUser",
                                 profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                                 name: "Indomie Spesial",
                                 description: "Indomie terenak sepanjang masa",
@@ -1353,7 +1354,7 @@ paths:
                                 status: "None",
                                 total_like: 79,
                                 total_comment : 117,
-                                url_image:
+                                images:
                                   [
                                     {
                                       id: 1,
@@ -1394,12 +1395,20 @@ paths:
                 example:
                   message: internal server error
 
-  /recipes/detail:
+  /recipes/{recipe_id}/detail:
     get:
       tags:
         - Recipes
       summary: get details of recipes
       description: feature for getting details of recipes
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         200:
           description: success get details of recipes
@@ -1414,14 +1423,14 @@ paths:
                       {
                         id: 1,
                         username: "Benjamin29",
-                        user_type: "VerifiedUser",
+                        user_role: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                         name: "Indomie Spesial",
                         description: "Indomie terenak sepanjang masa",
                         status: "None",
                         total_like: 79,
                         total_comment : 117,
-                        url_image:
+                        images:
                           [
                             {
                               id: 1,
@@ -1480,11 +1489,11 @@ paths:
                       {
                         id: 3,
                         username: "Biangkerokk77",
-                        user_type: "VerifiedUser",
+                        user_role: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                         name: "Indomie Telur Spesial",
                         description: "Indomie telur terenak sepanjang masa",
-                        url_image:
+                        images:
                           [
                             {
                               id: 3,
@@ -1544,11 +1553,11 @@ paths:
                           {
                             id: 1,
                             username: "Benjamin29",
-                            user_type: "VerifiedUser",
+                            user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 1,
@@ -1608,11 +1617,11 @@ paths:
                       {
                         id: 3,
                         username: "Ronny69",
-                        user_type: "VerifiedUser",
+                        user_role: "VerifiedUser",
                         profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
                         name: "Indomie Telur Spesial Ala Ronny",
                         description: "Indomie telur terenak sepanjang masa",
-                        url_image:
+                        images:
                           [
                             {
                               id: 3,
@@ -1628,7 +1637,7 @@ paths:
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
-                            url_image:
+                            images:
                               [
                                 {
                                   id: 1,
@@ -1845,7 +1854,7 @@ paths:
               example:
                 message: internal server error
 
-  /recipes/{recipe_id}/likes:
+  /recipes/{recipe_id}/like:
     post:
       tags:
         - Recipes
@@ -1904,7 +1913,7 @@ paths:
               example:
                 message: internal server error
 
-  /recipes/{recipe_id}/likes/{like_id}:
+  /recipes/{recipe_id}/unlike:
     delete:
       tags:
         - Recipes
@@ -1916,13 +1925,6 @@ paths:
         - name: recipe_id
           in: path
           description: recipe's id to be unlike for
-          required: true
-          schema:
-            type: integer
-            example: 1
-        - name: like_id
-          in: path
-          description: like's id to be deleted
           required: true
           schema:
             type: integer
@@ -2236,7 +2238,7 @@ paths:
                         {
                           id: 1,
                           username: "Hijack099",
-                          user_type: "VerifiedUser",
+                          user_role: "VerifiedUser",
                           profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cyber.jpg,
                           comment: "Emang mantep si ini resepnya",
                           comment_image:  https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cyber.jpg,
@@ -2244,7 +2246,7 @@ paths:
                         {
                           id: 2,
                           username: "Beluga077",
-                          user_type: "VerifiedUser",
+                          user_role: "VerifiedUser",
                           profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Green%20Tea.jpg,
                           comment: "The best resepnya",
                           comment_image:  "",
@@ -2252,7 +2254,7 @@ paths:
                         {
                           id: 3,
                           username: "Norrikembung057",
-                          user_type: "User",
+                          user_role: "User",
                           profile_picture: https://storage.googleapis.com/alta-cookit/static/images/Dark%20Saber.jpg,
                           comment: "Enak, tapi agak kurang kalo di saya. Beda selera mungkin",
                           comment_image:  "",
@@ -2970,7 +2972,7 @@ paths:
   ####################################
   #  INGREDIENTS DETAILS
   ####################################
-  /ingredients/{ingredient_id}/ingredientDetails:
+  /recipes/{recipe_id}/ingredients/{ingredient_id}/ingredientDetails:
     post:
       tags:
         - Ingredient Details
@@ -2979,6 +2981,13 @@ paths:
       security:
         - JWTAuth: []
       parameters:
+        - name: recipe_id
+          in: path
+          description: ingredient details of recipe's id of ingredient to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
         - name: ingredient_id
           in: path
           description: ingredient details of ingredient's id to be inserted
@@ -3053,7 +3062,7 @@ paths:
               example:
                 message: internal server error
 
-  /ingredient/{ingredient_id}/ingredientDetails/{ingredient_detail_id}:
+  /recipes/{recipe_id}/ingredients/ingredientDetails/{ingredient_detail_id}:
     put:
       tags:
         - Ingredient Details
@@ -3062,9 +3071,9 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: ingredient_id
+        - name: recipe_id
           in: path
-          description: ingredient details of ingredient's id to be updated
+          description: ingredient details of recipe's id of ingredient to be updated
           required: true
           schema:
             type: integer
@@ -3146,9 +3155,9 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: ingredient_id
+        - name: recipe_id
           in: path
-          description: ingredient details of ingredient's id to be deleted
+          description: ingredient details of recipe's id of ingredient to be updated
           required: true
           schema:
             type: integer
