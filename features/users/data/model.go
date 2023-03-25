@@ -1,4 +1,4 @@
-package models
+package data
 
 import (
 	_cartModel "alta-cookit-be/features/carts/models"
@@ -7,6 +7,7 @@ import (
 	_likeModel "alta-cookit-be/features/likes/models"
 	_recipeModel "alta-cookit-be/features/recipes/models"
 	_transactionModel "alta-cookit-be/features/transactions/models"
+	"alta-cookit-be/features/users"
 
 	"gorm.io/gorm"
 )
@@ -14,8 +15,8 @@ import (
 type User struct {
 	gorm.Model
 	ProfilePicture string                          `gorm:"type:text"`
-	Name           string                          `gorm:"not null;type:VARCHAR(50)"`
 	Username       string                          `gorm:"unique;not null;type:VARCHAR(50)"`
+	Bio            string                          `gorm:"not null;type:VARCHAR(151)"`
 	Role           string                          `gorm:"not null;type:enum('Admin', 'User', 'VerifiedUser');default:'User'"`
 	Email          string                          `gorm:"unique;not null;type:VARCHAR(100)"`
 	GoogleId       string                          `gorm:"type:text"`
@@ -27,4 +28,28 @@ type User struct {
 	Comments       []_commentModel.Comment         `gorm:"constraint:OnDelete:CASCADE;"`
 	Carts          []_cartModel.Cart               `gorm:"constraint:OnDelete:CASCADE;"`
 	Transactions   []_transactionModel.Transaction `gorm:"constraint:OnDelete:CASCADE;"`
+}
+
+func ModelToCore(data User) users.Core {
+	return users.Core{
+		ID:             data.ID,
+		ProfilePicture: data.ProfilePicture,
+		Username:       data.Username,
+		Bio:            data.Bio,
+		Role:           data.Role,
+		Email:          data.Email,
+		Password:       data.Password,
+	}
+}
+
+func CoreToModel(data users.Core) User {
+	return User{
+		Model:          gorm.Model{ID: data.ID},
+		ProfilePicture: data.ProfilePicture,
+		Username:       data.Username,
+		Bio:            data.Bio,
+		Role:           data.Role,
+		Email:          data.Email,
+		Password:       data.Password,
+	}
 }
