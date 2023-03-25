@@ -33,7 +33,7 @@ type RecipeEntity struct {
 
 type RecipeRequest struct {
 	ID                 uint
-	UserID             uint `json:"user_id" form:"user_id"`
+	UserID             uint
 	UserRole           string
 	RecipeID           uint `json:"recipe_id" form:"recipe_id"`
 	Image              []multipart.File
