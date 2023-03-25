@@ -13,7 +13,7 @@ type IngredientDetailEntity struct {
 }
 
 type IngredientDetailRequest struct {
-	ID           uint `json:"id"`
+	ID           uint
 	UserID       uint
 	RecipeID     uint
 	IngredientID uint
