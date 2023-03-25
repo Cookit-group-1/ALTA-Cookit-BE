@@ -21,6 +21,26 @@ func New(recipeService recipes.RecipeService_) recipes.RecipeDelivery_ {
 	}
 }
 
+func (d *RecipeDelivery) SelectRecipeDetailById(e echo.Context) error {
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
+	if err != nil {
+		return errors.New(consts.ECHO_InvaildIdParam)
+	}
+
+	recipeRequest := recipes.RecipeRequest{}
+	err = e.Bind(&recipeRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	recipeRequest.ID = recipeId
+
+	output, err := d.recipeService.SelectRecipeDetailById(ConvertToEntity(&recipeRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfUserRecipes, ConvertToResponse(output)))
+}
+
 func (d *RecipeDelivery) SelectRecipesByUserId(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeRequest := recipes.RecipeRequest{}

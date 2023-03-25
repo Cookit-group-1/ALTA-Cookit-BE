@@ -20,6 +20,14 @@ func New(recipeData recipes.RecipeData_) recipes.RecipeService_ {
 	}
 }
 
+func (s *RecipeService) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
+	output, err := s.recipeData.SelectRecipeDetailById(entity)
+	if err != nil {
+		return nil, err
+	}
+	return output, nil
+}
+
 func (s *RecipeService) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	outputs, err := s.recipeData.SelectRecipesByUserId(entity)
 	if err != nil {
