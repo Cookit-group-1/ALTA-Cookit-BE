@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"alta-cookit-be/features/comments"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
@@ -41,6 +42,7 @@ func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
 }
 
 func (d *CommentDelivery) InsertComment(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -54,6 +56,7 @@ func (d *CommentDelivery) InsertComment(e echo.Context) error {
 
 	file, fileName, _ := helpers.ExtractFile(e, "image")
 	commentRequest.RecipeID = recipeId
+	commentRequest.UserID = userId
 	commentRequest.Image = file
 	commentRequest.ImageName = fileName
 
@@ -65,6 +68,7 @@ func (d *CommentDelivery) InsertComment(e echo.Context) error {
 }
 
 func (d *CommentDelivery) UpdateCommentById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -83,6 +87,7 @@ func (d *CommentDelivery) UpdateCommentById(e echo.Context) error {
 
 	file, fileName, _ := helpers.ExtractFile(e, "image")
 	commentRequest.ID = id
+	commentRequest.UserID = userId
 	commentRequest.RecipeID = recipeId
 	commentRequest.Image = file
 	commentRequest.ImageName = fileName
@@ -95,11 +100,11 @@ func (d *CommentDelivery) UpdateCommentById(e echo.Context) error {
 }
 
 func (d *CommentDelivery) DeleteCommentById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -110,9 +115,9 @@ func (d *CommentDelivery) DeleteCommentById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-
 	commentRequest.ID = id
 	commentRequest.RecipeID = recipeId
+	commentRequest.UserID = userId
 
 	err = d.commentService.DeleteCommentById(ConvertToEntity(&commentRequest))
 	if err != nil {

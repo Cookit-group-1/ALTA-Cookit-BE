@@ -24,9 +24,9 @@ func New(db *gorm.DB, userData users.UserData_) comments.CommentData_ {
 	}
 }
 
-func (d *CommentData) SelectCommentById(id, recipe_id uint) *_commentModel.Comment {
+func (d *CommentData) SelectCommentById(id uint) *_commentModel.Comment {
 	tempGorm := _commentModel.Comment{}
-	d.db.Where("id = ? AND recipe_id = ?", id, recipe_id).Find(&tempGorm)
+	d.db.Where("id = ?", id).Find(&tempGorm)
 	
 	if tempGorm.ID == 0 {
 		return nil
@@ -76,7 +76,7 @@ func (d *CommentData) InsertComment(entity *comments.CommentEntity) (*comments.C
 }
 
 func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*comments.CommentEntity, error) {
-	gorm, tempGorm := ConvertToGorm(entity), d.SelectCommentById(entity.ID, entity.RecipeID) 
+	gorm, tempGorm := ConvertToGorm(entity), d.SelectCommentById(entity.ID) 
 
 	if tempGorm == nil {
 		return nil, errors.New(consts.GORM_RecordNotFound)
@@ -96,7 +96,7 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 		gorm.UrlImage = urlImage
 	}
 	
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Updates(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		if strings.Contains(tx.Error.Error(), "user_id") {
 			return nil, errors.New(consts.USER_InvalidUser)
@@ -113,7 +113,7 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 }
 
 func (d *CommentData) DeleteCommentById(entity *comments.CommentEntity) error {
-	tx := d.db.Where("id = ? AND recipe_id = ?", entity.ID, entity.RecipeID).Delete(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
