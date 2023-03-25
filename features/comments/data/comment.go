@@ -5,6 +5,7 @@ import (
 	"alta-cookit-be/features/comments"
 	_commentModel "alta-cookit-be/features/comments/models"
 	"alta-cookit-be/features/users"
+	_userModel "alta-cookit-be/features/users/data"
 	"alta-cookit-be/utils/consts"
 	"errors"
 	"strings"
@@ -13,13 +14,13 @@ import (
 )
 
 type CommentData struct {
-	db *gorm.DB
-	userData users.UserData_
+	db       *gorm.DB
+	userData users.UserData
 }
 
-func New(db *gorm.DB, userData users.UserData_) comments.CommentData_ {
+func New(db *gorm.DB, userData users.UserData) comments.CommentData_ {
 	return &CommentData{
-		db: db,
+		db:       db,
 		userData: userData,
 	}
 }
@@ -27,7 +28,7 @@ func New(db *gorm.DB, userData users.UserData_) comments.CommentData_ {
 func (d *CommentData) SelectCommentById(id uint) *_commentModel.Comment {
 	tempGorm := _commentModel.Comment{}
 	d.db.Where("id = ?", id).Find(&tempGorm)
-	
+
 	if tempGorm.ID == 0 {
 		return nil
 	}
@@ -36,7 +37,7 @@ func (d *CommentData) SelectCommentById(id uint) *_commentModel.Comment {
 
 func (d *CommentData) SelectCommentsByRecipeId(entity *comments.CommentEntity) (*[]comments.CommentEntity, error) {
 	gorms := []_commentModel.Comment{}
-	
+
 	tx := d.db.Where("recipe_id = ?", entity.RecipeID).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
@@ -44,8 +45,9 @@ func (d *CommentData) SelectCommentsByRecipeId(entity *comments.CommentEntity) (
 
 	entities := []comments.CommentEntity{}
 	for _, comment := range gorms {
-		userGorm := d.userData.SelectUserById(comment.UserID)
-		entities = append(entities, *ConvertToEntity(&comment, userGorm))
+		userEntity := d.userData.SelectUserById(users.Core{ID: comment.UserID})
+		userModel := _userModel.CoreToModel(*userEntity)
+		entities = append(entities, *ConvertToEntity(&comment, &userModel))
 	}
 
 	return &entities, nil
@@ -61,7 +63,7 @@ func (d *CommentData) InsertComment(entity *comments.CommentEntity) (*comments.C
 		}
 		gorm.UrlImage = urlImage
 	}
-	
+
 	tx := d.db.Create(gorm)
 	if tx.Error != nil {
 		if strings.Contains(tx.Error.Error(), "user_id") {
@@ -76,7 +78,7 @@ func (d *CommentData) InsertComment(entity *comments.CommentEntity) (*comments.C
 }
 
 func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*comments.CommentEntity, error) {
-	gorm, tempGorm := ConvertToGorm(entity), d.SelectCommentById(entity.ID) 
+	gorm, tempGorm := ConvertToGorm(entity), d.SelectCommentById(entity.ID)
 
 	if tempGorm == nil {
 		return nil, errors.New(consts.GORM_RecordNotFound)
@@ -95,7 +97,7 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 		}
 		gorm.UrlImage = urlImage
 	}
-	
+
 	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		if strings.Contains(tx.Error.Error(), "user_id") {
@@ -106,7 +108,7 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 		}
 		return nil, tx.Error
 	}
-	if tx.RowsAffected == 0{
+	if tx.RowsAffected == 0 {
 		return nil, errors.New(consts.GORM_RecordNotFound)
 	}
 	return ConvertToEntity(gorm), nil
@@ -117,7 +119,7 @@ func (d *CommentData) DeleteCommentById(entity *comments.CommentEntity) error {
 	if tx.Error != nil {
 		return tx.Error
 	}
-	if tx.RowsAffected == 0{
+	if tx.RowsAffected == 0 {
 		return errors.New(consts.GORM_RecordNotFound)
 	}
 	return nil

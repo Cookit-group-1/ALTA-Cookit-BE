@@ -18,6 +18,18 @@ func New(db *gorm.DB) users.UserData {
 	}
 }
 
+func (uq *UserQuery) SelectUserById(user users.Core) *users.Core {
+	existUser := CoreToModel(user)
+	uq.db.Where("id = ?", existUser.ID).Find(&existUser)
+
+	if existUser.Username == "" {
+		return nil
+	}
+	
+	user = ModelToCore(existUser)
+	return &user
+}
+
 // Register implements users.UserData
 func (uq *UserQuery) Register(newUser users.Core) (users.Core, error) {
 	if newUser.Username == "" || newUser.Password == "" {

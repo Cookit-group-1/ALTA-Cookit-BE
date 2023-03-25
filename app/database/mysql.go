@@ -19,7 +19,7 @@ import (
 	_stepModel "alta-cookit-be/features/steps/models"
 	_transactionDetailModel "alta-cookit-be/features/transaction_details/models"
 	_transactionModel "alta-cookit-be/features/transactions/models"
-	_userModel "alta-cookit-be/features/users/models"
+	_userData "alta-cookit-be/features/users/data"
 )
 
 func InitDB(cfg config.AppConfig) *gorm.DB {
@@ -37,7 +37,7 @@ func InitDB(cfg config.AppConfig) *gorm.DB {
 
 func InitialMigration(db *gorm.DB) {
 	db.AutoMigrate(
-		_userModel.User{}, _cartModel.Cart{}, _commentModel.Comment{},
+		_userData.User{}, _cartModel.Cart{}, _commentModel.Comment{},
 		_followerModel.Follower{}, _imageModel.Image{}, _ingredientDetailModel.IngredientDetail{},
 		_ingredientModel.Ingredient{}, _likeModel.Like{}, _recipeModel.Recipe{}, _stepModel.Step{},
 		_transactionModel.Transaction{}, _transactionDetailModel.TransactionsDetail{},

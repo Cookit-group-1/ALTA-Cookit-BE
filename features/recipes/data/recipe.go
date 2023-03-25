@@ -12,17 +12,18 @@ import (
 
 	_imageModel "alta-cookit-be/features/images/models"
 	_recipeModel "alta-cookit-be/features/recipes/models"
+	_userModel "alta-cookit-be/features/users/data"
 
 	"gorm.io/gorm"
 )
 
 type RecipeData struct {
 	db        *gorm.DB
-	userData  users.UserData_
+	userData  users.UserData
 	imageData images.ImageData_
 }
 
-func New(db *gorm.DB, userData users.UserData_, imageData images.ImageData_) recipes.RecipeData_ {
+func New(db *gorm.DB, userData users.UserData, imageData images.ImageData_) recipes.RecipeData_ {
 	return &RecipeData{
 		db:        db,
 		userData:  userData,
@@ -38,11 +39,11 @@ func (d *RecipeData) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*reci
 		return nil, tx.Error
 	}
 
-	userGorm := d.userData.SelectUserById(gorm.UserID)
-	fmt.Println(userGorm)
-	entity = ConvertToEntity(&gorm, userGorm)
+	userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
+	userModel := _userModel.CoreToModel(*userEntity)
+	entity = ConvertToEntity(&gorm, &userModel)
 
-	subUserGorm := d.userData.SelectUserById(entity.Recipe.UserID)
+	subUserGorm := d.userData.SelectUserById(users.Core{ID: entity.Recipe.UserID})
 	entity.Recipe.UserName = subUserGorm.Username
 	entity.Recipe.UserRole = subUserGorm.Role
 	entity.Recipe.ProfilePicture = subUserGorm.ProfilePicture
@@ -65,14 +66,15 @@ func (d *RecipeData) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]rec
 	}
 
 	entities := []recipes.RecipeEntity{}
-	userGorm := d.userData.SelectUserById(entity.UserID)
+	userEntity := d.userData.SelectUserById(users.Core{ID: entity.UserID})
 	for index, gorm := range gorms {
-		entities = append(entities, *ConvertToEntity(&gorm, userGorm))
+		userModel := _userModel.CoreToModel(*userEntity)
+		entities = append(entities, *ConvertToEntity(&gorm, &userModel))
 		if entities[index].Recipe != nil {
-			subUserGorm := d.userData.SelectUserById(entities[index].Recipe.UserID)
-			entities[index].Recipe.UserName = subUserGorm.Username
-			entities[index].Recipe.UserRole = subUserGorm.Role
-			entities[index].Recipe.ProfilePicture = subUserGorm.ProfilePicture
+			userEntity := d.userData.SelectUserById(users.Core{ID: entities[index].Recipe.UserID})
+			entities[index].Recipe.UserName = userEntity.Username
+			entities[index].Recipe.UserRole = userEntity.Role
+			entities[index].Recipe.ProfilePicture = userEntity.ProfilePicture
 		}
 	}
 
@@ -126,8 +128,9 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 		return nil, errors.New(consts.SERVER_InternalServerError)
 	}
 
-	userGorm := d.userData.SelectUserById(entity.UserID)
-	return ConvertToEntity(&gorm, userGorm), nil
+	userEntity := d.userData.SelectUserById(users.Core{ID: entity.UserID})
+	userModel := _userModel.CoreToModel(*userEntity)
+	return ConvertToEntity(&gorm, &userModel), nil
 }
 
 func (d *RecipeData) UpdateRecipeById(entity *recipes.RecipeEntity) error {

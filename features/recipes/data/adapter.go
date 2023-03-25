@@ -6,7 +6,7 @@ import (
 	"alta-cookit-be/features/recipes"
 	_recipeModel "alta-cookit-be/features/recipes/models"
 	_stepData "alta-cookit-be/features/steps/data"
-	_userModel "alta-cookit-be/features/users/models"
+	_userModel "alta-cookit-be/features/users/data"
 )
 
 func ConvertToGorm(entity *recipes.RecipeEntity) *_recipeModel.Recipe {

@@ -3,7 +3,7 @@ package data
 import (
 	"alta-cookit-be/features/comments"
 	_commentModel "alta-cookit-be/features/comments/models"
-	_userModel "alta-cookit-be/features/users/models"
+	_userModel "alta-cookit-be/features/users/data"
 )
 
 func ConvertToGorm(entity *comments.CommentEntity) *_commentModel.Comment {
