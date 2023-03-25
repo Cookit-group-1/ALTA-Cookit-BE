@@ -48,12 +48,7 @@ func (s *StepSerivce) UpdateStepById(entity *steps.StepEntity) error {
 }
 
 func (s *StepSerivce) DeleteStepById(entity *steps.StepEntity) error {
-	err := s.validate.Struct(entity)
-	if err != nil {
-		return errors.New(consts.VALIDATION_InvalidInput)
-	}
-
-	err = s.stepData.DeleteStepById(entity)
+	err := s.stepData.DeleteStepById(entity)
 	if err != nil {
 		return err
 	}

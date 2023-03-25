@@ -8,7 +8,6 @@ func ConvertToEntity(request *steps.StepRequest) *steps.StepEntity {
 	return &steps.StepEntity{
 		ID:       request.ID,
 		UserID:   request.UserID,
-		UserRole: request.UserRole,
 		RecipeID: request.RecipeID,
 		Name:     request.Name,
 	}
