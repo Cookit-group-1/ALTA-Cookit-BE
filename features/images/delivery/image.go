@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"alta-cookit-be/features/images"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
@@ -21,6 +22,7 @@ func New(imageService images.ImageService_) images.ImageDelivery_ {
 }
 
 func (d *ImageDelivery) InsertImage(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -35,6 +37,7 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 	files, fileNames, _ := helpers.ExtractMultipleFiles(e, "image")
 	for index, file := range files {
 		imageRequests = append(imageRequests, images.ImageRequest{
+			UserID: userId,
 			RecipeID: recipeId,
 			Image: file,
 			ImageName: fileNames[index],
@@ -49,11 +52,11 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 }
 
 func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_ImageId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -67,6 +70,7 @@ func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
 
 	file, fileName, _ := helpers.ExtractFile(e, "image")
 	imageRequest.ID = id
+	imageRequest.UserID = userId
 	imageRequest.RecipeID = recipeId
 	imageRequest.Image = file
 	imageRequest.ImageName = fileName
@@ -79,11 +83,11 @@ func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
 }
 
 func (d *ImageDelivery) DeleteImageById(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -96,6 +100,7 @@ func (d *ImageDelivery) DeleteImageById(e echo.Context) error {
 	}
 	imageRequest.ID = id
 	imageRequest.RecipeID = recipeId
+	imageRequest.UserID = userId
 
 	err = d.imageService.DeleteImageById(ConvertToEntity(&imageRequest))
 	if err != nil {
