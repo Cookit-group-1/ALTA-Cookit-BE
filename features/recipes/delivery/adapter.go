@@ -44,6 +44,8 @@ func ConvertToResponse(entity *recipes.RecipeEntity) *recipes.RecipeResponse {
 		Status:              entity.Status,
 		Name:                entity.Name,
 		Description:         entity.Description,
+		TotalLike:           entity.TotalLike,
+		TotalComment:        entity.TotalComment,
 		StepResponses:       _stepDelivery.ConvertToResponses(&entity.StepEntities),
 		IngredientResponses: _ingredientsDelivery.ConvertToResponses(&entity.IngredientEntities),
 		ImageResponses:      _imageDelivery.ConvertToResponses(&entity.ImageEntities),

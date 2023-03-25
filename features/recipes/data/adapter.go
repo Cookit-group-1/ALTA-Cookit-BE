@@ -30,7 +30,6 @@ func ConvertToEntity(gorm *_recipeModel.Recipe, userGorm ...*_userModel.User) *r
 	entity := recipes.RecipeEntity{
 		ID:                 gorm.ID,
 		UserID:             gorm.UserID,
-		RecipeID:           *gorm.RecipeID,
 		Type:               gorm.Type,
 		Status:             gorm.Status,
 		Name:               gorm.Name,
@@ -40,7 +39,10 @@ func ConvertToEntity(gorm *_recipeModel.Recipe, userGorm ...*_userModel.User) *r
 		ImageEntities:      *_imageData.ConvertToEntities(&gorm.Images),
 	}
 	if gorm.Recipe != nil {
-		entity.Recipe = ConvertToEntity(gorm)
+		entity.Recipe = ConvertToEntity(gorm.Recipe)
+	}
+	if gorm.RecipeID != nil {
+		entity.RecipeID = *gorm.RecipeID
 	}
 	if len(userGorm) != 0 {
 		entity.UserName = userGorm[0].Username

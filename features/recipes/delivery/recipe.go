@@ -21,6 +21,23 @@ func New(recipeService recipes.RecipeService_) recipes.RecipeDelivery_ {
 	}
 }
 
+func (d *RecipeDelivery) SelectRecipesByUserId(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
+	recipeRequest := recipes.RecipeRequest{}
+	err := e.Bind(&recipeRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+
+	recipeRequest.UserID = userId
+
+	outputs, err := d.recipeService.SelectRecipesByUserId(ConvertToEntity(&recipeRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfUserRecipes, ConvertToResponses(outputs)))
+}
+
 func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeRequest := recipes.RecipeRequest{}

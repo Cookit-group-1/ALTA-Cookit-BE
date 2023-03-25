@@ -11,7 +11,7 @@ import (
 
 type RecipeEntity struct {
 	ID                 uint
-	UserID             uint 
+	UserID             uint
 	UserName           string
 	UserRole           string
 	ProfilePicture     string
@@ -20,12 +20,12 @@ type RecipeEntity struct {
 	ImageName          []string
 	Recipe             *RecipeEntity
 	UrlImage           string
-	Type               string 
-	Status             string 
+	Type               string
+	Status             string
 	Name               string `validate:"required"`
 	Description        string `validate:"required"`
-	TotalLike          int
-	TotalComment       int
+	TotalLike          int    `gorm:"column:total_like"`
+	TotalComment       int    `gorm:"column:total_comment"`
 	StepEntities       []steps.StepEntity
 	IngredientEntities []ingredients.IngredientEntity
 	ImageEntities      []images.ImageEntity
@@ -67,18 +67,21 @@ type RecipeResponse struct {
 }
 
 type RecipeDelivery_ interface {
+	SelectRecipesByUserId(e echo.Context) error
 	InsertRecipe(e echo.Context) error
 	UpdateRecipeById(e echo.Context) error
 	DeleteRecipeById(e echo.Context) error
 }
 
 type RecipeService_ interface {
+	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error
 }
 
 type RecipeData_ interface {
+	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error
