@@ -174,3 +174,23 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 		})
 	}
 }
+
+// Search implements users.UserHandler
+func (uh *userHandler) SearchUser() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		quotes := c.QueryParam("q")
+		log.Println(quotes)
+		res, err := uh.srv.SearchUser(quotes)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "data not found"})
+		}
+		result := []SearchResponse{}
+		for i := 0; i < len(res); i++ {
+			result = append(result, SearchResponse(result[i]))
+		}
+		return c.JSON(http.StatusCreated, map[string]interface{}{
+			"data":    result,
+			"message": "success find user",
+		})
+	}
+}

@@ -44,7 +44,7 @@ func ToSearchResponse(data users.Core) SearchResponse {
 		ProfilePicture: data.ProfilePicture,
 		Username:       data.Username,
 		Bio:            data.Bio,
-	}s
+	}
 }
 
 func ConvertUpdateResponse(input users.Core) (interface{}, error) {
