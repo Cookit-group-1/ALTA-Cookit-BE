@@ -27,6 +27,7 @@ type UserHandler interface {
 	Deactive() echo.HandlerFunc
 	UpdatePassword() echo.HandlerFunc
 	UpgradeUser() echo.HandlerFunc
+	Search() echo.HandlerFunc
 }
 
 type UserService interface {
@@ -37,6 +38,7 @@ type UserService interface {
 	Deactive(userID uint) error
 	UpdatePassword(userID uint, updatePassword Core) error
 	UpgradeUser(userID uint, approvement Core) (Core, error)
+	Search(quote string) ([]Core, error)
 }
 
 type UserData interface {
@@ -47,4 +49,5 @@ type UserData interface {
 	Update(userID uint, updateData Core) (Core, error)
 	Deactive(userID uint) error
 	UpgradeUser(userID uint, approvement Core) (Core, error)
+	Search(quote string) ([]Core, error)
 }
