@@ -833,9 +833,6 @@ paths:
           multipart/form-data:
             schema:
               type: object
-              required:
-                - name
-                - description
               properties:
                 recipe_id:
                   description: "Replied recipe's id"
@@ -1166,9 +1163,6 @@ paths:
                   message:
                     type: string
               examples:
-                Invalid Input:
-                  value:
-                    message: invalid input
                 Invalid Ingredient:
                   value:
                     message: invalid ingredient
@@ -1201,10 +1195,6 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - name
-                - status
-                - description
               properties:
                 name:
                   type: string
@@ -1219,7 +1209,6 @@ paths:
               Not For Sale:
                 value:
                   name: "Indomie Telur Spesial"
-                  status: "None"
                   description: "Indomie telur terenak sepanjang masa"
               Open For Sale:
                 value:
@@ -1259,9 +1248,6 @@ paths:
                 Invalid Id param:
                   value:
                     message: invalid id param
-                Invalid Input:
-                  value:
-                    message: invalid input
                 Record Not Found:
                   value:
                     message: record not found
@@ -2437,7 +2423,6 @@ paths:
               type: object
               required:
                 - comment
-                - image
               properties:
                 comment:
                   type: string
@@ -2513,7 +2498,6 @@ paths:
               type: object
               required:
                 - comment
-                - image
               properties:
                 comment:
                   type: string
