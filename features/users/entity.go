@@ -22,6 +22,7 @@ type UserHandler interface {
 	Profile() echo.HandlerFunc
 	Update() echo.HandlerFunc
 	Deactive() echo.HandlerFunc
+	UpdatePassword() echo.HandlerFunc
 }
 
 type UserService interface {
@@ -30,6 +31,7 @@ type UserService interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, fileData multipart.FileHeader, updateData Core) (Core, error)
 	Deactive(userID uint) error
+	UpdatePassword(userID, updatePassword Core) error
 }
 
 type UserData interface {
@@ -39,4 +41,5 @@ type UserData interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, updateData Core) (Core, error)
 	Deactive(userID uint) error
+	UpdatePassword(userID, updatePassword Core) error
 }
