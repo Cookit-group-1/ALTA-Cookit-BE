@@ -676,14 +676,12 @@ paths:
   ####################################
   #  RECIPES
   ####################################
-  /users/recipes:
+  /recipes:             
     get:
         tags:
           - Recipes
-        summary: get list of user's recipes
-        description: feature for getting list of user's recipes
-        security:
-        - JWTAuth: []
+        summary: get list of recipes
+        description: feature for getting list of recipes
         parameters:
         - name: page
           in: query
@@ -696,6 +694,12 @@ paths:
           schema:
             type: integer
             example: 2
+        - name: name
+          in: query
+          description: recipe's name
+          schema:
+            type: string
+            example: "Soto Rawon"
         - name: type
           in: query
           description: recipe's type
@@ -706,9 +710,18 @@ paths:
               - Mixed
               - Cooked
             example: "Original"
+        - name: status
+          in: query
+          description: recipe's status
+          schema:
+            type: string
+            enum:
+              - None
+              - OpenForSale
+            example: "None"
         responses:
           200:
-            description: success get list of user's recipes
+            description: success get list of recipes
             content:
               application/json:
                 schema:
@@ -726,7 +739,7 @@ paths:
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
                             type: "Original",
-                            status: "OpenForSale",
+                            status: "None",
                             total_like: 79,
                             total_comment : 117,
                             images:
@@ -739,13 +752,13 @@ paths:
                           },
                           {
                             id: 2,
-                            username: "Benjamin29",
+                            username: "Benjamin30",
                             user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
                             type: "Original",
-                            status: "None",
+                            status: "OpenForSale",
                             total_like: 79,
                             total_comment : 117,
                             images:
@@ -757,47 +770,28 @@ paths:
                               ],
                           },
                           {
-                            id: 4,
-                            username: "Benjamin29",
-                            user_role: "VerifiedUser",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                            id: 3,
+                            username: "Biangkerokk77",
+                            user_role: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
-                            type: "Mixed",
+                            type: "Original",
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
                             images:
                               [
                                 {
-                                  id: 4,
+                                  id: 3,
                                   url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
                                 }
                               ],
-                            replied_recipe:
-                              {
-                                id: 3,
-                                username: "Ronny69",
-                                user_role: "Ronny69",
-                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
-                                name: "Indomie Spesial",
-                                description: "Indomie terenak sepanjang masa",
-                                status: "OpenForSale",
-                                total_like: 79,
-                                total_comment : 117,
-                                images:
-                                  [
-                                    {
-                                      id: 3,
-                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
-                                    }
-                                  ],
-                              }
                           },
                         ],
                         total_page: 1,
                     }
-                  message: "succesfully read list of user's recipes"
+                  message: "succesfully read list of recipes"
           400:
             description: "bad request"
             content:
@@ -826,7 +820,6 @@ paths:
                 example:
                   message: internal server error
 
-  /recipes:
     post:
       tags:
         - Recipes
@@ -1193,12 +1186,166 @@ paths:
                     type: string
               example:
                 message: internal server error
-                
+
+  /recipes/{recipe_id}:
+    put:
+      tags:
+        - Recipes
+      summary: update user's recipe
+      description: feature for updating user's recipe
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - status
+                - description
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - None
+                    - OpenForSale
+                description:
+                  type: string
+            examples:
+              Not For Sale:
+                value:
+                  name: "Indomie Telur Spesial"
+                  status: "None"
+                  description: "Indomie telur terenak sepanjang masa"
+              Open For Sale:
+                value:
+                  name: "Indomie Telur Spesial"
+                  status: "OpenForSale"
+                  description: "Indomie telur terenak sepanjang masa"
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be updated
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success updating user's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully update user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Invalid Input:
+                  value:
+                    message: invalid input
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+    delete:
+      tags:
+        - Recipes
+      summary: delete user's recipe
+      description: feature for deleting user's recipe
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success deleting user's recipe
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete user's recipe"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /users/recipes:
     get:
         tags:
           - Recipes
-        summary: get list of recipes
-        description: feature for getting list of recipes
+        summary: get list of user's recipes
+        description: feature for getting list of user's recipes
+        security:
+        - JWTAuth: []
         parameters:
         - name: page
           in: query
@@ -1211,12 +1358,6 @@ paths:
           schema:
             type: integer
             example: 2
-        - name: name
-          in: query
-          description: recipe's name
-          schema:
-            type: string
-            example: "Soto Rawon"
         - name: type
           in: query
           description: recipe's type
@@ -1227,18 +1368,9 @@ paths:
               - Mixed
               - Cooked
             example: "Original"
-        - name: status
-          in: query
-          description: recipe's status
-          schema:
-            type: string
-            enum:
-              - None
-              - OpenForSale
-            example: "None"
         responses:
           200:
-            description: success get list of recipes
+            description: success get list of user's recipes
             content:
               application/json:
                 schema:
@@ -1256,7 +1388,7 @@ paths:
                             name: "Indomie Spesial",
                             description: "Indomie terenak sepanjang masa",
                             type: "Original",
-                            status: "None",
+                            status: "OpenForSale",
                             total_like: 79,
                             total_comment : 117,
                             images:
@@ -1269,13 +1401,13 @@ paths:
                           },
                           {
                             id: 2,
-                            username: "Benjamin30",
+                            username: "Benjamin29",
                             user_role: "VerifiedUser",
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Soto Spesial",
                             description: "Indomie soto terenak sepanjang masa",
                             type: "Original",
-                            status: "OpenForSale",
+                            status: "None",
                             total_like: 79,
                             total_comment : 117,
                             images:
@@ -1287,28 +1419,47 @@ paths:
                               ],
                           },
                           {
-                            id: 3,
-                            username: "Biangkerokk77",
-                            user_role: "User",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
+                            id: 4,
+                            username: "Benjamin29",
+                            user_role: "VerifiedUser",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
-                            type: "Original",
+                            type: "Mixed",
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
                             images:
                               [
                                 {
-                                  id: 3,
+                                  id: 4,
                                   url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
                                 }
                               ],
+                            replied_recipe:
+                              {
+                                id: 3,
+                                username: "Ronny69",
+                                user_role: "Ronny69",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                status: "OpenForSale",
+                                total_like: 79,
+                                total_comment : 117,
+                                images:
+                                  [
+                                    {
+                                      id: 3,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
                           },
                         ],
                         total_page: 1,
                     }
-                  message: "succesfully read list of recipes"
+                  message: "succesfully read list of user's recipes"
           400:
             description: "bad request"
             content:
@@ -1336,8 +1487,8 @@ paths:
                       type: string
                 example:
                   message: internal server error
-                  
-  /recipes/timeline:
+                      
+  /users/recipes/timeline:
     get:
         tags:
           - Recipes
@@ -1822,157 +1973,6 @@ paths:
                           }
                       }
                     message: "succesfully read details of recipe"
-        500:
-          description: "internal server error"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: internal server error
-  
-  /users/recipes/{recipe_id}:
-    put:
-      tags:
-        - Recipes
-      summary: update user's recipe
-      description: feature for updating user's recipe
-      security:
-        - JWTAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-                - status
-                - description
-              properties:
-                name:
-                  type: string
-                status:
-                  type: string
-                  enum:
-                    - None
-                    - OpenForSale
-                description:
-                  type: string
-            examples:
-              Not For Sale:
-                value:
-                  name: "Indomie Telur Spesial"
-                  status: "None"
-                  description: "Indomie telur terenak sepanjang masa"
-              Open For Sale:
-                value:
-                  name: "Indomie Telur Spesial"
-                  status: "OpenForSale"
-                  description: "Indomie telur terenak sepanjang masa"
-      parameters:
-        - name: recipe_id
-          in: path
-          description: recipe's id to be updated
-          required: true
-          schema:
-            type: integer
-            example: 1
-      responses:
-        201:
-          description: success updating user's recipe
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "succesfully update user's recipe"
-        400:
-          description: "bad request"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              examples:
-                Invalid Id param:
-                  value:
-                    message: invalid id param
-                Invalid Input:
-                  value:
-                    message: invalid input
-                Record Not Found:
-                  value:
-                    message: record not found
-                Foridden Request:
-                  value:
-                    message: forbidden request
-        500:
-          description: "internal server error"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: internal server error
-
-    delete:
-      tags:
-        - Recipes
-      summary: delete user's recipe
-      description: feature for deleting user's recipe
-      security:
-        - JWTAuth: []
-      parameters:
-        - name: recipe_id
-          in: path
-          description: recipe's id to be deleted
-          required: true
-          schema:
-            type: integer
-            example: 1
-      responses:
-        201:
-          description: success deleting user's recipe
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "succesfully delete user's recipe"
-        400:
-          description: "bad request"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              examples:
-                Invalid Id param:
-                  value:
-                    message: invalid id param
-                Record Not Found:
-                  value:
-                    message: record not found
-                Foridden Request:
-                  value:
-                    message: forbidden request
         500:
           description: "internal server error"
           content:
