@@ -122,3 +122,8 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 		}
 	}
 }
+
+// UpdatePassword implements users.UserHandler
+func (*userHandler) UpdatePassword() echo.HandlerFunc {
+	panic("unimplemented")
+}

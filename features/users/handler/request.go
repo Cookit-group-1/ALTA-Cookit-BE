@@ -23,6 +23,12 @@ type UpdateProfileReq struct {
 	FileHeader     multipart.FileHeader
 }
 
+type UpdatePasswordReq struct {
+	Password             string `json:"old_password" form:"old_password"`
+	NewPassword          string `json:"new_password" form:"new_password"`
+	ConfirmationPassword string `json:"confirmation_password" form:"confirmation_password"`
+}
+
 func ReqToCore(data interface{}) *users.Core {
 	res := users.Core{}
 
@@ -41,6 +47,11 @@ func ReqToCore(data interface{}) *users.Core {
 		res.ProfilePicture = cnv.ProfilePicture
 		res.Username = cnv.Username
 		res.Bio = cnv.Bio
+	case UpdatePasswordReq:
+		cnv := data.(UpdatePasswordReq)
+		res.Password = cnv.Password
+		res.NewPassword = cnv.NewPassword
+		res.ConfirmationPassword = cnv.ConfirmationPassword
 	default:
 		return nil
 	}

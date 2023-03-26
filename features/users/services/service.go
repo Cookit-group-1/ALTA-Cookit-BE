@@ -3,6 +3,7 @@ package services
 import (
 	"alta-cookit-be/features/users"
 	"alta-cookit-be/middlewares"
+	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
 	"log"
@@ -119,4 +120,37 @@ func (us *userService) Update(userID uint, fileData multipart.FileHeader, update
 		return users.Core{}, errors.New(msg)
 	}
 	return res, nil
+}
+
+// UpdatePassword implements users.UserService
+func (us *userService) UpdatePassword(userID uint, updatePassword users.Core) error {
+	if updatePassword.Password == "" || updatePassword.NewPassword == "" || updatePassword.ConfirmationPassword == "" {
+		return errors.New(consts.AUTH_ErrorEmptyPassword)
+	}
+	_, errSelect := us.qry.Profile(userID)
+	if errSelect != nil {
+		return errSelect
+	}
+
+	// if !helpers.CheckPassword(updatePassword.Password, dataCore.Password) {
+	// 	return errors.New(consts.AUTH_ErrorComparePassword)
+	// }
+
+	if updatePassword.NewPassword != updatePassword.ConfirmationPassword {
+		return errors.New(consts.AUTH_ErrorNewPassword)
+	}
+
+	hash, errHash := helpers.GeneratePassword(updatePassword.NewPassword)
+	if errHash != nil {
+		return errors.New(consts.AUTH_ErrorHash)
+	}
+
+	updatePassword.Password = hash
+
+	_, errUpdate := us.qry.Update(userID, updatePassword)
+	if errUpdate != nil {
+		return errUpdate
+	}
+
+	return nil
 }
