@@ -21,6 +21,16 @@ func ToProfileResponse(data users.Core) ProfileResponse {
 	}
 }
 
+type ApproveResponse struct {
+	Role string `json:"role"`
+}
+
+func ToApproveResponse(data users.Core) ApproveResponse {
+	return ApproveResponse{
+		Role: data.Role,
+	}
+}
+
 func ConvertUpdateResponse(input users.Core) (interface{}, error) {
 	ResponseFilter := users.Core{}
 	ResponseFilter = input

@@ -7,6 +7,7 @@ import (
 	"alta-cookit-be/utils/helpers"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -138,5 +139,38 @@ func (uh *userHandler) UpdatePassword() echo.HandlerFunc {
 			return c.JSON(helpers.ErrorResponse(err))
 		}
 		return c.JSON(http.StatusOK, helpers.Response(consts.USER_SuccessUpdatePassword))
+	}
+}
+
+// UpgradeUser implements users.UserHandler
+func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userID, _, _ := middlewares.ExtractToken(c)
+		input := ApprovementReq{}
+
+		err := c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, "input format incorrect")
+		}
+
+		if input.Approvement == "yes" {
+			input.Role = "VerifiedUser"
+		} else {
+			input.Role = "User"
+		}
+
+		res, err := uh.srv.UpgradeUser(userID, *ReqToCore(input))
+
+		if err != nil {
+			if strings.Contains(err.Error(), "password") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "password not match"})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
+			}
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    ToApproveResponse(res),
+			"message": "success upgrade user to verifieduser",
+		})
 	}
 }
