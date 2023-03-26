@@ -89,14 +89,11 @@ func (d *RecipeDelivery) DeleteRecipeById(e echo.Context) error {
 
 func (d *RecipeDelivery) SelectRecipesByUserId(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
-	page, limit, err := helpers.ExtractPageLimit(e)
-	if err != nil {
-		return e.JSON(http.StatusBadRequest, helpers.Response(err.Error()))
-	}
+	page, limit := helpers.ExtractPageLimit(e)
 	limit, offset := helpers.LimitOffsetConvert(page, limit)
 
 	recipeRequest := recipes.RecipeRequest{}
-	err = e.Bind(&recipeRequest)
+	err := e.Bind(&recipeRequest)
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
@@ -114,14 +111,11 @@ func (d *RecipeDelivery) SelectRecipesByUserId(e echo.Context) error {
 
 func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
-	page, limit, err := helpers.ExtractPageLimit(e)
-	if err != nil {
-		return e.JSON(http.StatusBadRequest, helpers.Response(err.Error()))
-	}
+	page, limit := helpers.ExtractPageLimit(e)
 	limit, offset := helpers.LimitOffsetConvert(page, limit)
 
 	recipeRequest := recipes.RecipeRequest{}
-	err = e.Bind(&recipeRequest)
+	err := e.Bind(&recipeRequest)
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}

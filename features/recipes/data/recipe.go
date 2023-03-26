@@ -41,7 +41,7 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 	}
 
 	tx := d.db
-	if gorm.RecipeID != nil {
+	if *gorm.RecipeID != 0 {
 		tx = txTransaction.Create(&gorm)
 	} else {
 		tx = txTransaction.Omit("recipe_id").Create(&gorm)
