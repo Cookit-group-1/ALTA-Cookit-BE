@@ -38,7 +38,7 @@ func (d *CommentData) SelectCommentById(id uint) *_commentModel.Comment {
 func (d *CommentData) SelectCommentsByRecipeId(entity *comments.CommentEntity) (*[]comments.CommentEntity, error) {
 	gorms := []_commentModel.Comment{}
 
-	tx := d.db.Where("recipe_id = ?", entity.RecipeID).Find(&gorms)
+	tx := d.db.Where("recipe_id = ?", entity.RecipeID).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

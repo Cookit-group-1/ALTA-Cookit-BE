@@ -22,6 +22,11 @@ func New(commentService comments.CommentService_) comments.CommentDelivery_ {
 }
 
 func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
+	page, limit, err := helpers.ExtractPageLimit(e)
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, helpers.Response(err.Error()))
+	}
+	limit, offset := helpers.LimitOffsetConvert(page, limit)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -33,6 +38,8 @@ func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 	commentRequest.RecipeID = recipeId
+	commentRequest.DataLimit = limit
+	commentRequest.DataOffset = offset
 
 	output, err := d.commentService.SelectCommentsByRecipeId(ConvertToEntity(&commentRequest))
 	if err != nil {
