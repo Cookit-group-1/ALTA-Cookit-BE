@@ -139,7 +139,7 @@ func (uq *UserQuery) UpgradeUser(userID uint, approvement users.Core) (users.Cor
 // Search implements users.UserData
 func (uq *UserQuery) Search(quote string) ([]users.Core, error) {
 	find := []User{}
-	err := uq.db.Where("email LIKE ?", "%"+quote+"%").Or("user_name LIKE ?", "%"+quote+"%").Find(&find).Error
+	err := uq.db.Where("user_name LIKE ?", "%"+quote+"%").Find(&find).Error
 	if err != nil {
 		log.Println("no data processed", err.Error())
 		return []users.Core{}, errors.New("no user found")
