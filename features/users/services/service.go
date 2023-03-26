@@ -8,20 +8,25 @@ import (
 	"log"
 	"mime/multipart"
 	"strings"
+
+	"github.com/go-playground/validator"
 )
 
 type userService struct {
-	qry users.UserData
+	qry      users.UserData
+	validate *validator.Validate
 }
 
 func New(ud users.UserData) users.UserService {
 	return &userService{
-		qry: ud,
+		qry:      ud,
+		validate: validator.New(),
 	}
 }
 
 // Login implements users.UserService
 func (us *userService) Login(username string, password string) (string, users.Core, error) {
+
 	res, err := us.qry.Login(username)
 	if err != nil {
 		msg := ""
@@ -44,18 +49,17 @@ func (us *userService) Login(username string, password string) (string, users.Co
 
 // Register implements users.UserService
 func (us *userService) Register(newUser users.Core) (users.Core, error) {
+
+	err := helpers.Validation(helpers.ToValidate("register", newUser))
+	if err != nil {
+		return users.Core{}, err
+	}
+
 	hashed, err := helpers.GeneratePassword(newUser.Password)
 	if err != nil {
 		log.Println("bcrypt error ", err.Error())
 		return users.Core{}, errors.New("password process error")
 	}
-
-	// err = us.vld.Struct(&newUser)
-	// if err != nil {
-	// 	log.Println("err", err)
-	// 	msg := helpers.ValidationErrorHandle(err)
-	// 	return users.Core{}, errors.New(msg)
-	// }
 
 	newUser.Password = string(hashed)
 	res, err := us.qry.Register(newUser)

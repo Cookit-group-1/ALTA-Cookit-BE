@@ -35,16 +35,19 @@ import (
 )
 
 func initUserRouter(db *gorm.DB, e *echo.Echo) {
-	userData := _userData.New(db)
-	userService := _userService.New(userData)
-	userHandler := _userDelivery.New(userService)
+	// userData := _userData.New(db)
+	// userService := _userService.New(userData)
+	// userHandler := _userDelivery.New(userService)
 
-	e.POST("/login", userHandler.Login())
-	e.POST("/users", userHandler.Register())
-	// e.GET("/users", userHandler.GetUserData, middlewares.JWTMiddleware())
-	// e.PUT("/users", userHandler.UpdateAccount, middlewares.JWTMiddleware())
+	// // Auth
+	// e.POST("/login", userHandler.Login())
+	// e.POST("/register", userHandler.Register())
+
+	// // Users
+	// e.GET("/users", userHandler.Profile(), middlewares.JWTMiddleware())
+	// e.PUT("/users", userHandler.Update(), middlewares.JWTMiddleware())
+	// e.DELETE("/users", userHandler.Deactive(), middlewares.JWTMiddleware())
 	// e.PUT("/users/password", userHandler.UpdatePassword, middlewares.JWTMiddleware())
-	// e.DELETE("/users", userHandler.RemoveAccount, middlewares.JWTMiddleware())
 	// e.GET("/users/balances", userHandler.GetUserBalance, middlewares.JWTMiddleware())
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
 }
