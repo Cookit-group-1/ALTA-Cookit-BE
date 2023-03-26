@@ -3,13 +3,16 @@ package helpers
 import (
 	"alta-cookit-be/features/users"
 	"errors"
-	"fmt"
 	"io"
+	"log"
 	"mime/multipart"
 	"net/http"
+	"regexp"
 
 	"github.com/go-playground/validator"
 )
+
+var validate *validator.Validate
 
 func TypeFile(test multipart.File) (string, error) {
 	fileByte, _ := io.ReadAll(test)
@@ -26,37 +29,86 @@ func TypeFile(test multipart.File) (string, error) {
 	return "", errors.New("file type not match")
 }
 
-type UserValidate struct {
+type UserRegisterValidate struct {
 	Username string `validate:"required"`
 	Email    string `validate:"required,email"`
-	Password string `validate:"required,min=5,alphanum"`
+	Password string `validate:"required,secure_password"`
 }
 
-func CoreToRegVal(data users.Core) UserValidate {
-	return UserValidate{
-		Username: data.Username,
-		Email:    data.Email,
-		Password: data.Password,
+type UserLoginValidate struct {
+	Username string `validate:"required"`
+	Password string `validate:"required,secure_password"`
+}
+
+type PasswordValidate struct {
+	Password string `validate:"secure_password"`
+}
+
+type EmailValidate struct {
+	Email string `validate:"email"`
+}
+
+func ToValidate(option string, data interface{}) interface{} {
+	switch option {
+	case "register":
+		res := UserRegisterValidate{}
+		if v, ok := data.(users.Core); ok {
+			res.Username = v.Username
+			res.Email = v.Email
+			res.Password = v.Password
+		}
+		return res
+	case "login":
+		res := UserLoginValidate{}
+		if v, ok := data.(users.Core); ok {
+			res.Username = v.Username
+			res.Password = v.Password
+		}
+		return res
+	case "password":
+		res := PasswordValidate{}
+		if v, ok := data.(users.Core); ok {
+			res.Password = v.Password
+		}
+		return res
+	case "email":
+		res := EmailValidate{}
+		if v, ok := data.(users.Core); ok {
+			res.Email = v.Email
+		}
+		return res
+	default:
+		return nil
 	}
 }
-func RegistrationValidate(data users.Core) error {
-	validate := validator.New()
-	val := CoreToRegVal(data)
-	if err := validate.Struct(val); err != nil {
-		for _, e := range err.(validator.ValidationErrors) {
-			vlderror := ""
-			if e.Field() == "Password" && e.Value() != "" {
-				vlderror = fmt.Sprintf("%s is not %s", e.Value(), e.Tag())
-				return errors.New(vlderror)
-			}
-			if e.Value() == "" {
-				vlderror = fmt.Sprintf("%s is %s", e.Field(), e.Tag())
-				return errors.New(vlderror)
-			} else {
-				vlderror = fmt.Sprintf("%s is not %s", e.Value(), e.Tag())
-				return errors.New(vlderror)
-			}
-		}
+
+func securePassword(fl validator.FieldLevel) bool {
+	password := fl.Field().String()
+	if len(password) < 8 {
+		return false
+	}
+	if !regexp.MustCompile(`[A-Z]`).MatchString(password) {
+		return false
+	}
+	if !regexp.MustCompile(`[a-z]`).MatchString(password) {
+		return false
+	}
+	if !regexp.MustCompile(`[0-9]`).MatchString(password) {
+		return false
+	}
+	if regexp.MustCompile(`^(?i)(password|1234|qwerty)`).MatchString(password) {
+		return false
+	}
+	return true
+}
+
+func Validation(data interface{}) error {
+	validate = validator.New()
+	validate.RegisterValidation("secure_password", securePassword)
+	err := validate.Struct(data)
+	if err != nil {
+		log.Println("log on helper validation: ", err)
+		return err
 	}
 	return nil
 }

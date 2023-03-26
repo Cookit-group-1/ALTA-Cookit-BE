@@ -9,11 +9,11 @@ import (
 type Core struct {
 	ID             uint
 	ProfilePicture string
-	Username       string `validate:"required"`
+	Username       string
 	Bio            string
-	Email          string `validate:"required,email"`
-	Password       string `validate:"required,min=5"`
-	Role           string `validate:"required"`
+	Email          string
+	Password       string
+	Role           string
 }
 
 type UserHandler interface {

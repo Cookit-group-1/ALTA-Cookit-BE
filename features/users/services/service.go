@@ -26,10 +26,7 @@ func New(ud users.UserData) users.UserService {
 
 // Login implements users.UserService
 func (us *userService) Login(username string, password string) (string, users.Core, error) {
-	errValidate := us.validate.StructExcept(username, "Username")
-	if errValidate != nil {
-		return "", users.Core{}, errors.New("validate: " + errValidate.Error())
-	}
+
 	res, err := us.qry.Login(username)
 	if err != nil {
 		msg := ""
@@ -52,9 +49,10 @@ func (us *userService) Login(username string, password string) (string, users.Co
 
 // Register implements users.UserService
 func (us *userService) Register(newUser users.Core) (users.Core, error) {
-	errValidate := us.validate.Struct(newUser)
-	if errValidate != nil {
-		return users.Core{}, errors.New("validate: " + errValidate.Error())
+
+	err := helpers.Validation(helpers.ToValidate("register", newUser))
+	if err != nil {
+		return users.Core{}, err
 	}
 
 	hashed, err := helpers.GeneratePassword(newUser.Password)
@@ -62,13 +60,6 @@ func (us *userService) Register(newUser users.Core) (users.Core, error) {
 		log.Println("bcrypt error ", err.Error())
 		return users.Core{}, errors.New("password process error")
 	}
-
-	// err = us.vld.Struct(&newUser)
-	// if err != nil {
-	// 	log.Println("err", err)
-	// 	msg := helpers.ValidationErrorHandle(err)
-	// 	return users.Core{}, errors.New(msg)
-	// }
 
 	newUser.Password = string(hashed)
 	res, err := us.qry.Register(newUser)
@@ -110,10 +101,6 @@ func (us *userService) Profile(userID uint) (users.Core, error) {
 
 // Update implements users.UserService
 func (us *userService) Update(userID uint, fileData multipart.FileHeader, updateData users.Core) (users.Core, error) {
-	errValidate := us.validate.StructExcept(updateData, "Password")
-	if errValidate != nil {
-		return users.Core{}, errors.New("validate: " + errValidate.Error())
-	}
 	url, err := helpers.GetUrlImagesFromAWS(fileData, int(1))
 	if err != nil {
 		return users.Core{}, errors.New("validate: " + err.Error())
