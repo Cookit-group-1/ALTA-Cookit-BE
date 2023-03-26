@@ -20,30 +20,6 @@ func New(recipeData recipes.RecipeData_) recipes.RecipeService_ {
 	}
 }
 
-func (s *RecipeService) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
-	output, err := s.recipeData.SelectRecipesTimeline(entity)
-	if err != nil {
-		return nil, err
-	}
-	return output, nil
-}
-
-func (s *RecipeService) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
-	output, err := s.recipeData.SelectRecipeDetailById(entity)
-	if err != nil {
-		return nil, err
-	}
-	return output, nil
-}
-
-func (s *RecipeService) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
-	outputs, err := s.recipeData.SelectRecipesByUserId(entity)
-	if err != nil {
-		return nil, err
-	}
-	return outputs, nil
-}
-
 func (s *RecipeService) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
 	err := s.validate.Struct(entity)
 	if err != nil {
@@ -76,4 +52,28 @@ func (s *RecipeService) DeleteRecipeById(entity *recipes.RecipeEntity) error {
 		return err
 	}
 	return nil
+}
+
+func (s *RecipeService) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	outputs, err := s.recipeData.SelectRecipesByUserId(entity)
+	if err != nil {
+		return nil, err
+	}
+	return outputs, nil
+}
+
+func (s *RecipeService) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	output, err := s.recipeData.SelectRecipesTimeline(entity)
+	if err != nil {
+		return nil, err
+	}
+	return output, nil
+}
+
+func (s *RecipeService) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
+	output, err := s.recipeData.SelectRecipeDetailById(entity)
+	if err != nil {
+		return nil, err
+	}
+	return output, nil
 }
