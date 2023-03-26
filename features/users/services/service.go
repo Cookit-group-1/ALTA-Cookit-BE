@@ -154,3 +154,20 @@ func (us *userService) UpdatePassword(userID uint, updatePassword users.Core) er
 
 	return nil
 }
+
+// UpgradeUser implements users.UserService
+func (us *userService) UpgradeUser(userID uint, approvement users.Core) (users.Core, error) {
+	res, err := us.qry.UpgradeUser(uint(userID), approvement)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "account not registered"
+		} else if strings.Contains(err.Error(), "email") {
+			msg = "email duplicated"
+		} else if strings.Contains(err.Error(), "access denied") {
+			msg = "access denied"
+		}
+		return users.Core{}, errors.New(msg)
+	}
+	return res, nil
+}
