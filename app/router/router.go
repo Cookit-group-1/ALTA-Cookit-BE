@@ -53,12 +53,12 @@ func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
 	service := _recipeService.New(data)
 	handler := _recipeDelivery.New(service)
 
-	e.GET("/users/recipes", handler.SelectRecipesByUserId, middlewares.JWTMiddleware())
 	e.POST("/recipes", handler.InsertRecipe, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/recipes/:%s", consts.ECHO_P_RecipeId), handler.UpdateRecipeById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s", consts.ECHO_P_RecipeId), handler.DeleteRecipeById, middlewares.JWTMiddleware())
+	e.GET("/users/recipes", handler.SelectRecipesByUserId, middlewares.JWTMiddleware())
 	e.GET("users/recipes/timeline", handler.SelectRecipesTimeline, middlewares.JWTMiddleware())
 	e.GET(fmt.Sprintf("/recipes/:%s/detail", consts.ECHO_P_RecipeId), handler.SelectRecipeDetailById, middlewares.JWTMiddleware())
-	e.PUT(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.UpdateRecipeById, middlewares.JWTMiddleware())
-	e.DELETE(fmt.Sprintf("/users/recipes/:%s", consts.ECHO_P_RecipeId), handler.DeleteRecipeById, middlewares.JWTMiddleware())
 }
 
 func initImageRouter(db *gorm.DB, e *echo.Echo) {
