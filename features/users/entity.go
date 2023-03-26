@@ -7,13 +7,15 @@ import (
 )
 
 type Core struct {
-	ID             uint
-	ProfilePicture string
-	Username       string
-	Bio            string
-	Email          string
-	Password       string
-	Role           string
+	ID                   uint
+	ProfilePicture       string
+	Username             string
+	Bio                  string
+	Email                string
+	Password             string
+	NewPassword          string
+	ConfirmationPassword string
+	Role                 string
 }
 
 type UserHandler interface {
@@ -31,7 +33,7 @@ type UserService interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, fileData multipart.FileHeader, updateData Core) (Core, error)
 	Deactive(userID uint) error
-	UpdatePassword(userID, updatePassword Core) error
+	UpdatePassword(userID uint, updatePassword Core) error
 }
 
 type UserData interface {
@@ -41,5 +43,4 @@ type UserData interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, updateData Core) (Core, error)
 	Deactive(userID uint) error
-	UpdatePassword(userID, updatePassword Core) error
 }
