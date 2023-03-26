@@ -95,5 +95,30 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 		if errBind != nil {
 			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
 		}
+		//proses cek apakah user input foto ?
+		checkFile, _, _ := c.Request().FormFile("profile_picture")
+		if checkFile != nil {
+			formHeader, err := c.FormFile("profile_picture")
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "Select a file to upload"})
+			}
+			input.FileHeader = *formHeader
+		}
+
+		res, err := uh.srv.Update(id, input.FileHeader, *ReqToCore(input))
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		result, err := ConvertUpdateResponse(res)
+		if err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"message": err.Error(),
+			})
+		} else {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"data":    result,
+				"message": "success update profile",
+			})
+		}
 	}
 }
