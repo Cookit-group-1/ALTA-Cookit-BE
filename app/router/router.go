@@ -123,7 +123,7 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 	service := _ingredientDetailService.New(data)
 	handler := _ingredientDetailDelivery.New(service)
 
-	e.POST(fmt.Sprintf("/recipes/:%s/ingredients/ingredientDetails", consts.ECHO_P_IngredientId), handler.InsertIngredientDetail, middlewares.JWTMiddleware())
+	e.POST(fmt.Sprintf("/recipes/:%s/ingredients/:%s/ingredientDetails", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.InsertIngredientDetail, middlewares.JWTMiddleware())
 	e.PUT(fmt.Sprintf("/recipes/:%s/ingredients/ingredientDetails/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientDetailId), handler.UpdateIngredientDetailById, middlewares.JWTMiddleware())
 	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients/ingredientDetails/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientDetailId), handler.DeleteIngredientDetailById, middlewares.JWTMiddleware())
 }
