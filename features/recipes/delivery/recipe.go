@@ -21,6 +21,31 @@ func New(recipeService recipes.RecipeService_) recipes.RecipeDelivery_ {
 	}
 }
 
+func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
+	page, limit, err := helpers.ExtractPageLimit(e)
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, helpers.Response(err.Error()))
+	}
+	limit, offset := helpers.LimitOffsetConvert(page, limit)
+
+	recipeRequest := recipes.RecipeRequest{}
+	err = e.Bind(&recipeRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	recipeRequest.UserID = userId
+	recipeRequest.DataLimit = limit
+	recipeRequest.DataOffset = offset
+	recipeRequest.ExtractedQueryParams = helpers.ExtractQueryParams(e.QueryParams())
+
+	outputs, err := d.recipeService.SelectRecipesTimeline(ConvertToEntity(&recipeRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfUserRecipes, ConvertToResponses(outputs)))
+}
+
 func (d *RecipeDelivery) SelectRecipeDetailById(e echo.Context) error {
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
@@ -43,13 +68,21 @@ func (d *RecipeDelivery) SelectRecipeDetailById(e echo.Context) error {
 
 func (d *RecipeDelivery) SelectRecipesByUserId(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
+	page, limit, err := helpers.ExtractPageLimit(e)
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, helpers.Response(err.Error()))
+	}
+	limit, offset := helpers.LimitOffsetConvert(page, limit)
+
 	recipeRequest := recipes.RecipeRequest{}
-	err := e.Bind(&recipeRequest)
+	err = e.Bind(&recipeRequest)
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-
 	recipeRequest.UserID = userId
+	recipeRequest.DataLimit = limit
+	recipeRequest.DataOffset = offset
+	recipeRequest.ExtractedQueryParams = helpers.ExtractQueryParams(e.QueryParams())
 
 	outputs, err := d.recipeService.SelectRecipesByUserId(ConvertToEntity(&recipeRequest))
 	if err != nil {
@@ -108,7 +141,7 @@ func (d *RecipeDelivery) DeleteRecipeById(e echo.Context) error {
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-	
+
 	recipeRequest := recipes.RecipeRequest{}
 	err = e.Bind(&recipeRequest)
 	if err != nil {

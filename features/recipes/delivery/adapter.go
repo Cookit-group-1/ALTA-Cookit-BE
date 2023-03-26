@@ -9,18 +9,22 @@ import (
 
 func ConvertToEntity(request *recipes.RecipeRequest) *recipes.RecipeEntity {
 	return &recipes.RecipeEntity{
-		ID:                 request.ID,
-		UserID:             request.UserID,
-		UserRole:           request.UserRole,
-		RecipeID:           request.RecipeID,
-		Image:              request.Image,
-		ImageName:          request.ImageName,
-		Type:               request.Type,
-		Status:             request.Status,
-		Name:               request.Name,
-		Description:        request.Description,
-		StepEntities:       *_stepDelivery.ConvertToEntities(&request.StepRequests),
-		IngredientEntities: *_ingredientsDelivery.ConvertToEntities(&request.IngredientRequests),
+		ID:                   request.ID,
+		UserID:               request.UserID,
+		UserRole:             request.UserRole,
+		RecipeID:             request.RecipeID,
+		Image:                request.Image,
+		ImageName:            request.ImageName,
+		Recipe:               &recipes.RecipeEntity{},
+		Type:                 request.Type,
+		Status:               request.Status,
+		Name:                 request.Name,
+		Description:          request.Description,
+		StepEntities:         *_stepDelivery.ConvertToEntities(&request.StepRequests),
+		IngredientEntities:   *_ingredientsDelivery.ConvertToEntities(&request.IngredientRequests),
+		DataLimit:            request.DataLimit,
+		DataOffset:           request.DataOffset,
+		ExtractedQueryParams: request.ExtractedQueryParams,
 	}
 }
 
