@@ -6,6 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	_likeData "alta-cookit-be/features/likes/data"
+	_likeDelivery "alta-cookit-be/features/likes/delivery"
+	_likeService "alta-cookit-be/features/likes/service"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
@@ -71,6 +74,15 @@ func initImageRouter(db *gorm.DB, e *echo.Echo) {
 	e.DELETE(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.DeleteImageById, middlewares.JWTMiddleware())
 }
 
+func initLikeRouter(db *gorm.DB, e *echo.Echo) {
+	data := _likeData.New(db)
+	service := _likeService.New(data)
+	handler := _likeDelivery.New(service)
+
+	e.POST(fmt.Sprintf("/recipes/:%s/like", consts.ECHO_P_RecipeId), handler.LikeRecipe, middlewares.JWTMiddleware())
+	e.POST(fmt.Sprintf("/recipes/:%s/unlike", consts.ECHO_P_RecipeId), handler.UnlikeRecipe, middlewares.JWTMiddleware())
+}
+
 func initCommentRouter(db *gorm.DB, e *echo.Echo) {
 	userData := _userData.New(db)
 	data := _commentData.New(db, userData)
@@ -116,6 +128,7 @@ func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initRecipeRouter(db, e)
 	initImageRouter(db, e)
+	initLikeRouter(db, e)
 	initCommentRouter(db, e)
 	initStepRouter(db, e)
 	initIngredientRouter(db, e)
