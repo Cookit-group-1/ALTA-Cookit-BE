@@ -140,3 +140,8 @@ func (uh *userHandler) UpdatePassword() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, helpers.Response(consts.USER_SuccessUpdatePassword))
 	}
 }
+
+// UpgradeUser implements users.UserHandler
+func (*userHandler) UpgradeUser() echo.HandlerFunc {
+	panic("unimplemented")
+}
