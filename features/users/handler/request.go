@@ -1,6 +1,9 @@
 package handler
 
-import "alta-cookit-be/features/users"
+import (
+	"alta-cookit-be/features/users"
+	"mime/multipart"
+)
 
 type RegisterReq struct {
 	Username string `json:"username" form:"username"`
@@ -17,6 +20,7 @@ type UpdateProfileReq struct {
 	ProfilePicture string `json:"profile_picture" form:"profile_picture"`
 	Username       string `json:"username" form:"username"`
 	Bio            string `json:"bio" form:"bio"`
+	FileHeader     multipart.FileHeader
 }
 
 func ReqToCore(data interface{}) *users.Core {

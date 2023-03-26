@@ -88,5 +88,12 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 
 // Update implements users.UserHandler
 func (uh *userHandler) Update() echo.HandlerFunc {
-	panic("unimplemented")
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		input := UpdateProfileReq{}
+		errBind := c.Bind(&input)
+		if errBind != nil {
+			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
+		}
+	}
 }
