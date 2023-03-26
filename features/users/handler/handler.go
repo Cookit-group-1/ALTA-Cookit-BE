@@ -186,7 +186,7 @@ func (uh *userHandler) SearchUser() echo.HandlerFunc {
 		}
 		result := []SearchResponse{}
 		for i := 0; i < len(res); i++ {
-			result = append(result, SearchResponse(result[i]))
+			result = append(result, ToSearchResponse(res[i]))
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"data":    result,

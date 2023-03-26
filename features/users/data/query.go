@@ -138,15 +138,15 @@ func (uq *UserQuery) UpgradeUser(userID uint, approvement users.Core) (users.Cor
 
 // SearchUser implements users.UserData
 func (uq *UserQuery) SearchUser(quote string) ([]users.Core, error) {
-	find := []User{}
-	err := uq.db.Where("user_name LIKE ?", "%"+quote+"%").Find(&find).Error
+	findRes := []User{}
+	err := uq.db.Where("username LIKE ?", "%"+quote+"%").Find(&findRes).Error
 	if err != nil {
 		log.Println("no data processed", err.Error())
 		return []users.Core{}, errors.New("no user found")
 	}
 	res := []users.Core{}
-	for i := 0; i < len(find); i++ {
-		res = append(res, ModelToCore(find[i]))
+	for i := 0; i < len(findRes); i++ {
+		res = append(res, ModelToCore(findRes[i]))
 	}
 	return res, nil
 }
