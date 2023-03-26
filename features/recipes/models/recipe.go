@@ -17,8 +17,8 @@ type Recipe struct {
 	Recipe      *Recipe
 	Type        string                        `gorm:"not null;type:enum('Original', 'Mixed', 'Cooked');default:'Original'"`
 	Status      string                        `gorm:"not null;type:enum('None', 'OpenForSale');default:'None'"`
-	Name        string                        `gorm:"not null;type:VARCHAR(50)"`
-	Description string                        `gorm:"not null;type:text"`
+	Name        string                        `gorm:"default:'';not null;type:VARCHAR(50)"`
+	Description string                        `gorm:"default:'';not null;type:text"`
 	Steps       []_stepModel.Step             `gorm:"constraint:OnDelete:CASCADE;"`
 	Ingredients []_ingredientModel.Ingredient `gorm:"constraint:OnDelete:CASCADE;"`
 	Comments    []_commentModel.Comment       `gorm:"constraint:OnDelete:CASCADE;"`

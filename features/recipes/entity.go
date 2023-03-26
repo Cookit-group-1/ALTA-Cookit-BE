@@ -22,8 +22,8 @@ type RecipeEntity struct {
 	UrlImage             string
 	Type                 string
 	Status               string
-	Name                 string `validate:"required"`
-	Description          string `validate:"required"`
+	Name                 string 
+	Description          string 
 	TotalLike            int    `gorm:"column:total_like"`
 	TotalComment         int    `gorm:"column:total_comment"`
 	StepEntities         []steps.StepEntity
