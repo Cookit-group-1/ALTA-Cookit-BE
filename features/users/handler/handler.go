@@ -70,7 +70,7 @@ func (uh *userHandler) Deactive() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(helpers.ErrorResponse(err))
 		}
-		return c.JSON(http.StatusOK, helpers.Response(consts.AUTH_ErrorBind))
+		return c.JSON(http.StatusOK, helpers.Response(consts.USER_SuccessDelete))
 	}
 }
 
@@ -82,7 +82,7 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(helpers.ErrorResponse(err))
 		}
-		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.AUTH_ErrorBind, ToProfileResponse(dataCore)))
+		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.USER_SuccessGetProfile, ToProfileResponse(dataCore)))
 	}
 }
 
