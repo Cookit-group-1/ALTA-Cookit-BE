@@ -7,5 +7,5 @@ import (
 type Image struct {
 	gorm.Model
 	RecipeID uint
-	UrlImage string `gorm:"not null;type:text"`
+	UrlImage string `gorm:"default:'';not null;type:text"`
 }

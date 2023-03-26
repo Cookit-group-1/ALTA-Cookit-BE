@@ -34,7 +34,10 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	files, fileNames, _ := helpers.ExtractMultipleFiles(e, "image")
+	files, fileNames, err := helpers.ExtractMultipleFiles(e, "image")
+	if err != nil {
+		return e.JSON(http.StatusCreated, helpers.Response(consts.VALIDATION_InvalidInput))
+	}
 	for index, file := range files {
 		imageRequests = append(imageRequests, images.ImageRequest{
 			UserID: userId,
