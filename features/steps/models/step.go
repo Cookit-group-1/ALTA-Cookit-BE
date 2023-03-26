@@ -7,5 +7,5 @@ import (
 type Step struct {
 	gorm.Model
 	RecipeID    uint
-	Name        string `gorm:"not null;type:text"`
+	Name        string `gorm:"default:'';not null;type:text"`
 }
