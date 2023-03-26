@@ -16,6 +16,7 @@ type Core struct {
 	NewPassword          string
 	ConfirmationPassword string
 	Role                 string
+	Approvement          string
 }
 
 type UserHandler interface {
@@ -25,6 +26,7 @@ type UserHandler interface {
 	Update() echo.HandlerFunc
 	Deactive() echo.HandlerFunc
 	UpdatePassword() echo.HandlerFunc
+	UpgradeUser() echo.HandlerFunc
 }
 
 type UserService interface {
@@ -34,6 +36,7 @@ type UserService interface {
 	Update(userID uint, fileData multipart.FileHeader, updateData Core) (Core, error)
 	Deactive(userID uint) error
 	UpdatePassword(userID uint, updatePassword Core) error
+	UpgradeUser(userID uint, approvement Core) (Core, error)
 }
 
 type UserData interface {
@@ -43,4 +46,5 @@ type UserData interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, updateData Core) (Core, error)
 	Deactive(userID uint) error
+	UpgradeUser(userID uint, approvement Core) (Core, error)
 }
