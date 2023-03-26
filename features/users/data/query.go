@@ -123,3 +123,15 @@ func (uq *UserQuery) Update(userID uint, updateData users.Core) (users.Core, err
 
 	return ModelToCore(cnv), nil
 }
+
+// UpgradeUser implements users.UserData
+func (uq *UserQuery) UpgradeUser(userID uint, approvement users.Core) (users.Core, error) {
+	input := CoreToModel(approvement)
+	err := uq.db.Where("id = ?", userID).Updates(&input).Error
+	if err != nil {
+		log.Println("get user error : ", err.Error())
+		return users.Core{}, errors.New("failed to upgrade to verifieduser")
+	}
+
+	return approvement, nil
+}
