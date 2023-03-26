@@ -28,7 +28,5 @@ func main() {
 	fmt.Println(token)
 
 	e.Logger.Fatal(e.Start(":8083"))
-
-	
 	
 }

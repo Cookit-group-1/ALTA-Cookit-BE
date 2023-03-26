@@ -19,9 +19,9 @@ type Core struct {
 type UserHandler interface {
 	Register() echo.HandlerFunc
 	Login() echo.HandlerFunc
-	Profile() echo.HandlerFunc
-	Update() echo.HandlerFunc
-	Deactive() echo.HandlerFunc
+	// Profile() echo.HandlerFunc
+	// Update() echo.HandlerFunc
+	// Deactive() echo.HandlerFunc
 }
 
 type UserService interface {
