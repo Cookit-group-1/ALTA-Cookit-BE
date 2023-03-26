@@ -111,6 +111,36 @@ func ErrorResponse(err error) (int, interface{}) {
 		code = http.StatusInternalServerError
 	case strings.Contains(msg, consts.AUTH_ErrorRole):
 		code = http.StatusBadRequest
+	case strings.Contains(msg, consts.QUERY_ErrorUpdateData):
+		code = http.StatusInternalServerError
+	case strings.Contains(msg, consts.AUTH_ErrorEmptyPassword):
+		code = http.StatusBadRequest
+	case strings.Contains(msg, consts.QUERY_ErrorDeleteData):
+		code = http.StatusInternalServerError
+	case strings.Contains(msg, consts.QUERY_ErrorReadData):
+		code = http.StatusInternalServerError
+
 	}
+
+	return code, resp
+}
+
+func PrintErrorResponse(msg string) (int, interface{}) {
+	resp := map[string]interface{}{}
+	code := -1
+	if msg != "" {
+		resp["message"] = msg
+	}
+
+	if strings.Contains(msg, "server") {
+		code = http.StatusInternalServerError
+	} else if strings.Contains(msg, "format") {
+		code = http.StatusBadRequest
+	} else if strings.Contains(msg, "Unauthorized") {
+		code = http.StatusUnauthorized
+	} else if strings.Contains(msg, "not found") {
+		code = http.StatusNotFound
+	}
+
 	return code, resp
 }
