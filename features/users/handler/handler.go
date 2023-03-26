@@ -65,8 +65,8 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 // Deactive implements users.UserHandler
 func (uh *userHandler) Deactive() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userID, _, _ := middlewares.ExtractToken(c)
-		err := uh.srv.Deactive(userID)
+		id, _, _ := middlewares.ExtractToken(c)
+		err := uh.srv.Deactive(id)
 		if err != nil {
 			return c.JSON(helpers.ErrorResponse(err))
 		}
@@ -76,7 +76,14 @@ func (uh *userHandler) Deactive() echo.HandlerFunc {
 
 // Profile implements users.UserHandler
 func (uh *userHandler) Profile() echo.HandlerFunc {
-	panic("unimplemented")
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		dataCore, err := uh.srv.Profile(id)
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.AUTH_ErrorBind, ToProfileResponse(dataCore)))
+	}
 }
 
 // Update implements users.UserHandler
