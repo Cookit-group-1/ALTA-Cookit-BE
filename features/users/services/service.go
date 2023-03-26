@@ -8,20 +8,28 @@ import (
 	"log"
 	"mime/multipart"
 	"strings"
+
+	"github.com/go-playground/validator"
 )
 
 type userService struct {
-	qry users.UserData
+	qry      users.UserData
+	validate *validator.Validate
 }
 
 func New(ud users.UserData) users.UserService {
 	return &userService{
-		qry: ud,
+		qry:      ud,
+		validate: validator.New(),
 	}
 }
 
 // Login implements users.UserService
 func (us *userService) Login(username string, password string) (string, users.Core, error) {
+	errValidate := us.validate.StructExcept(username, "Username")
+	if errValidate != nil {
+		return "", users.Core{}, errors.New("validate: " + errValidate.Error())
+	}
 	res, err := us.qry.Login(username)
 	if err != nil {
 		msg := ""
@@ -44,6 +52,11 @@ func (us *userService) Login(username string, password string) (string, users.Co
 
 // Register implements users.UserService
 func (us *userService) Register(newUser users.Core) (users.Core, error) {
+	errValidate := us.validate.Struct(newUser)
+	if errValidate != nil {
+		return users.Core{}, errors.New("validate: " + errValidate.Error())
+	}
+
 	hashed, err := helpers.GeneratePassword(newUser.Password)
 	if err != nil {
 		log.Println("bcrypt error ", err.Error())
@@ -97,6 +110,10 @@ func (us *userService) Profile(userID uint) (users.Core, error) {
 
 // Update implements users.UserService
 func (us *userService) Update(userID uint, fileData multipart.FileHeader, updateData users.Core) (users.Core, error) {
+	errValidate := us.validate.StructExcept(updateData, "Password")
+	if errValidate != nil {
+		return users.Core{}, errors.New("validate: " + errValidate.Error())
+	}
 	url, err := helpers.GetUrlImagesFromAWS(fileData, int(1))
 	if err != nil {
 		return users.Core{}, errors.New("validate: " + err.Error())
