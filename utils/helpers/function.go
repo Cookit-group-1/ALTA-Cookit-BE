@@ -27,18 +27,18 @@ func ExtractIDParam(c echo.Context, pathName string) (uint, error) {
 	return uint(id), nil
 }
 
-func ExtractPageLimit(c echo.Context) (page int, limit int, err error) {
+func ExtractPageLimit(c echo.Context) (page int, limit int) {
 	pageStr := c.QueryParam("page")
-	page, err = strconv.Atoi(pageStr)
+	page, err := strconv.Atoi(pageStr)
 	if err != nil {
-		return -1, -1, errors.New(consts.ECHO_InvaildPageParam)
+		return -1, -1
 	}
 	limitStr := c.QueryParam("limit")
 	limit, err = strconv.Atoi(limitStr)
 	if err != nil {
-		return -1, -1, errors.New(consts.ECHO_InvaildLimitParam)
+		return -1, -1
 	}
-	return page, limit, nil
+	return page, limit
 }
 
 func ExtractQueryParams(queryParams url.Values) map[string]interface{} {
