@@ -13,9 +13,6 @@ func ConvertToGorm(entity *comments.CommentEntity) *_commentModel.Comment {
 		Comment:  entity.Comment,
 		UrlImage: entity.UrlImage,
 	}
-	if entity.UrlImage == "" {
-		gorm.UrlImage = " "
-	}
 	if entity.ID != 0 {
 		gorm.ID = entity.ID
 	}

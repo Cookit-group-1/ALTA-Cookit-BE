@@ -22,10 +22,7 @@ func New(commentService comments.CommentService_) comments.CommentDelivery_ {
 }
 
 func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
-	page, limit, err := helpers.ExtractPageLimit(e)
-	if err != nil {
-		return e.JSON(http.StatusBadRequest, helpers.Response(err.Error()))
-	}
+	page, limit := helpers.ExtractPageLimit(e)
 	limit, offset := helpers.LimitOffsetConvert(page, limit)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
