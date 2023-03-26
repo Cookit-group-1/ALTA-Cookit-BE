@@ -41,7 +41,7 @@ func (d *LikeData) LikeRecipe(entity *likes.LikeEntity) error {
 func (d *LikeData) UnlikeRecipe(entity *likes.LikeEntity) error {
 	gorm := ConvertToGorm(entity)
 
-	tx := d.db.Where("user_id = ? AND recipe_id = ?", entity.UserID, entity.RecipeID).Delete(&gorm)
+	tx := d.db.Where("user_id = ? AND recipe_id = ?", entity.UserID, entity.RecipeID).Unscoped().Delete(&gorm)
 	if tx.Error != nil {
 		return tx.Error
 	}
