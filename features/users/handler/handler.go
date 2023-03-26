@@ -124,6 +124,19 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 }
 
 // UpdatePassword implements users.UserHandler
-func (*userHandler) UpdatePassword() echo.HandlerFunc {
-	panic("unimplemented")
+func (uh *userHandler) UpdatePassword() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userID, _, _ := middlewares.ExtractToken(c)
+		input := UpdatePasswordReq{}
+		errBind := c.Bind(&input)
+		if errBind != nil {
+			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
+		}
+
+		err := uh.srv.UpdatePassword(userID, *ReqToCore(input))
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		return c.JSON(http.StatusOK, helpers.Response(consts.USER_SuccessUpdatePassword))
+	}
 }
