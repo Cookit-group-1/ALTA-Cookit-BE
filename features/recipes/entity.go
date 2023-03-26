@@ -10,40 +10,46 @@ import (
 )
 
 type RecipeEntity struct {
-	ID                 uint
-	UserID             uint
-	UserName           string
-	UserRole           string
-	ProfilePicture     string
-	RecipeID           uint
-	Image              []multipart.File
-	ImageName          []string
-	Recipe             *RecipeEntity
-	UrlImage           string
-	Type               string
-	Status             string
-	Name               string `validate:"required"`
-	Description        string `validate:"required"`
-	TotalLike          int    `gorm:"column:total_like"`
-	TotalComment       int    `gorm:"column:total_comment"`
-	StepEntities       []steps.StepEntity
-	IngredientEntities []ingredients.IngredientEntity
-	ImageEntities      []images.ImageEntity
+	ID                   uint
+	UserID               uint
+	UserName             string
+	UserRole             string
+	ProfilePicture       string
+	RecipeID             uint
+	Image                []multipart.File
+	ImageName            []string
+	Recipe               *RecipeEntity
+	UrlImage             string
+	Type                 string
+	Status               string
+	Name                 string `validate:"required"`
+	Description          string `validate:"required"`
+	TotalLike            int    `gorm:"column:total_like"`
+	TotalComment         int    `gorm:"column:total_comment"`
+	StepEntities         []steps.StepEntity
+	IngredientEntities   []ingredients.IngredientEntity
+	ImageEntities        []images.ImageEntity
+	DataLimit            int
+	DataOffset           int
+	ExtractedQueryParams map[string]interface{}
 }
 
 type RecipeRequest struct {
-	ID                 uint
-	UserID             uint
-	UserRole           string
-	RecipeID           uint `json:"recipe_id" form:"recipe_id"`
-	Image              []multipart.File
-	ImageName          []string
-	Type               string                          `json:"type" form:"type"`
-	Status             string                          `json:"status" form:"status"`
-	Name               string                          `json:"name" form:"name"`
-	Description        string                          `json:"description" form:"description"`
-	StepRequests       []steps.StepRequest             `json:"steps" form:"steps"`
-	IngredientRequests []ingredients.IngredientRequest `json:"ingredients" form:"ingredients"`
+	ID                   uint
+	UserID               uint
+	UserRole             string
+	RecipeID             uint `json:"recipe_id" form:"recipe_id"`
+	Image                []multipart.File
+	ImageName            []string
+	Type                 string                          `json:"type" form:"type"`
+	Status               string                          `json:"status" form:"status"`
+	Name                 string                          `json:"name" form:"name"`
+	Description          string                          `json:"description" form:"description"`
+	StepRequests         []steps.StepRequest             `json:"steps" form:"steps"`
+	IngredientRequests   []ingredients.IngredientRequest `json:"ingredients" form:"ingredients"`
+	DataLimit            int
+	DataOffset           int
+	ExtractedQueryParams map[string]interface{}
 }
 
 type RecipeResponse struct {
@@ -68,6 +74,7 @@ type RecipeResponse struct {
 
 type RecipeDelivery_ interface {
 	SelectRecipesByUserId(e echo.Context) error
+	SelectRecipesTimeline(e echo.Context) error
 	SelectRecipeDetailById(e echo.Context) error
 	InsertRecipe(e echo.Context) error
 	UpdateRecipeById(e echo.Context) error
@@ -76,6 +83,7 @@ type RecipeDelivery_ interface {
 
 type RecipeService_ interface {
 	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
+	SelectRecipesTimeline(entity *RecipeEntity) (*[]RecipeEntity, error)
 	SelectRecipeDetailById(entity *RecipeEntity) (*RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
@@ -84,6 +92,7 @@ type RecipeService_ interface {
 
 type RecipeData_ interface {
 	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
+	SelectRecipesTimeline(entity *RecipeEntity) (*[]RecipeEntity, error)
 	SelectRecipeDetailById(entity *RecipeEntity) (*RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
