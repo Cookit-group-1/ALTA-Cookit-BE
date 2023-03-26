@@ -9,7 +9,10 @@ const (
 
 // Success
 const (
-	
+	USER_SuccessGetProfile     string = "success show profile"
+	USER_SuccessUpdateProfile  string = "success update profile"
+	USER_SuccessDelete         string = "succes delete user data"
+	USER_SuccessUpdatePassword string = "success update password"
 )
 
 // Failed

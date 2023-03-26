@@ -2,6 +2,7 @@ package handler
 
 import (
 	"alta-cookit-be/features/users"
+	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"log"
@@ -58,5 +59,66 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 		}
 		log.Println(res)
 		return c.JSON(http.StatusCreated, helpers.Response(consts.AUTH_SuccessCreate))
+	}
+}
+
+// Deactive implements users.UserHandler
+func (uh *userHandler) Deactive() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		err := uh.srv.Deactive(id)
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		return c.JSON(http.StatusOK, helpers.Response(consts.USER_SuccessDelete))
+	}
+}
+
+// Profile implements users.UserHandler
+func (uh *userHandler) Profile() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		dataCore, err := uh.srv.Profile(id)
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.USER_SuccessGetProfile, ToProfileResponse(dataCore)))
+	}
+}
+
+// Update implements users.UserHandler
+func (uh *userHandler) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		input := UpdateProfileReq{}
+		errBind := c.Bind(&input)
+		if errBind != nil {
+			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
+		}
+		//proses cek apakah user input foto ?
+		checkFile, _, _ := c.Request().FormFile("profile_picture")
+		if checkFile != nil {
+			formHeader, err := c.FormFile("profile_picture")
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "Select a file to upload"})
+			}
+			input.FileHeader = *formHeader
+		}
+
+		res, err := uh.srv.Update(id, input.FileHeader, *ReqToCore(input))
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		result, err := ConvertUpdateResponse(res)
+		if err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"message": err.Error(),
+			})
+		} else {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"data":    result,
+				"message": "success update profile",
+			})
+		}
 	}
 }
