@@ -68,8 +68,11 @@ func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initImageRouter(db *gorm.DB, e *echo.Echo) {
+	userData := _userData.New(db)
+	imageData := _imageData.New(db)
+	recipeData := _recipeData.New(db, userData, imageData)
 	data := _imageData.New(db)
-	service := _imageService.New(data)
+	service := _imageService.New(data, recipeData)
 	handler := _imageDelivery.New(service)
 
 	e.POST(fmt.Sprintf("/recipes/:%s/images", consts.ECHO_P_RecipeId), handler.InsertImage, middlewares.JWTMiddleware())
@@ -99,8 +102,11 @@ func initCommentRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initStepRouter(db *gorm.DB, e *echo.Echo) {
+	userData := _userData.New(db)
+	imageData := _imageData.New(db)
+	recipeData := _recipeData.New(db, userData, imageData)
 	data := _stepData.New(db)
-	service := _stepService.New(data)
+	service := _stepService.New(data, recipeData)
 	handler := _stepDelivery.New(service)
 
 	e.POST(fmt.Sprintf("/recipes/:%s/steps", consts.ECHO_P_RecipeId), handler.InsertStep, middlewares.JWTMiddleware())
@@ -109,8 +115,11 @@ func initStepRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
+	userData := _userData.New(db)
+	imageData := _imageData.New(db)
+	recipeData := _recipeData.New(db, userData, imageData)
 	data := _ingredientData.New(db)
-	service := _ingredientService.New(data)
+	service := _ingredientService.New(data, recipeData)
 	handler := _ingredientDelivery.New(service)
 
 	e.POST(fmt.Sprintf("/recipes/:%s/ingredients", consts.ECHO_P_RecipeId), handler.InsertIngredient, middlewares.JWTMiddleware())
@@ -119,8 +128,11 @@ func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
+	userData := _userData.New(db)
+	imageData := _imageData.New(db)
+	recipeData := _recipeData.New(db, userData, imageData)
 	data := _ingredientDetailData.New(db)
-	service := _ingredientDetailService.New(data)
+	service := _ingredientDetailService.New(data, recipeData)
 	handler := _ingredientDetailDelivery.New(service)
 
 	e.POST(fmt.Sprintf("/recipes/:%s/ingredients/:%s/ingredientDetails", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.InsertIngredientDetail, middlewares.JWTMiddleware())
