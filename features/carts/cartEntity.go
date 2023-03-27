@@ -3,10 +3,11 @@ package carts
 import "github.com/labstack/echo/v4"
 
 type Recipe struct {
-	ID         uint
-	Name       string
-	SellerID   uint
-	SellerName uint
+	ID          uint
+	Name        string
+	SellerID    uint
+	SellerName  uint
+	RecipeImage string
 }
 
 type Ingredient struct {
