@@ -2,6 +2,8 @@ package service
 
 import (
 	"alta-cookit-be/features/images"
+	"alta-cookit-be/utils/consts"
+	"errors"
 
 	"github.com/go-playground/validator"
 )
@@ -27,6 +29,11 @@ func (s *ImageService) InsertImage(entity *[]images.ImageEntity) (*[]images.Imag
 }
 
 func (s *ImageService) UpdateImageById(entity *images.ImageEntity) (*images.ImageEntity, error) {
+	isEntitled := s.imageData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return nil, errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	output, err := s.imageData.UpdateImageById(entity)
 	if err != nil {
 		return nil, err
@@ -35,6 +42,11 @@ func (s *ImageService) UpdateImageById(entity *images.ImageEntity) (*images.Imag
 }
 
 func (s *ImageService) DeleteImageById(entity *images.ImageEntity) error {
+	isEntitled := s.imageData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err := s.imageData.DeleteImageById(entity)
 	if err != nil {
 		return err

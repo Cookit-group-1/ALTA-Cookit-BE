@@ -21,6 +21,13 @@ func New(db *gorm.DB) images.ImageData_ {
 	}
 }
 
+func (d *ImageData) ActionValidator(id, recipeId, userId uint) bool {
+	tempGorm := _imageModel.Image{}
+	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = images.recipe_id").Where("images.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+
+	return tempGorm.ID != 0
+}
+
 func (d *ImageData) SelectImagesByRecipeId(recipeId uint) *[]_imageModel.Image {
 	tempGorms := []_imageModel.Image{}
 	d.db.Where("recipe_id = ?", recipeId).Find(&tempGorms)

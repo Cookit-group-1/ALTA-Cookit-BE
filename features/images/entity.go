@@ -43,6 +43,7 @@ type ImageService_ interface {
 }
 
 type ImageData_ interface {
+	ActionValidator(id, recipeId, userId uint) bool
 	SelectImagesByRecipeId(recipeId uint) *[]_imageModel.Image
 	InsertImage(imageEntity *[]ImageEntity) (*[]ImageEntity, error)
 	UpdateImageById(imageEntity *ImageEntity) (*ImageEntity, error)
