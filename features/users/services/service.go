@@ -127,14 +127,14 @@ func (us *userService) UpdatePassword(userID uint, updatePassword users.Core) er
 	if updatePassword.Password == "" || updatePassword.NewPassword == "" || updatePassword.ConfirmationPassword == "" {
 		return errors.New(consts.AUTH_ErrorEmptyPassword)
 	}
-	_, errSelect := us.qry.Profile(userID)
+	user, errSelect := us.qry.Profile(userID)
 	if errSelect != nil {
 		return errSelect
 	}
 
-	// if !helpers.CheckPassword(updatePassword.Password, dataCore.Password) {
-	// 	return errors.New(consts.AUTH_ErrorComparePassword)
-	// }
+	if err := helpers.CheckPassword(user.Password, updatePassword.Password); err != nil {
+		return errors.New(consts.AUTH_ErrorComparePassword)
+	}
 
 	if updatePassword.NewPassword != updatePassword.ConfirmationPassword {
 		return errors.New(consts.AUTH_ErrorNewPassword)
