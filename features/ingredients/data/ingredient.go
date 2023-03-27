@@ -41,7 +41,7 @@ func (d *IngredientData) InsertIngredient (entity *ingredients.IngredientEntity)
 }
 
 func (d *IngredientData) UpdateIngredientById(entity *ingredients.IngredientEntity) error {
-	tx := d.db.Debug().Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
+	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
