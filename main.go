@@ -24,9 +24,5 @@ func main() {
 	}))
 	router.InitRouter(db, e)
 
-	token, _ := middlewares.CreateToken(1, "User")
-	fmt.Println(token)
-
 	e.Logger.Fatal(e.Start(":8083"))
-	
 }
