@@ -188,7 +188,7 @@ func (uh *userHandler) SearchUser() echo.HandlerFunc {
 		for i := 0; i < len(res); i++ {
 			result = append(result, ToSearchResponse(res[i]))
 		}
-		return c.JSON(http.StatusCreated, map[string]interface{}{
+		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    result,
 			"message": "success find user",
 		})
