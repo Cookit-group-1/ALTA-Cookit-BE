@@ -1,6 +1,7 @@
 package service
 
 import (
+	"alta-cookit-be/features/recipes"
 	"alta-cookit-be/features/steps"
 	"alta-cookit-be/utils/consts"
 
@@ -11,12 +12,14 @@ import (
 
 type StepSerivce struct {
 	stepData steps.StepData_
+	recipeData recipes.RecipeData_
 	validate *validator.Validate
 }
 
-func New(stepData steps.StepData_) steps.StepService_ {
+func New(stepData steps.StepData_, recipeData recipes.RecipeData_) steps.StepService_ {
 	return &StepSerivce{
 		stepData: stepData,
+		recipeData: recipeData,
 		validate: validator.New(),
 	}
 }
@@ -25,6 +28,11 @@ func (s *StepSerivce) InsertStep(entity *steps.StepEntity) (*steps.StepEntity, e
 	err := s.validate.Struct(entity)
 	if err != nil {
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
+	}
+
+	isEntitled := s.recipeData.ActionValidator(entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return nil, errors.New(consts.SERVER_ForbiddenRequest)
 	}
 
 	output, err := s.stepData.InsertStep(entity)
