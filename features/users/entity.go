@@ -38,7 +38,7 @@ type UserService interface {
 	Deactive(userID uint) error
 	UpdatePassword(userID uint, updatePassword Core) error
 	UpgradeUser(userID uint, approvement Core) (Core, error)
-	SearchUser(quote string) ([]Core, error)
+	SearchUser(userID uint, quote string) ([]Core, error)
 }
 
 type UserData interface {
@@ -49,5 +49,5 @@ type UserData interface {
 	Update(userID uint, updateData Core) (Core, error)
 	Deactive(userID uint) error
 	UpgradeUser(userID uint, approvement Core) (Core, error)
-	SearchUser(quote string) ([]Core, error)
+	SearchUser(userID uint, quote string) ([]Core, error)
 }

@@ -51,7 +51,7 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 		input := RegisterReq{}
 		errBind := c.Bind(&input)
 		if errBind != nil {
-			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
+			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_SecurePassword))
 		}
 
 		res, errRegister := uh.srv.Register(*ReqToCore(input))
@@ -178,10 +178,14 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 // Search implements users.UserHandler
 func (uh *userHandler) SearchUser() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		userID, _, _ := middlewares.ExtractToken(c)
 		quotes := c.QueryParam("q")
 		log.Println(quotes)
-		res, err := uh.srv.SearchUser(quotes)
+		res, err := uh.srv.SearchUser(userID, quotes)
 		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "data not found"})
+		}
+		if quotes == "" {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "data not found"})
 		}
 		result := []SearchResponse{}

@@ -173,8 +173,8 @@ func (us *userService) UpgradeUser(userID uint, approvement users.Core) (users.C
 }
 
 // SearchUser implements users.UserService
-func (us *userService) SearchUser(quote string) ([]users.Core, error) {
-	res, err := us.qry.SearchUser(quote)
+func (us *userService) SearchUser(userID uint, quote string) ([]users.Core, error) {
+	res, err := us.qry.SearchUser(userID, quote)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "user") {
