@@ -51,3 +51,11 @@ func ConvertToEntity(gorm *_recipeModel.Recipe, userGorm ...*_userModel.User) *r
 	}
 	return &entity
 }
+
+func ConvertToEntities(gorms *[]_recipeModel.Recipe) *[]recipes.RecipeEntity {
+	entities := []recipes.RecipeEntity{}
+	for _, gorm := range *gorms {
+		entities = append(entities, *ConvertToEntity(&gorm))
+	}
+	return &entities
+}

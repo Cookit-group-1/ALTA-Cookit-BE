@@ -91,6 +91,7 @@ type RecipeService_ interface {
 }
 
 type RecipeData_ interface {
+	ActionValidator(recipeId, userId uint) bool
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error
