@@ -25,6 +25,13 @@ func New(db *gorm.DB, userData users.UserData) comments.CommentData_ {
 	}
 }
 
+func (d *CommentData) ActionValidator(id, recipeId, userId uint) bool {
+	tempGorm := _commentModel.Comment{}
+	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = comments.recipe_id").Where("comments.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+
+	return tempGorm.ID != 0
+}
+
 func (d *CommentData) SelectCommentById(id uint) *_commentModel.Comment {
 	tempGorm := _commentModel.Comment{}
 	d.db.Where("id = ?", id).Find(&tempGorm)
