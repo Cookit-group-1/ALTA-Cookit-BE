@@ -72,7 +72,7 @@ func ReadEnv() *AppConfig {
 		isRead = false
 	}
 	if val, found := os.LookupEnv("GCP_BUCKET_NAME"); found {
-		app.DB_NAME = val
+		app.GCP_BUCKET_NAME = val
 		isRead = false
 	}
 	// if val, found := os.LookupEnv("MIDTRANS_SERVER_KEY"); found {
@@ -123,7 +123,6 @@ func ReadEnv() *AppConfig {
 	SECRET_JWT = app.JWT_KEY
 	GCP_PROJECT_ID = app.GCP_PROJECT_ID
 	GCP_BUCKET_NAME = app.GCP_BUCKET_NAME
-	fmt.Println(GCP_PROJECT_ID, GCP_BUCKET_NAME)
 	AWS_REGION = app.AWS_REGION
 	ACCESS_KEY_ID = app.ACCESS_KEY_ID
 	ACCESS_KEY_SECRET = app.ACCESS_KEY_SECRET
