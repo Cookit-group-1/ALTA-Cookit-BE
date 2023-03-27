@@ -40,6 +40,11 @@ func (s *IngredientService) UpdateIngredientById(entity *ingredients.IngredientE
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
+	isEntitled := s.ingredientData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err = s.ingredientData.UpdateIngredientById(entity)
 	if err != nil {
 		return err
@@ -48,6 +53,11 @@ func (s *IngredientService) UpdateIngredientById(entity *ingredients.IngredientE
 }
 
 func (s *IngredientService) DeleteIngredientById(entity *ingredients.IngredientEntity) error {
+	isEntitled := s.ingredientData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err := s.ingredientData.DeleteIngredientById(entity)
 	if err != nil {
 		return err
