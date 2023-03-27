@@ -4,8 +4,6 @@ import (
 	"alta-cookit-be/app/config"
 	"alta-cookit-be/app/database"
 	"alta-cookit-be/app/router"
-	"alta-cookit-be/middlewares"
-	"fmt"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
