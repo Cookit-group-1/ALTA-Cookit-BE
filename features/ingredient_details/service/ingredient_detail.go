@@ -24,7 +24,7 @@ func New(ingredientDetailData ingredient_details.IngredientDetailData_) ingredie
 func (s *IngredientDetailService) InsertIngredientDetail(entity *ingredient_details.IngredientDetailEntity) (*ingredient_details.IngredientDetailEntity, error) {
 	err := s.validate.Struct(entity)
 	if err != nil {
-		return nil, errors.New(consts.VALIDATION_InvalidInput)
+		return nil, err
 	}
 
 	output, err := s.ingredientDetailData.InsertIngredientDetail(entity)
@@ -40,6 +40,11 @@ func (s *IngredientDetailService) UpdateIngredientDetailById(entity *ingredient_
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
+	isEntitled := s.ingredientDetailData.ActionValidator(entity.ID, entity.IngredientID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err = s.ingredientDetailData.UpdateIngredientDetailById(entity)
 	if err != nil {
 		return err
@@ -48,6 +53,11 @@ func (s *IngredientDetailService) UpdateIngredientDetailById(entity *ingredient_
 }
 
 func (s *IngredientDetailService) DeleteIngredientDetailById(entity *ingredient_details.IngredientDetailEntity) error {
+	isEntitled := s.ingredientDetailData.ActionValidator(entity.ID, entity.IngredientID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err := s.ingredientDetailData.DeleteIngredientDetailById(entity)
 	if err != nil {
 		return err
