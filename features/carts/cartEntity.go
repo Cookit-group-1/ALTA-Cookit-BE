@@ -23,8 +23,22 @@ type Carts struct {
 }
 
 type CartHandler interface {
-	AddRecipe() echo.HandlerFunc
-	ShowAllRecipe() echo.HandlerFunc
-	UpdateRecipe() echo.HandlerFunc
-	DeleteRecipe() echo.HandlerFunc
+	AddProduct() echo.HandlerFunc
+	ShowAllProduct() echo.HandlerFunc
+	UpdateProduct() echo.HandlerFunc
+	DeleteProduct() echo.HandlerFunc
+}
+
+type CartService interface {
+	AddProduct(userID, ingredientID uint, newCart Carts) (Carts, error)
+	ShowAllProduct(userID uint) ([]Carts, error)
+	UpdateProduct(userID, ingredientID uint, updateCart Carts) (Carts, error)
+	DeleteProduct(userID, ingredientID uint)
+}
+
+type CartData interface {
+	AddProduct(userID, ingredientID uint, newCart Carts) (Carts, error)
+	ShowAllProduct(userID uint) ([]Carts, error)
+	UpdateProduct(userID, ingredientID uint, updateCart Carts) (Carts, error)
+	DeleteProduct(userID, ingredientID uint)
 }
