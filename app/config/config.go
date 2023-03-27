@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -122,6 +123,7 @@ func ReadEnv() *AppConfig {
 	SECRET_JWT = app.JWT_KEY
 	GCP_PROJECT_ID = app.GCP_PROJECT_ID
 	GCP_BUCKET_NAME = app.GCP_BUCKET_NAME
+	fmt.Println(GCP_PROJECT_ID, GCP_BUCKET_NAME)
 	AWS_REGION = app.AWS_REGION
 	ACCESS_KEY_ID = app.ACCESS_KEY_ID
 	ACCESS_KEY_SECRET = app.ACCESS_KEY_SECRET

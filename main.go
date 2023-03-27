@@ -4,6 +4,8 @@ import (
 	"alta-cookit-be/app/config"
 	"alta-cookit-be/app/database"
 	"alta-cookit-be/app/router"
+	"alta-cookit-be/middlewares"
+	"fmt"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -21,6 +23,8 @@ func main() {
 		Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}` + "\n",
 	}))
 	router.InitRouter(db, e)
+
+	fmt.Println(middlewares.CreateToken(1, "User"))
 
 	e.Logger.Fatal(e.Start(":8083"))
 }
