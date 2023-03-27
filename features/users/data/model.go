@@ -14,13 +14,13 @@ import (
 
 type User struct {
 	gorm.Model
-	ProfilePicture string `gorm:"type:text"`
+	ProfilePicture string `gorm:"type:VARCHAR(1000)"`
 	Username       string `gorm:"unique;not null;type:VARCHAR(50)"`
 	Bio            string `gorm:"not null;type:VARCHAR(151)"`
 	Role           string `gorm:"not null;type:enum('Admin', 'User', 'VerifiedUser');default:'User'"`
 	Email          string `gorm:"unique;not null;type:VARCHAR(100)"`
-	GoogleId       string `gorm:"type:text"`
-	Password       string `gorm:"not null;type:text"`
+	GoogleId       string `gorm:"type:VARCHAR(1000)"`
+	Password       string `gorm:"not null;type:VARCHAR(1000)"`
 	Approvement    string
 	FromFollowers  []_followerModel.Follower       `gorm:"foreignKey:FromUserID;constraint:OnDelete:CASCADE;"`
 	ToFollowers    []_followerModel.Follower       `gorm:"foreignKey:ToUserID;constraint:OnDelete:CASCADE;"`
