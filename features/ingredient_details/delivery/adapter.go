@@ -6,6 +6,7 @@ func ConvertToEntity(request *ingredient_details.IngredientDetailRequest) *ingre
 	return &ingredient_details.IngredientDetailEntity{
 		ID:           request.ID,
 		UserID:       request.UserID,
+		RecipeID:     request.RecipeID,
 		IngredientID: request.IngredientID,
 		Name:         request.Name,
 		Quantity:     request.Quantity,
