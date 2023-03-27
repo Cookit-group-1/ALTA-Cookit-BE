@@ -31,6 +31,24 @@ func ToApproveResponse(data users.Core) ApproveResponse {
 	}
 }
 
+type SearchResponse struct {
+	ID             uint   `json:"id"`
+	ProfilePicture string `json:"profile_picture"`
+	Username       string `json:"username"`
+	Role           string `json:"role"`
+	Bio            string `json:"bio"`
+}
+
+func ToSearchResponse(data users.Core) SearchResponse {
+	return SearchResponse{
+		ID:             data.ID,
+		ProfilePicture: data.ProfilePicture,
+		Username:       data.Username,
+		Role:           data.Role,
+		Bio:            data.Bio,
+	}
+}
+
 func ConvertUpdateResponse(input users.Core) (interface{}, error) {
 	ResponseFilter := users.Core{}
 	ResponseFilter = input

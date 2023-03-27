@@ -9,6 +9,7 @@ const (
 	AUTH_ErrorRole            string = "role must be VerifiedUser"
 	AUTH_ErrorNewPassword     string = "new password and confirmation password is not equal"
 	AUTH_ErrorEmptyPassword   string = "old password, new password and confirmation password field cannot be empty"
+	AUTH_SecurePassword       string = "password must be at least 8 characters long, must contain uppercase letters, must contain lowercase letters, must contain numbers, must not be too general"
 )
 
 // Success Response
