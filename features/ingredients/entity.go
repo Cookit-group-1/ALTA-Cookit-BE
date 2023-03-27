@@ -46,6 +46,7 @@ type IngredientService_ interface {
 }
 
 type IngredientData_ interface {
+	ActionValidator(id, recipeId, userId uint) bool
 	InsertIngredient(ingredientEntity *IngredientEntity) (*IngredientEntity, error)
 	UpdateIngredientById(ingredientEntity *IngredientEntity) error
 	DeleteIngredientById(ingredientEntity *IngredientEntity) error

@@ -6,6 +6,8 @@ import (
 	"errors"
 	"strings"
 
+	_ingredientModel "alta-cookit-be/features/ingredients/models"
+
 	"gorm.io/gorm"
 )
 
@@ -17,6 +19,13 @@ func New(db *gorm.DB) ingredients.IngredientData_ {
 	return &IngredientData{
 		db: db,
 	}
+}
+
+func (d *IngredientData) ActionValidator(id, recipeId, userId uint) bool {
+	tempGorm := _ingredientModel.Ingredient{}
+	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = ingredients.recipe_id").Where("ingredients.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+
+	return tempGorm.ID != 0
 }
 
 func (d *IngredientData) InsertIngredient (entity *ingredients.IngredientEntity) (*ingredients.IngredientEntity, error) {
