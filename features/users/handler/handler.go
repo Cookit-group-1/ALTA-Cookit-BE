@@ -51,12 +51,12 @@ func (uh *userHandler) Register() echo.HandlerFunc {
 		input := RegisterReq{}
 		errBind := c.Bind(&input)
 		if errBind != nil {
-			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_SecurePassword))
+			return c.JSON(http.StatusBadRequest, helpers.Response(consts.ECHO_ErrorBindData))
 		}
 
 		res, errRegister := uh.srv.Register(*ReqToCore(input))
 		if errRegister != nil {
-			return c.JSON(helpers.ErrorResponse(errRegister))
+			return c.JSON(helpers.PrintErrorResponse(errRegister.Error()))
 		}
 		log.Println(res)
 		return c.JSON(http.StatusCreated, helpers.Response(consts.AUTH_SuccessCreate))
