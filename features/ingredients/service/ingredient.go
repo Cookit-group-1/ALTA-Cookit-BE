@@ -2,6 +2,7 @@ package service
 
 import (
 	"alta-cookit-be/features/ingredients"
+	"alta-cookit-be/features/recipes"
 	"alta-cookit-be/utils/consts"
 
 	"errors"
@@ -10,12 +11,14 @@ import (
 )
 
 type IngredientService struct {
+	recipeData     recipes.RecipeData_
 	ingredientData ingredients.IngredientData_
 	validate       *validator.Validate
 }
 
-func New(ingredientData ingredients.IngredientData_) ingredients.IngredientService_ {
+func New(ingredientData ingredients.IngredientData_, recipeData recipes.RecipeData_) ingredients.IngredientService_ {
 	return &IngredientService{
+		recipeData:     recipeData,
 		ingredientData: ingredientData,
 		validate:       validator.New(),
 	}
@@ -25,6 +28,11 @@ func (s *IngredientService) InsertIngredient(entity *ingredients.IngredientEntit
 	err := s.validate.Struct(entity)
 	if err != nil {
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
+	}
+
+	isEntitled := s.recipeData.ActionValidator(entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return nil, errors.New(consts.SERVER_ForbiddenRequest)
 	}
 
 	output, err := s.ingredientData.InsertIngredient(entity)
