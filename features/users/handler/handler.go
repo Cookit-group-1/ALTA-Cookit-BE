@@ -183,10 +183,10 @@ func (uh *userHandler) SearchUser() echo.HandlerFunc {
 		log.Println(quotes)
 		res, err := uh.srv.SearchUser(userID, quotes)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "data not found"})
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}
 		if quotes == "" {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "data not found"})
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}
 		result := []SearchResponse{}
 		for i := 0; i < len(res); i++ {
