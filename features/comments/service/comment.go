@@ -48,7 +48,7 @@ func (s *CommentService) UpdateCommentById(entity *comments.CommentEntity) (*com
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	isEntitled := s.commentData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	isEntitled := s.commentData.ActionValidator(entity.RecipeID, entity.UserID)
 	if !isEntitled {
 		return nil, errors.New(consts.SERVER_ForbiddenRequest)
 	}
@@ -61,7 +61,7 @@ func (s *CommentService) UpdateCommentById(entity *comments.CommentEntity) (*com
 }
 
 func (s *CommentService) DeleteCommentById(entity *comments.CommentEntity) error {
-	isEntitled := s.commentData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	isEntitled := s.commentData.ActionValidator(entity.RecipeID, entity.UserID)
 	if !isEntitled {
 		return errors.New(consts.SERVER_ForbiddenRequest)
 	}

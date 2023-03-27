@@ -57,7 +57,7 @@ type CommentService_ interface {
 }
 
 type CommentData_ interface {
-	ActionValidator(id, recipeId, userId uint) bool
+	ActionValidator(recipeId, userId uint) bool
 	SelectCommentsByRecipeId(commentEntity *CommentEntity) (*[]CommentEntity, error)
 	InsertComment(commentEntity *CommentEntity) (*CommentEntity, error)
 	UpdateCommentById(commentEntity *CommentEntity) (*CommentEntity, error)
