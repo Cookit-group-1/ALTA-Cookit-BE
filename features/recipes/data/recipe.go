@@ -115,6 +115,14 @@ func (d *RecipeData) DeleteRecipeById(entity *recipes.RecipeEntity) error {
 	return nil
 }
 
+func (d *RecipeData) ActionValidator(recipeId, userId uint) bool {
+	tempGorm := _recipeModel.Recipe{}
+
+	d.db.Where("id = ? AND user_id = ?", recipeId, userId).Find(&tempGorm)
+
+	return tempGorm.ID != 0
+}
+
 func (d *RecipeData) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	gorms := []_recipeModel.Recipe{}
 

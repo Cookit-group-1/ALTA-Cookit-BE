@@ -2,6 +2,8 @@ package service
 
 import (
 	"alta-cookit-be/features/recipes"
+	"alta-cookit-be/utils/consts"
+	"errors"
 )
 
 type RecipeService struct {
@@ -23,6 +25,11 @@ func (s *RecipeService) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Rec
 }
 
 func (s *RecipeService) UpdateRecipeById(entity *recipes.RecipeEntity) error {
+	isEntitled := s.recipeData.ActionValidator(entity.ID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err := s.recipeData.UpdateRecipeById(entity)
 	if err != nil {
 		return err
@@ -31,6 +38,11 @@ func (s *RecipeService) UpdateRecipeById(entity *recipes.RecipeEntity) error {
 }
 
 func (s *RecipeService) DeleteRecipeById(entity *recipes.RecipeEntity) error {
+	isEntitled := s.recipeData.ActionValidator(entity.ID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err := s.recipeData.DeleteRecipeById(entity)
 	if err != nil {
 		return err
