@@ -40,6 +40,11 @@ func (s *StepSerivce) UpdateStepById(entity *steps.StepEntity) error {
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
+	isEntitled := s.stepData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err = s.stepData.UpdateStepById(entity)
 	if err != nil {
 		return err
@@ -48,6 +53,11 @@ func (s *StepSerivce) UpdateStepById(entity *steps.StepEntity) error {
 }
 
 func (s *StepSerivce) DeleteStepById(entity *steps.StepEntity) error {
+	isEntitled := s.stepData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	err := s.stepData.DeleteStepById(entity)
 	if err != nil {
 		return err

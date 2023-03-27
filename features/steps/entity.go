@@ -34,6 +34,7 @@ type StepService_ interface {
 }
 
 type StepData_ interface {
+	ActionValidator(id, recipeId, userId uint) bool
 	InsertStep(stepEntity *StepEntity) (*StepEntity, error)
 	UpdateStepById(istepEntity *StepEntity) error
 	DeleteStepById(stepEntity *StepEntity) error

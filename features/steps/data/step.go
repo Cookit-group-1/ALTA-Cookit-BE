@@ -2,6 +2,7 @@ package data
 
 import (
 	"alta-cookit-be/features/steps"
+	_stepModel "alta-cookit-be/features/steps/models"
 	"alta-cookit-be/utils/consts"
 	"errors"
 	"strings"
@@ -17,6 +18,13 @@ func New(db *gorm.DB) steps.StepData_ {
 	return &StepData{
 		db: db,
 	}
+}
+
+func (d *StepData) ActionValidator(id, recipeId, userId uint) bool {
+	tempGorm := _stepModel.Step{}
+	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = steps.recipe_id").Where("steps.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+
+	return tempGorm.ID != 0
 }
 
 func (d *StepData) InsertStep (entity *steps.StepEntity) (*steps.StepEntity, error) {
