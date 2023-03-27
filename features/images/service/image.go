@@ -2,6 +2,7 @@ package service
 
 import (
 	"alta-cookit-be/features/images"
+	"alta-cookit-be/features/recipes"
 	"alta-cookit-be/utils/consts"
 	"errors"
 
@@ -9,18 +10,25 @@ import (
 )
 
 type ImageService struct {
-	imageData images.ImageData_
-	validate  *validator.Validate
+	recipeData recipes.RecipeData_
+	imageData  images.ImageData_
+	validate   *validator.Validate
 }
 
-func New(imageData images.ImageData_) images.ImageService_ {
+func New(imageData images.ImageData_, recipeData recipes.RecipeData_) images.ImageService_ {
 	return &ImageService{
-		imageData: imageData,
-		validate:  validator.New(),
+		imageData:  imageData,
+		recipeData: recipeData,
+		validate:   validator.New(),
 	}
 }
 
 func (s *ImageService) InsertImage(entity *[]images.ImageEntity) (*[]images.ImageEntity, error) {
+	isEntitled := s.recipeData.ActionValidator((*entity)[0].RecipeID, (*entity)[0].UserID)
+	if !isEntitled {
+		return nil, errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
 	output, err := s.imageData.InsertImage(entity)
 	if err != nil {
 		return nil, err
