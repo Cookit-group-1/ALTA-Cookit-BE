@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -71,7 +70,7 @@ func ReadEnv() *AppConfig {
 		app.GCP_PROJECT_ID = val
 		isRead = false
 	}
-	if val, found := os.LookupEnv("GCP_PROJECT_NAME"); found {
+	if val, found := os.LookupEnv("GCP_BUCKET_NAME"); found {
 		app.DB_NAME = val
 		isRead = false
 	}
@@ -123,7 +122,6 @@ func ReadEnv() *AppConfig {
 	SECRET_JWT = app.JWT_KEY
 	GCP_PROJECT_ID = app.GCP_PROJECT_ID
 	GCP_BUCKET_NAME = app.GCP_BUCKET_NAME
-	fmt.Println(GCP_PROJECT_ID, GCP_BUCKET_NAME)
 	AWS_REGION = app.AWS_REGION
 	ACCESS_KEY_ID = app.ACCESS_KEY_ID
 	ACCESS_KEY_SECRET = app.ACCESS_KEY_SECRET
