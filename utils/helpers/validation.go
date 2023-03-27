@@ -35,6 +35,14 @@ type UserRegisterValidate struct {
 	Password string `validate:"required,secure_password"`
 }
 
+// func CoreUserReqToVal(data users.Core) UserRegisterValidate {
+// 	return UserRegisterValidate{
+// 		Username: data.Username,
+// 		Email:    data.Email,
+// 		Password: data.Password,
+// 	}
+// }
+
 type UserLoginValidate struct {
 	Username string `validate:"required"`
 	Password string `validate:"required,secure_password"`
