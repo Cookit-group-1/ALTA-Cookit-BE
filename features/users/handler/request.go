@@ -34,6 +34,10 @@ type ApprovementReq struct {
 	Role        string `json:"role" form:"role"`
 }
 
+type ApprovalReq struct {
+	Status string `json:"status" form:"status"`
+}
+
 func ReqToCore(data interface{}) *users.Core {
 	res := users.Core{}
 
