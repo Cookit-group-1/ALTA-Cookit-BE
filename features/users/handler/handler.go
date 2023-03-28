@@ -180,6 +180,9 @@ func (uh *userHandler) SearchUser() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}
+		if quotes == "Admin" || quotes == "admin" || quotes == "ADMIN" {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "cannot search credentials data"})
+		}
 		if quotes == "" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}

@@ -30,12 +30,17 @@ type UpdatePasswordReq struct {
 }
 
 type ApprovementReq struct {
+	ID          uint   `json:"id" form:"id"`
+	Username    string `json:"username" form:"username"`
 	Approvement string `json:"approvement" form:"approvement"`
 	Role        string `json:"role" form:"role"`
 }
 
 type ApprovalReq struct {
-	Status string `json:"status" form:"status"`
+	ID       uint   `json:"id" form:"id"`
+	Username string `json:"username" form:"username"`
+	Role     string `json:"role" form:"role"`
+	Status   string `json:"status" form:"status"`
 }
 
 func ReqToCore(data interface{}) *users.Core {
@@ -63,8 +68,16 @@ func ReqToCore(data interface{}) *users.Core {
 		res.PasswordConfirmation = cnv.PasswordConfirmation
 	case ApprovementReq:
 		cnv := data.(ApprovementReq)
+		res.ID = cnv.ID
+		res.Username = cnv.Username
 		res.Approvement = cnv.Approvement
 		res.Role = cnv.Role
+	case ApprovalReq:
+		cnv := data.(ApprovalReq)
+		res.ID = cnv.ID
+		res.Username = cnv.Username
+		res.Role = cnv.Role
+
 	default:
 		return nil
 	}
