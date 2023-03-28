@@ -257,3 +257,25 @@ func (uh *userHandler) AdminApproval() echo.HandlerFunc {
 		})
 	}
 }
+
+// ListUserRequest implements users.UserHandler
+func (uh *userHandler) ListUserRequest() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, role, _ := middlewares.ExtractToken(c)
+		if role != "Admin" {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "only admin can pass"})
+		}
+		dataCore, err := uh.srv.ListUserRequest(id)
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		result := []ListUserRequestedResponse{}
+		for i := 0; i < len(dataCore); i++ {
+			result = append(result, ToListUserRequestedResponse(dataCore[i]))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all requested users",
+		})
+	}
+}

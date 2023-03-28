@@ -159,7 +159,7 @@ func (uq *UserQuery) SearchUser(userID uint, quote string) ([]users.Core, error)
 // ListUserRequest implements users.UserData
 func (uq *UserQuery) ListUserRequest(userID uint) ([]users.Core, error) {
 	listUser := []User{}
-	err := uq.db.Where("approvement = requested", userID).First(&listUser).Error
+	err := uq.db.Where("approvement = ?", "requested").Find(&listUser).Error
 	if err != nil {
 		log.Println("get list user request query error", err.Error())
 		return []users.Core{}, errors.New("users not found")

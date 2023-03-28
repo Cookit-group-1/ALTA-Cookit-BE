@@ -55,6 +55,24 @@ func ToSearchResponse(data users.Core) SearchResponse {
 	}
 }
 
+type ListUserRequestedResponse struct {
+	ID             uint
+	ProfilePicture string
+	Username       string
+	Role           string
+	Approvement    string
+}
+
+func ToListUserRequestedResponse(data users.Core) ListUserRequestedResponse {
+	return ListUserRequestedResponse{
+		ID:             data.ID,
+		ProfilePicture: data.ProfilePicture,
+		Username:       data.Username,
+		Role:           data.Role,
+		Approvement:    data.Approvement,
+	}
+}
+
 func ConvertUpdateResponse(input users.Core) (interface{}, error) {
 	ResponseFilter := users.Core{}
 	ResponseFilter = input
