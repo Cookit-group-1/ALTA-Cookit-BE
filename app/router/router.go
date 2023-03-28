@@ -47,7 +47,7 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	e.GET("/users", userHandler.Profile(), middlewares.JWTMiddleware())
 	e.PUT("/users", userHandler.Update(), middlewares.JWTMiddleware())
 	e.DELETE("/users", userHandler.Deactive(), middlewares.JWTMiddleware())
-	e.GET("users/upgrade", userHandler.UpgradeUser(), middlewares.JWTMiddleware())
+	e.POST("users/upgrade", userHandler.UpgradeUser(), middlewares.JWTMiddleware())
 	e.GET("users/search", userHandler.SearchUser(), middlewares.JWTMiddleware())
 	e.PUT("/users/password", userHandler.UpdatePassword(), middlewares.JWTMiddleware())
 	e.GET("/users/:id", userHandler.ShowAnotherUserByID(), middlewares.JWTMiddleware())
@@ -55,8 +55,8 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// e.PUT("/users/balances", userHandler.UpdateBalance, middlewares.JWTMiddleware())
 
 	// Admin
-	// e.PUT("/users/approval/:id", userHandler.AdminApproval(), middlewares.JWTMiddleware())
-	// e.GET("users/verifying", userHandler.ListUserRequest(), middlewares.JWTMiddleware())
+	e.PUT("/users/approval/:id", userHandler.AdminApproval(), middlewares.JWTMiddleware())
+	e.GET("users/verifying", userHandler.ListUserRequest(), middlewares.JWTMiddleware())
 }
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {

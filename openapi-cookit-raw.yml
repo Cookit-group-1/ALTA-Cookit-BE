@@ -565,7 +565,7 @@ paths:
                 message: internal server error
 
   /users/upgrade:
-    get:
+    post:
       tags:
         - Users
       summary: "request upgrade verified user to admin"
@@ -573,7 +573,7 @@ paths:
       security:
         - JWTAuth: []
       responses:
-        201:
+        200:
           description: "success submitted verified user request to admin"
           content:
             application/json:

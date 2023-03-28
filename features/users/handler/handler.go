@@ -163,7 +163,7 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
 			}
 		}
-		return c.JSON(http.StatusOK, map[string]interface{}{
+		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "success send your request to admin",
 		})
 	}
