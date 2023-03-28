@@ -9,4 +9,5 @@ type Cart struct {
 	UserID       uint
 	IngredientID uint
 	Quantity     int `gorm:"not null;default:1"`
+	TotalPrice float64
 }
