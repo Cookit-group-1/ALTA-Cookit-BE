@@ -155,3 +155,9 @@ func (uq *UserQuery) SearchUser(userID uint, quote string) ([]users.Core, error)
 
 	return res, nil
 }
+
+// ListUserRequest implements users.UserData
+func (uq *UserQuery) ListUserRequest(userID uint) ([]users.Core, error) {
+	listUser := []User{}
+	err :=
+}

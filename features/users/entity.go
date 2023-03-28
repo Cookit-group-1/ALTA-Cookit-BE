@@ -30,6 +30,7 @@ type UserHandler interface {
 	SearchUser() echo.HandlerFunc
 	ShowAnotherUserByID() echo.HandlerFunc
 	AdminApproval() echo.HandlerFunc
+	ListUserRequest() echo.HandlerFunc
 }
 
 type UserService interface {
@@ -41,6 +42,7 @@ type UserService interface {
 	UpdatePassword(userID uint, updatePassword Core) error
 	UpgradeUser(userID uint, approvement Core) (Core, error)
 	SearchUser(userID uint, quote string) ([]Core, error)
+	ListUserRequest(userID uint) ([]Core, error)
 }
 
 type UserData interface {
@@ -52,4 +54,5 @@ type UserData interface {
 	Deactive(userID uint) error
 	UpgradeUser(userID uint, approvement Core) (Core, error)
 	SearchUser(userID uint, quote string) ([]Core, error)
+	ListUserRequest(userID uint) ([]Core, error)
 }
