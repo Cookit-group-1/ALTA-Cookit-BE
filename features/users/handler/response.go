@@ -42,11 +42,11 @@ func ToSearchResponse(data users.Core) SearchResponse {
 }
 
 type ListUserRequestedResponse struct {
-	ID             uint
-	ProfilePicture string
-	Username       string
-	Role           string
-	Approvement    string
+	ID             uint   `json:"id"`
+	ProfilePicture string `json:"profile_picture"`
+	Username       string `json:"username"`
+	Role           string `json:"role"`
+	Approvement    string `json:"approvement"`
 }
 
 func ToListUserRequestedResponse(data users.Core) ListUserRequestedResponse {

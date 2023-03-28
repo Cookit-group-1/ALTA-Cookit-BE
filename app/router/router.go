@@ -56,7 +56,7 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 
 	// Admin
 	e.PUT("/users/approval/:id", userHandler.AdminApproval(), middlewares.JWTMiddleware())
-	e.GET("users/verifying", userHandler.ListUserRequest(), middlewares.JWTMiddleware())
+	e.GET("/users/listverify", userHandler.ListUserRequest(), middlewares.JWTMiddleware())
 }
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {

@@ -568,7 +568,7 @@ paths:
     post:
       tags:
         - Users
-      summary: "request upgrade verified user to admin"
+      summary: "request upgrade account to admin"
       description: "request upgrade verified user to admin"
       security:
         - JWTAuth: []
@@ -585,6 +585,107 @@ paths:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+
+  /users/approval/{id}:
+    put:
+      tags:
+        - Admin
+      summary: accept or deny from user request upgrading account
+      description: accept or deny from user request upgrading account
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "id"
+          in: path
+          required: true
+          schema:
+              description: "id"
+              type: integer
+              example: 5
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+            example:
+              status: verify
+      responses:
+        200:
+          description: success approve verified user request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success approve verified user request"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
+
+  /users/listverify:
+    get:
+      tags:
+        - Admin
+      summary: get all list users request upgrade
+      description: get all list users who want upgrade 
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "success show all requested users"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 1
+                    profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    username: "udin adun"
+                    role: "User"
+                    approvement: "requested"
+                  - id: 2
+                    profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    username: "kamarudin"
+                    role: "User"
+                    approvement: "requested"
+                message: "success show all requested users"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+      
 
   ####################################
   #  FOLLOWERS
