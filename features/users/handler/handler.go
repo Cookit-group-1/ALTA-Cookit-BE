@@ -7,6 +7,7 @@ import (
 	"alta-cookit-be/utils/helpers"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -192,5 +193,22 @@ func (uh *userHandler) SearchUser() echo.HandlerFunc {
 			"data":    result,
 			"message": "success find user",
 		})
+	}
+}
+
+// ShowAnotherUserByID implements users.UserHandler
+func (uh *userHandler) ShowAnotherUserByID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		pID := c.Param("id")
+		anotherUserID, _ := strconv.Atoi(pID)
+		_, _, err := middlewares.ExtractToken(c)
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "error from server"})
+		}
+		dataCore, err := uh.srv.Profile(uint(anotherUserID))
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+		}
+		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.USER_SuccessGetProfile, ToProfileResponse(dataCore)))
 	}
 }

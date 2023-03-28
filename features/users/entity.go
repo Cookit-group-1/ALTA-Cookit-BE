@@ -28,6 +28,7 @@ type UserHandler interface {
 	UpdatePassword() echo.HandlerFunc
 	UpgradeUser() echo.HandlerFunc
 	SearchUser() echo.HandlerFunc
+	ShowAnotherUserByID() echo.HandlerFunc
 }
 
 type UserService interface {
