@@ -29,7 +29,7 @@ type UserHandler interface {
 	UpgradeUser() echo.HandlerFunc
 	SearchUser() echo.HandlerFunc
 	ShowAnotherUserByID() echo.HandlerFunc
-	AdminApproval(userID uint) echo.HandlerFunc
+	AdminApproval() echo.HandlerFunc
 }
 
 type UserService interface {

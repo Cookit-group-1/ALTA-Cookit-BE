@@ -146,15 +146,13 @@ func (uh *userHandler) UpdatePassword() echo.HandlerFunc {
 // UpgradeUser implements users.UserHandler
 func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userID, _, _ := middlewares.ExtractToken(c)
+		userID, role, _ := middlewares.ExtractToken(c)
+		if role == "VerifiedUser" {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "your role already VerifiedUser"})
+		}
 		input := ApprovementReq{
 			Approvement: "requested",
 		}
-
-		// err := c.Bind(&input)
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, "input format incorrect")
-		// }
 
 		res, err := uh.srv.UpgradeUser(userID, *ReqToCore(input))
 
@@ -167,7 +165,7 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    ToApproveResponse(res),
-			"message": "your request has been submmited upgrade to verifieduser",
+			"message": "your request has been submmited to admin",
 		})
 	}
 }
@@ -181,6 +179,9 @@ func (uh *userHandler) SearchUser() echo.HandlerFunc {
 		res, err := uh.srv.SearchUser(userID, quotes)
 		if err != nil {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+		}
+		if quotes == "Admin" || quotes == "admin" || quotes == "ADMIN" {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "cannot search credentials data"})
 		}
 		if quotes == "" {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
@@ -214,11 +215,11 @@ func (uh *userHandler) ShowAnotherUserByID() echo.HandlerFunc {
 }
 
 // AdminApproval implements users.UserHandler
-func (uh *userHandler) AdminApproval(userID uint) echo.HandlerFunc {
+func (uh *userHandler) AdminApproval() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		_, role, _ := middlewares.ExtractToken(c)
 		if role != "Admin" {
-			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "only admin can login"})
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "only admin can pass"})
 		}
 		approveID := c.Param("id")
 		approvementID, _ := strconv.Atoi(approveID)
@@ -226,24 +227,20 @@ func (uh *userHandler) AdminApproval(userID uint) echo.HandlerFunc {
 		input := ApprovalReq{}
 		errBind := c.Bind(&input)
 		if errBind != nil {
-			return c.JSON(http.StatusBadRequest,  map[string]interface{}{"message": "cannot "})
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "cannot verify user, please choose verify or deny"})
 		}
 
 		targetRole := "User"
-		if input.Status == "accepted" {
+		if input.Status == "verify" {
 			targetRole = "VerifiedUser"
+		} else {
+			return c.JSON(http.StatusCreated, map[string]interface{}{"message": "user request verified has been denied"})
 		}
 
 		updatedApprovement := ApprovementReq{
 			Approvement: input.Status,
-			Role: 	  targetRole,
+			Role:        targetRole,
 		}
-
-
-		// err := c.Bind(&input)
-		// if err != nil {
-		// 	return c.JSON(http.StatusBadRequest, "input format incorrect")
-		// }
 
 		res, err := uh.srv.UpgradeUser(uint(approvementID), *ReqToCore(updatedApprovement))
 
@@ -256,7 +253,7 @@ func (uh *userHandler) AdminApproval(userID uint) echo.HandlerFunc {
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    ToApproveResponse(res),
-			"message": "your request has been submmited upgrade to verifieduser",
+			"message": "success approve verified user request",
 		})
 	}
 }
