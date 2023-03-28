@@ -14,7 +14,7 @@ type Core struct {
 	Email                string
 	Password             string
 	NewPassword          string
-	ConfirmationPassword string
+	PasswordConfirmation string
 	Role                 string
 	Approvement          string
 }

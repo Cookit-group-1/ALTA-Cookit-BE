@@ -26,7 +26,7 @@ type UpdateProfileReq struct {
 type UpdatePasswordReq struct {
 	Password             string `json:"old_password" form:"old_password"`
 	NewPassword          string `json:"new_password" form:"new_password"`
-	ConfirmationPassword string `json:"confirmation_password" form:"confirmation_password"`
+	PasswordConfirmation string `json:"password_confirmation" form:"password_confirmation"`
 }
 
 type ApprovementReq struct {
@@ -56,7 +56,7 @@ func ReqToCore(data interface{}) *users.Core {
 		cnv := data.(UpdatePasswordReq)
 		res.Password = cnv.Password
 		res.NewPassword = cnv.NewPassword
-		res.ConfirmationPassword = cnv.ConfirmationPassword
+		res.PasswordConfirmation = cnv.PasswordConfirmation
 	case ApprovementReq:
 		cnv := data.(ApprovementReq)
 		res.Approvement = cnv.Approvement
