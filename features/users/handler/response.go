@@ -23,20 +23,6 @@ func ToProfileResponse(data users.Core) ProfileResponse {
 	}
 }
 
-type ApproveResponse struct {
-	ID       uint   `json:"id"`
-	Username string `json:"username"`
-	Role     string `json:"role"`
-}
-
-func ToApproveResponse(data users.Core) ApproveResponse {
-	return ApproveResponse{
-		ID:       data.ID,
-		Username: data.Username,
-		Role:     data.Role,
-	}
-}
-
 type SearchResponse struct {
 	ID             uint   `json:"id"`
 	ProfilePicture string `json:"profile_picture"`
