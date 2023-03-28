@@ -20,6 +20,7 @@ type IngredientCore struct {
 type CartsCore struct {
 	ID          uint
 	Ingredients []IngredientCore
+	Quantity    uint
 	TotalPrice  float64
 }
 
