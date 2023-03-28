@@ -694,6 +694,12 @@ paths:
           schema:
             type: integer
             example: 2
+        - name: user_id
+          in: query
+          description: recipes of user's id to looked for
+          schema:
+            type: integer
+            example: 2
         - name: name
           in: query
           description: recipe's name
@@ -728,8 +734,6 @@ paths:
                   $ref: "#/components/schemas/responseObject"
                 example:
                   data:
-                    {
-                      recipes:
                         [
                           {
                             id: 1,
@@ -776,7 +780,7 @@ paths:
                             profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
                             name: "Indomie Telur Spesial",
                             description: "Indomie telur terenak sepanjang masa",
-                            type: "Original",
+                            type: "Mixed",
                             status: "None",
                             total_like: 79,
                             total_comment : 117,
@@ -787,10 +791,67 @@ paths:
                                   url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
                                 }
                               ],
+                            replied_recipe:
+                              {
+                                id: 1,
+                                username: "Benjamin29",
+                                user_role: "VerifiedUser",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                type: "Original",
+                                status: "None",
+                                total_like: 79,
+                                total_comment : 117,
+                                images:
+                                  [
+                                    {
+                                      id: 1,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
                           },
-                        ],
-                        total_page: 1,
-                    }
+                          {
+                            id: 4,
+                            username: "Ronny69",
+                            user_role: "User",
+                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
+                            name: "Indomie Telur Spesial Ala Ronny",
+                            description: "Indomie telur terenak sepanjang masa",
+                            type: "Cooked",
+                            status: "None",
+                            total_like: 79,
+                            total_comment : 117,
+                            images:
+                              [
+                                {
+                                  id: 3,
+                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
+                                }
+                              ],
+                            replied_recipe:
+                              {
+                                id: 1,
+                                username: "Benjamin29",
+                                user_role: "VerifiedUser",
+                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
+                                name: "Indomie Spesial",
+                                description: "Indomie terenak sepanjang masa",
+                                type: "Original",
+                                status: "None",
+                                total_like: 79,
+                                total_comment : 117,
+                                images:
+                                  [
+                                    {
+                                      id: 1,
+                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
+                                    }
+                                  ],
+                              }
+                          },
+                        ]
                   message: "succesfully read list of recipes"
           400:
             description: "bad request"
@@ -1323,156 +1384,6 @@ paths:
                     type: string
               example:
                 message: internal server error
-
-  /users/recipes:
-    get:
-        tags:
-          - Recipes
-        summary: get list of user's recipes
-        description: feature for getting list of user's recipes
-        security:
-        - JWTAuth: []
-        parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            example: 1
-        - name: limit
-          in: query
-          description: limit data for each page
-          schema:
-            type: integer
-            example: 2
-        - name: type
-          in: query
-          description: recipe's type
-          schema:
-            type: string
-            enum:
-              - Original
-              - Mixed
-              - Cooked
-            example: "Original"
-        responses:
-          200:
-            description: success get list of user's recipes
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/responseObject"
-                example:
-                  data:
-                    {
-                      recipes:
-                        [
-                          {
-                            id: 1,
-                            username: "Benjamin29",
-                            user_role: "VerifiedUser",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
-                            name: "Indomie Spesial",
-                            description: "Indomie terenak sepanjang masa",
-                            type: "Original",
-                            status: "OpenForSale",
-                            total_like: 79,
-                            total_comment : 117,
-                            images:
-                              [
-                                {
-                                  id: 1,
-                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
-                                }
-                              ],
-                          },
-                          {
-                            id: 2,
-                            username: "Benjamin29",
-                            user_role: "VerifiedUser",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
-                            name: "Indomie Soto Spesial",
-                            description: "Indomie soto terenak sepanjang masa",
-                            type: "Original",
-                            status: "None",
-                            total_like: 79,
-                            total_comment : 117,
-                            images:
-                              [
-                                {
-                                  id: 2,
-                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Soto%20Spesial.jpg"
-                                }
-                              ],
-                          },
-                          {
-                            id: 4,
-                            username: "Benjamin29",
-                            user_role: "VerifiedUser",
-                            profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cythe.jpg",
-                            name: "Indomie Telur Spesial",
-                            description: "Indomie telur terenak sepanjang masa",
-                            type: "Mixed",
-                            status: "None",
-                            total_like: 79,
-                            total_comment : 117,
-                            images:
-                              [
-                                {
-                                  id: 4,
-                                  url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
-                                }
-                              ],
-                            replied_recipe:
-                              {
-                                id: 3,
-                                username: "Ronny69",
-                                user_role: "Ronny69",
-                                profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Cloud.jpg",
-                                name: "Indomie Spesial",
-                                description: "Indomie terenak sepanjang masa",
-                                status: "OpenForSale",
-                                total_like: 79,
-                                total_comment : 117,
-                                images:
-                                  [
-                                    {
-                                      id: 3,
-                                      url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
-                                    }
-                                  ],
-                              }
-                          },
-                        ],
-                        total_page: 1,
-                    }
-                  message: "succesfully read list of user's recipes"
-          400:
-            description: "bad request"
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                examples:
-                  Invalid page param:
-                    value:
-                      message: invalid page param
-                  Invalid limit param:
-                    value:
-                      message: invalid limit param
-          500:
-            description: "internal server error"
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                example:
-                  message: internal server error
                       
   /users/recipes/timeline:
     get:
@@ -1503,8 +1414,6 @@ paths:
                   $ref: "#/components/schemas/responseObject"
                 example:
                   data:
-                    {
-                      recipes:
                         [
                           {
                             id: 1,
@@ -1622,9 +1531,7 @@ paths:
                                   ],
                               }
                           },
-                        ],
-                        total_page: 1,
-                    }
+                        ]
                   message: "succesfully read list of recipes"
           400:
             description: "bad request"
