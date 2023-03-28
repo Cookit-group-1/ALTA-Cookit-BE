@@ -31,6 +31,63 @@ func New(db *gorm.DB, userData users.UserData, imageData images.ImageData_) reci
 	}
 }
 
+func (d *RecipeData) ActionValidator(recipeId, userId uint) bool {
+	tempGorm := _recipeModel.Recipe{}
+
+	d.db.Where("id = ? AND user_id = ?", recipeId, userId).Find(&tempGorm)
+
+	return tempGorm.ID != 0
+}
+
+func (d *RecipeData) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	gorms := []_recipeModel.Recipe{}
+
+	qString := ""
+	for key, val := range entity.ExtractedQueryParams {
+		if qString != "" {
+			qString += " AND "
+		}
+		if key == "name" {
+			qString += fmt.Sprintf("%s LIKE %s%s%s ", key, "'%", val, "%'")
+		} else {
+			qString += fmt.Sprintf("%s = '%s'", key, val)
+		}
+	}
+
+	tx := d.db.Preload("Recipe").Where(qString).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	entities := []recipes.RecipeEntity{}
+	for index, gorm := range gorms {
+		userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
+		userModel := _userModel.CoreToModel(*userEntity)
+		entities = append(entities, *ConvertToEntity(&gorm, &userModel))
+		if entities[index].Recipe != nil {
+			userEntity := d.userData.SelectUserById(users.Core{ID: entities[index].Recipe.UserID})
+			entities[index].Recipe.UserName = userEntity.Username
+			entities[index].Recipe.UserRole = userEntity.Role
+			entities[index].Recipe.ProfilePicture = userEntity.ProfilePicture
+		}
+	}
+
+	for index, entity := range entities {
+		d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entity.ID).Find(&entities[index].TotalLike)
+		if entities[index].Recipe != nil {
+			d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entities[index].Recipe.ID).Find(&entities[index].Recipe.TotalLike)
+		}
+	}
+
+	for index, entity := range entities {
+		d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(cs.recipe_id) as total_comment").Joins("left join comments cs on cs.recipe_id = recipes.id").Where("cs.recipe_id = ?", entity.ID).Find(&entities[index].TotalComment)
+		if entities[index].Recipe != nil {
+			d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(cs.recipe_id) as total_comment").Joins("left join comments cs on cs.recipe_id = recipes.id").Where("cs.recipe_id = ?", entities[index].Recipe.ID).Find(&entities[index].Recipe.TotalComment)
+		}
+	}
+	return &entities, nil
+}
+
 func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
 	gorm := *ConvertToGorm(entity)
 
@@ -115,33 +172,18 @@ func (d *RecipeData) DeleteRecipeById(entity *recipes.RecipeEntity) error {
 	return nil
 }
 
-func (d *RecipeData) ActionValidator(recipeId, userId uint) bool {
-	tempGorm := _recipeModel.Recipe{}
-
-	d.db.Where("id = ? AND user_id = ?", recipeId, userId).Find(&tempGorm)
-
-	return tempGorm.ID != 0
-}
-
-func (d *RecipeData) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+func (d *RecipeData) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	gorms := []_recipeModel.Recipe{}
 
-	qString := ""
-	for key, val := range entity.ExtractedQueryParams {
-		if qString != "" {
-			qString += " AND "
-		}
-		qString += fmt.Sprintf("%s = '%s'", key, val)
-	}
-
-	tx := d.db.Preload("Recipe").Where("user_id = ?", entity.UserID).Where(qString).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	subQuery := d.db.Table("followers").Distinct("to_user_id").Where("from_user_id = ?", entity.UserID).Select("to_user_id")
+	tx := d.db.Preload("Recipe").Where("user_id IN (?)", subQuery).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 
 	entities := []recipes.RecipeEntity{}
-	userEntity := d.userData.SelectUserById(users.Core{ID: entity.UserID})
 	for index, gorm := range gorms {
+		userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
 		userModel := _userModel.CoreToModel(*userEntity)
 		entities = append(entities, *ConvertToEntity(&gorm, &userModel))
 		if entities[index].Recipe != nil {
@@ -168,18 +210,17 @@ func (d *RecipeData) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]rec
 	return &entities, nil
 }
 
-func (d *RecipeData) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+func (d *RecipeData) SelectRecipesTrending(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	gorms := []_recipeModel.Recipe{}
 
-	subQuery := d.db.Table("followers").Distinct("to_user_id").Where("from_user_id = ?", entity.UserID).Select("to_user_id")
-	tx := d.db.Preload("Recipe").Where("user_id IN (?)", subQuery).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Debug().Preload("Recipe").Select("*, recipes.id as id, recipes.user_id as user_id, COUNT(DISTINCT lk.id) as total_like, COUNT(DISTINCT cs.id) as total_comment").Joins("left join likes lk on lk.recipe_id = recipes.id").Joins("left join comments cs on cs.recipe_id = recipes.id").Order("total_like desc, total_comment desc").Group("recipes.id").Where("recipes.type = 'Original' AND recipes.created_at >= DATE(NOW() - INTERVAL 7 DAY)").Order("recipes.created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
 
 	entities := []recipes.RecipeEntity{}
-	userEntity := d.userData.SelectUserById(users.Core{ID: entity.UserID})
 	for index, gorm := range gorms {
+		userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
 		userModel := _userModel.CoreToModel(*userEntity)
 		entities = append(entities, *ConvertToEntity(&gorm, &userModel))
 		if entities[index].Recipe != nil {

@@ -73,29 +73,32 @@ type RecipeResponse struct {
 }
 
 type RecipeDelivery_ interface {
+	SelectRecipes(e echo.Context) error
 	InsertRecipe(e echo.Context) error
 	UpdateRecipeById(e echo.Context) error
 	DeleteRecipeById(e echo.Context) error
-	SelectRecipesByUserId(e echo.Context) error
 	SelectRecipesTimeline(e echo.Context) error
+	SelectRecipesTrending(e echo.Context) error
 	SelectRecipeDetailById(e echo.Context) error
 }
 
 type RecipeService_ interface {
+	SelectRecipes(entity *RecipeEntity) (*[]RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error
-	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
 	SelectRecipesTimeline(entity *RecipeEntity) (*[]RecipeEntity, error)
+	SelectRecipesTrending(entity *RecipeEntity) (*[]RecipeEntity, error)
 	SelectRecipeDetailById(entity *RecipeEntity) (*RecipeEntity, error)
 }
 
 type RecipeData_ interface {
 	ActionValidator(recipeId, userId uint) bool
+	SelectRecipes(entity *RecipeEntity) (*[]RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
 	DeleteRecipeById(entity *RecipeEntity) error
-	SelectRecipesByUserId(entity *RecipeEntity) (*[]RecipeEntity, error)
 	SelectRecipesTimeline(entity *RecipeEntity) (*[]RecipeEntity, error)
+	SelectRecipesTrending(entity *RecipeEntity) (*[]RecipeEntity, error)
 	SelectRecipeDetailById(entity *RecipeEntity) (*RecipeEntity, error)
 }

@@ -21,6 +21,26 @@ func New(recipeService recipes.RecipeService_) recipes.RecipeDelivery_ {
 	}
 }
 
+func (d *RecipeDelivery) SelectRecipes(e echo.Context) error {
+	page, limit := helpers.ExtractPageLimit(e)
+	limit, offset := helpers.LimitOffsetConvert(page, limit)
+
+	recipeRequest := recipes.RecipeRequest{}
+	err := e.Bind(&recipeRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	recipeRequest.DataLimit = limit
+	recipeRequest.DataOffset = offset
+	recipeRequest.ExtractedQueryParams = helpers.ExtractQueryParams(e.QueryParams())
+
+	outputs, err := d.recipeService.SelectRecipes(ConvertToEntity(&recipeRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfUserRecipes, ConvertToResponses(outputs)))
+}
+
 func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeRequest := recipes.RecipeRequest{}
@@ -87,28 +107,6 @@ func (d *RecipeDelivery) DeleteRecipeById(e echo.Context) error {
 	return e.JSON(http.StatusCreated, helpers.Response(consts.RECIPE_SucessDeleteUserRecipe))
 }
 
-func (d *RecipeDelivery) SelectRecipesByUserId(e echo.Context) error {
-	userId, _, _ := middlewares.ExtractToken(e)
-	page, limit := helpers.ExtractPageLimit(e)
-	limit, offset := helpers.LimitOffsetConvert(page, limit)
-
-	recipeRequest := recipes.RecipeRequest{}
-	err := e.Bind(&recipeRequest)
-	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
-	}
-	recipeRequest.UserID = userId
-	recipeRequest.DataLimit = limit
-	recipeRequest.DataOffset = offset
-	recipeRequest.ExtractedQueryParams = helpers.ExtractQueryParams(e.QueryParams())
-
-	outputs, err := d.recipeService.SelectRecipesByUserId(ConvertToEntity(&recipeRequest))
-	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
-	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfUserRecipes, ConvertToResponses(outputs)))
-}
-
 func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	page, limit := helpers.ExtractPageLimit(e)
@@ -122,9 +120,29 @@ func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
 	recipeRequest.UserID = userId
 	recipeRequest.DataLimit = limit
 	recipeRequest.DataOffset = offset
-	recipeRequest.ExtractedQueryParams = helpers.ExtractQueryParams(e.QueryParams())
 
 	outputs, err := d.recipeService.SelectRecipesTimeline(ConvertToEntity(&recipeRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
+}
+
+func (d *RecipeDelivery) SelectRecipesTrending(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
+	page, limit := helpers.ExtractPageLimit(e)
+	limit, offset := helpers.LimitOffsetConvert(page, limit)
+
+	recipeRequest := recipes.RecipeRequest{}
+	err := e.Bind(&recipeRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	recipeRequest.UserID = userId
+	recipeRequest.DataLimit = limit
+	recipeRequest.DataOffset = offset
+
+	outputs, err := d.recipeService.SelectRecipesTrending(ConvertToEntity(&recipeRequest))
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
