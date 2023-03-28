@@ -10,6 +10,7 @@ type ProfileResponse struct {
 	ProfilePicture string `json:"profile_picture"`
 	Username       string `json:"username"`
 	Bio            string `json:"bio"`
+	Role           string `json:"role"`
 }
 
 func ToProfileResponse(data users.Core) ProfileResponse {
@@ -18,6 +19,7 @@ func ToProfileResponse(data users.Core) ProfileResponse {
 		ProfilePicture: data.ProfilePicture,
 		Username:       data.Username,
 		Bio:            data.Bio,
+		Role:           data.Role,
 	}
 }
 
