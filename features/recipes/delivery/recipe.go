@@ -38,7 +38,7 @@ func (d *RecipeDelivery) SelectRecipes(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfUserRecipes, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
 }
 
 func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
