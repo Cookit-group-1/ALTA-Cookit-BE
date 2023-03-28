@@ -12,6 +12,7 @@ info:
 tags:
     - name: Auth
     - name: Users
+    - name: Admin
 
 paths:
   /register:
@@ -317,9 +318,9 @@ paths:
                   type: string
                   format: password
             example:
-              old_password: "1234"
-              new_password: "5678"
-              password_confirmation: "5678"
+              old_password: "Abdul1234"
+              new_password: "Abdul5678"
+              password_confirmation: "Abdul5678"
       responses:
         200:
           description: success update password
@@ -564,33 +565,22 @@ paths:
                 message: internal server error
 
   /users/upgrade:
-    post:
+    get:
       tags:
         - Users
-      summary: "upgrade user to verified user"
-      description: "upgrade user to verified user"
+      summary: "request upgrade verified user to admin"
+      description: "request upgrade verified user to admin"
       security:
         - JWTAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                approvement:
-                  type: string
-            example:
-              approvement: "Approve"
       responses:
         201:
-          description: "success upgrade user to verified user"
+          description: "success submitted verified user request to admin"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
-                message: "success upgrade user to verified user"
+                message: "success send your request to admin"
         400:
           $ref: "#/components/responses/400"
         500:

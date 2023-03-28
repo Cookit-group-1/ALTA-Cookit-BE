@@ -164,7 +164,7 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"message": "your request has been submitted to admin",
+			"message": "success send your request to admin",
 		})
 	}
 }
