@@ -27,12 +27,17 @@ func (d *IngredientDetailDelivery) InsertIngredientDetail (e echo.Context) error
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
+	if err != nil {
+		return errors.New(consts.ECHO_InvaildIdParam)
+	}
 
 	ingredientDetailRequest := ingredient_details.IngredientDetailRequest{}
 	err = e.Bind(&ingredientDetailRequest)
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
+	ingredientDetailRequest.RecipeID = recipeId
 	ingredientDetailRequest.IngredientID = ingredientId
 	ingredientDetailRequest.UserID = userId
 
