@@ -185,3 +185,17 @@ func (us *userService) SearchUser(userID uint, quote string) ([]users.Core, erro
 	}
 	return res, nil
 }
+
+// ListUserRequest implements users.UserService
+func (us *userService) ListUserRequest(userID uint) ([]users.Core, error) {
+	res, err := us.qry.ListUserRequest(userID)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "user") {
+			return []users.Core{}, errors.New("user not found")
+		} else {
+			return []users.Core{}, errors.New("internal server error")
+		}
+	}
+	return res, nil
+}
