@@ -154,7 +154,7 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 			Approvement: "requested",
 		}
 
-		res, err := uh.srv.UpgradeUser(userID, *ReqToCore(input))
+		_, err := uh.srv.UpgradeUser(userID, *ReqToCore(input))
 
 		if err != nil {
 			if strings.Contains(err.Error(), "password") {
@@ -163,9 +163,8 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
 			}
 		}
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    ToApproveResponse(res),
-			"message": "your request has been submmited to admin",
+		return c.JSON(http.StatusCreated, map[string]interface{}{
+			"message": "success send your request to admin",
 		})
 	}
 }
@@ -242,7 +241,7 @@ func (uh *userHandler) AdminApproval() echo.HandlerFunc {
 			Role:        targetRole,
 		}
 
-		res, err := uh.srv.UpgradeUser(uint(approvementID), *ReqToCore(updatedApprovement))
+		_, err := uh.srv.UpgradeUser(uint(approvementID), *ReqToCore(updatedApprovement))
 
 		if err != nil {
 			if strings.Contains(err.Error(), "password") {
@@ -252,8 +251,29 @@ func (uh *userHandler) AdminApproval() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    ToApproveResponse(res),
 			"message": "success approve verified user request",
+		})
+	}
+}
+
+// ListUserRequest implements users.UserHandler
+func (uh *userHandler) ListUserRequest() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, role, _ := middlewares.ExtractToken(c)
+		if role != "Admin" {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "only admin can pass"})
+		}
+		dataCore, err := uh.srv.ListUserRequest(id)
+		if err != nil {
+			return c.JSON(helpers.ErrorResponse(err))
+		}
+		result := []ListUserRequestedResponse{}
+		for i := 0; i < len(dataCore); i++ {
+			result = append(result, ToListUserRequestedResponse(dataCore[i]))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all requested users",
 		})
 	}
 }
