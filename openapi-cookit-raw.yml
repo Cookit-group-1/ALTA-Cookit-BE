@@ -348,6 +348,53 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: show another user by user id
+      description: show another user by user id
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: "id"
+          in: path
+          required: true
+          schema:
+              description: "id"
+              type: integer
+              example: 5
+      responses:
+        200:
+          description: succes show profile by user id
+          content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/responseObject"
+                  example:
+                    data:
+                      id: 5
+                      username: "alfian123"
+                      bio: "I love cooking and ate it. LOL"
+                      role: "User"
+                      profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    message: "success show profile"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
 
   /users/followed:
     get:
