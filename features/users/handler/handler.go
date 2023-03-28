@@ -154,7 +154,7 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 			Approvement: "requested",
 		}
 
-		res, err := uh.srv.UpgradeUser(userID, *ReqToCore(input))
+		_, err := uh.srv.UpgradeUser(userID, *ReqToCore(input))
 
 		if err != nil {
 			if strings.Contains(err.Error(), "password") {
@@ -164,8 +164,7 @@ func (uh *userHandler) UpgradeUser() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    ToApproveResponse(res),
-			"message": "your request has been submmited to admin",
+			"message": "your request has been submitted to admin",
 		})
 	}
 }
