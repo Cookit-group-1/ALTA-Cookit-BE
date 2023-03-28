@@ -242,7 +242,7 @@ func (uh *userHandler) AdminApproval() echo.HandlerFunc {
 			Role:        targetRole,
 		}
 
-		res, err := uh.srv.UpgradeUser(uint(approvementID), *ReqToCore(updatedApprovement))
+		_, err := uh.srv.UpgradeUser(uint(approvementID), *ReqToCore(updatedApprovement))
 
 		if err != nil {
 			if strings.Contains(err.Error(), "password") {
@@ -252,7 +252,6 @@ func (uh *userHandler) AdminApproval() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    ToApproveResponse(res),
 			"message": "success approve verified user request",
 		})
 	}
