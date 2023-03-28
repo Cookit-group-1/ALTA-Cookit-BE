@@ -124,7 +124,7 @@ func (us *userService) Update(userID uint, fileData multipart.FileHeader, update
 
 // UpdatePassword implements users.UserService
 func (us *userService) UpdatePassword(userID uint, updatePassword users.Core) error {
-	if updatePassword.Password == "" || updatePassword.NewPassword == "" || updatePassword.ConfirmationPassword == "" {
+	if updatePassword.Password == "" || updatePassword.NewPassword == "" || updatePassword.PasswordConfirmation == "" {
 		return errors.New(consts.AUTH_ErrorEmptyPassword)
 	}
 	user, errSelect := us.qry.Profile(userID)
@@ -136,7 +136,7 @@ func (us *userService) UpdatePassword(userID uint, updatePassword users.Core) er
 		return errors.New(consts.AUTH_ErrorComparePassword)
 	}
 
-	if updatePassword.NewPassword != updatePassword.ConfirmationPassword {
+	if updatePassword.NewPassword != updatePassword.PasswordConfirmation {
 		return errors.New(consts.AUTH_ErrorNewPassword)
 	}
 
