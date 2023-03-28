@@ -16,6 +16,14 @@ func New(recipeData recipes.RecipeData_) recipes.RecipeService_ {
 	}
 }
 
+func (s *RecipeService) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	outputs, err := s.recipeData.SelectRecipes(entity)
+	if err != nil {
+		return nil, err
+	}
+	return outputs, nil
+}
+
 func (s *RecipeService) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
 	output, err := s.recipeData.InsertRecipe(entity)
 	if err != nil {
@@ -50,16 +58,16 @@ func (s *RecipeService) DeleteRecipeById(entity *recipes.RecipeEntity) error {
 	return nil
 }
 
-func (s *RecipeService) SelectRecipesByUserId(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
-	outputs, err := s.recipeData.SelectRecipesByUserId(entity)
+func (s *RecipeService) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	output, err := s.recipeData.SelectRecipesTimeline(entity)
 	if err != nil {
 		return nil, err
 	}
-	return outputs, nil
+	return output, nil
 }
 
-func (s *RecipeService) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
-	output, err := s.recipeData.SelectRecipesTimeline(entity)
+func (s *RecipeService) SelectRecipesTrending(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
+	output, err := s.recipeData.SelectRecipesTrending(entity)
 	if err != nil {
 		return nil, err
 	}
