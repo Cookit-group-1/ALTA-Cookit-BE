@@ -22,12 +22,16 @@ func ToProfileResponse(data users.Core) ProfileResponse {
 }
 
 type ApproveResponse struct {
-	Role string `json:"role"`
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
 }
 
 func ToApproveResponse(data users.Core) ApproveResponse {
 	return ApproveResponse{
-		Role: data.Role,
+		ID:       data.ID,
+		Username: data.Username,
+		Role:     data.Role,
 	}
 }
 
