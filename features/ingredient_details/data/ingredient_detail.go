@@ -22,7 +22,7 @@ func New(db *gorm.DB) ingredient_details.IngredientDetailData_ {
 
 func (d *IngredientDetailData) ActionValidator(id, recipeId, userId uint) bool {
 	tempGorm := _ingredientDetailModel.IngredientDetail{}
-	d.db.Debug().Model(&tempGorm).Joins("left join ingredients igs on igs.id = ingredient_details.ingredient_id").Joins("left join recipes rs on rs.id = igs.recipe_id").Where("ingredient_details.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	d.db.Model(&tempGorm).Joins("left join ingredients igs on igs.id = ingredient_details.ingredient_id").Joins("left join recipes rs on rs.id = igs.recipe_id").Where("ingredient_details.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
 
 	return tempGorm.ID != 0
 }
