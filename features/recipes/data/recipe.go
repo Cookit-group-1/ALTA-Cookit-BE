@@ -54,12 +54,10 @@ func (d *RecipeData) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.Rec
 		}
 	}
 
-	tx := d.db.Preload("Recipe").Preload("Images").Where(qString).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Preload("Recipe").Preload("Images").Preload("Ingredients").Where(qString).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-
-	fmt.Println(gorms[0].Images)
 
 	entities := []recipes.RecipeEntity{}
 	for index, gorm := range gorms {
@@ -240,7 +238,7 @@ func (d *RecipeData) SelectRecipesTrending(entity *recipes.RecipeEntity) (*[]rec
 func (d *RecipeData) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
 	gorm := _recipeModel.Recipe{}
 
-	tx := d.db.Preload("Recipe").Preload("Steps").Preload("Ingredients").Preload("Ingredients.IngredientDetails").Where("id = ?", entity.ID).First(&gorm)
+	tx := d.db.Preload("Recipe").Preload("Steps").Preload("Ingredients").Preload("Images").Preload("Ingredients.IngredientDetails").Where("id = ?", entity.ID).First(&gorm)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
