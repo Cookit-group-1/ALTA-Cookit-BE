@@ -54,10 +54,12 @@ func (d *RecipeData) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.Rec
 		}
 	}
 
-	tx := d.db.Preload("Recipe").Where(qString).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Preload("Recipe").Preload("Images").Where(qString).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
+
+	fmt.Println(gorms[0].Images)
 
 	entities := []recipes.RecipeEntity{}
 	for index, gorm := range gorms {
@@ -91,28 +93,6 @@ func (d *RecipeData) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.Rec
 func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
 	gorm := *ConvertToGorm(entity)
 
-	txTransaction := d.db.Begin()
-	if txTransaction.Error != nil {
-		txTransaction.Rollback()
-		return nil, errors.New(consts.SERVER_InternalServerError)
-	}
-
-	tx := d.db
-	if *gorm.RecipeID != 0 {
-		tx = txTransaction.Create(&gorm)
-	} else {
-		tx = txTransaction.Omit("recipe_id").Create(&gorm)
-	}
-	if tx.Error != nil {
-		if strings.Contains(tx.Error.Error(), "recipe_id") {
-			return nil, errors.New(consts.RECIPE_InvalidRecipe)
-		}
-		if strings.Contains(tx.Error.Error(), "user_id") {
-			return nil, errors.New(consts.USER_InvalidUser)
-		}
-		return nil, tx.Error
-	}
-
 	for index, file := range entity.Image {
 		urlImage, err := storage.GetStorageClient().UploadFile(file, entity.ImageName[index])
 		if err != nil {
@@ -123,10 +103,20 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 		})
 	}
 
-	tx = txTransaction.Commit()
+	tx := d.db
+	if *gorm.RecipeID != 0 {
+		tx = d.db.Create(&gorm)
+	} else {
+		tx = d.db.Omit("recipe_id").Create(&gorm)
+	}
 	if tx.Error != nil {
-		tx.Rollback()
-		return nil, errors.New(consts.SERVER_InternalServerError)
+		if strings.Contains(tx.Error.Error(), "recipe_id") {
+			return nil, errors.New(consts.RECIPE_InvalidRecipe)
+		}
+		if strings.Contains(tx.Error.Error(), "user_id") {
+			return nil, errors.New(consts.USER_InvalidUser)
+		}
+		return nil, tx.Error
 	}
 
 	userEntity := d.userData.SelectUserById(users.Core{ID: entity.UserID})
