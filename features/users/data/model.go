@@ -3,7 +3,7 @@ package data
 import (
 	_cartModel "alta-cookit-be/features/carts/models"
 	_commentModel "alta-cookit-be/features/comments/models"
-	_followerModel "alta-cookit-be/features/followers/models"
+	_followerModel "alta-cookit-be/features/followers/data"
 	_likeModel "alta-cookit-be/features/likes/models"
 	_recipeModel "alta-cookit-be/features/recipes/models"
 	_transactionModel "alta-cookit-be/features/transactions/models"

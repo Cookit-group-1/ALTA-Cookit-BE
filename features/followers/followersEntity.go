@@ -1,10 +1,28 @@
 package followers
 
+import (
+	"github.com/labstack/echo/v4"
+)
+
 type FollowCore struct {
-	ID uint
-	FollowersName string
-	FollowingName string
-	FollowersImage string
-	FollowingImage string
-	
+	ID                  uint
+	FollowersFromUserID uint
+	FollowingToUserID   uint
+	FollowersName       string
+	FollowingName       string
+	FollowersImage      string
+	FollowingImage      string
+	AmountFollowing     uint
+	AmountFollowers     uint
+}
+
+type FollowHandler interface {
+	Follow() echo.HandlerFunc
+	Unfollow() echo.HandlerFunc
+	ShowAllFollower() echo.HandlerFunc
+	ShowAllFollowing() echo.HandlerFunc
+}
+
+type FollowService interface {
+
 }
