@@ -117,9 +117,21 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 		return nil, tx.Error
 	}
 
+	tx = d.db.Preload("Recipe").Preload("Recipe.Steps").Preload("Recipe.Ingredients").Preload("Recipe.Images").Preload("Recipe.Ingredients.IngredientDetails").Preload("Steps").Preload("Ingredients").Preload("Images").Preload("Ingredients.IngredientDetails").Find(&gorm)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
 	userEntity := d.userData.SelectUserById(users.Core{ID: entity.UserID})
 	userModel := _userModel.CoreToModel(*userEntity)
-	return ConvertToEntity(&gorm, &userModel), nil
+	entity = ConvertToEntity(&gorm, &userModel)
+	if entity.Recipe != nil {
+		subUserEntity := d.userData.SelectUserById(users.Core{ID: entity.Recipe.UserID})
+		entity.Recipe.UserName = subUserEntity.Username
+		entity.Recipe.UserRole = subUserEntity.Role
+		entity.Recipe.ProfilePicture = subUserEntity.ProfilePicture
+	}
+	return entity, nil
 }
 
 func (d *RecipeData) UpdateRecipeById(entity *recipes.RecipeEntity) error {
@@ -247,10 +259,10 @@ func (d *RecipeData) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*reci
 	userModel := _userModel.CoreToModel(*userEntity)
 	entity = ConvertToEntity(&gorm, &userModel)
 	if entity.Recipe != nil {
-		subUserGorm := d.userData.SelectUserById(users.Core{ID: entity.Recipe.UserID})
-		entity.Recipe.UserName = subUserGorm.Username
-		entity.Recipe.UserRole = subUserGorm.Role
-		entity.Recipe.ProfilePicture = subUserGorm.ProfilePicture
+		subUserEntity := d.userData.SelectUserById(users.Core{ID: entity.Recipe.UserID})
+		entity.Recipe.UserName = subUserEntity.Username
+		entity.Recipe.UserRole = subUserEntity.Role
+		entity.Recipe.ProfilePicture = subUserEntity.ProfilePicture
 	}
 
 	d.db.Model(&_recipeModel.Recipe{}).Select("COUNT(lk.recipe_id) as total_like").Joins("left join likes lk on lk.recipe_id = recipes.id").Where("lk.recipe_id = ?", entity.ID).Find(&entity.TotalLike)
