@@ -20,7 +20,7 @@ type Ingredient struct {
 	gorm.Model
 	Quantity        uint
 	Price           float64
-	IngredientRefer uint
+	// IngredientRefer uint
 	Recipe          Recipe `gorm:"foreignKey:RecipeName"`
 }
 

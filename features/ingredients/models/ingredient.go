@@ -16,5 +16,5 @@ type Ingredient struct {
 	IngredientDetails []_ingredientDetailModel.IngredientDetail `gorm:"constraint:OnDelete:CASCADE;"`
 	Carts             []_cartModel.Cart                         `gorm:"constraint:OnDelete:CASCADE;"`
 	Transactions      []_transactionModel.Transaction           `gorm:"constraint:OnDelete:CASCADE;"`
-	IngredientRefer uint
+	// IngredientRefer uint
 }
