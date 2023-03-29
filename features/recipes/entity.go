@@ -65,8 +65,8 @@ type RecipeResponse struct {
 	Status              string                           `json:"status,omitempty"`
 	Name                string                           `json:"name,omitempty"`
 	Description         string                           `json:"description,omitempty"`
-	TotalLike           int                              `json:"total_like,omitempty"`
-	TotalComment        int                              `json:"total_comment,omitempty"`
+	TotalLike           int                              `json:"total_like"`
+	TotalComment        int                              `json:"total_comment"`
 	StepResponses       []steps.StepResponse             `json:"steps,omitempty"`
 	IngredientResponses []ingredients.IngredientResponse `json:"ingredients,omitempty"`
 	ImageResponses      []images.ImageResponse           `json:"images,omitempty"`
