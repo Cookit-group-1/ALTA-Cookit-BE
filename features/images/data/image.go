@@ -91,7 +91,7 @@ func (d *ImageData) UpdateImageById(entity *images.ImageEntity) (*images.ImageEn
 }
 
 func (d *ImageData) DeleteImageById(entity *images.ImageEntity) error {
-	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
+	tx := d.db.Unscoped().Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

@@ -7,30 +7,30 @@ import (
 )
 
 type CommentEntity struct {
-	ID                   uint
-	UserID               uint
-	UserName             string
-	UserRole             string
-	ProfilePicture       string
-	RecipeID             uint
-	Comment              string `validate:"required"`
-	Image                multipart.File
-	ImageName            string
-	UrlImage             string
-	DataLimit            int
-	DataOffset           int
+	ID             uint
+	UserID         uint
+	UserName       string
+	UserRole       string
+	ProfilePicture string
+	RecipeID       uint
+	Comment        string `validate:"required"`
+	Image          multipart.File
+	ImageName      string
+	UrlImage       string
+	DataLimit      int
+	DataOffset     int
 }
 
 type CommentRequest struct {
-	ID                   uint
-	UserID               uint
-	UserRole             string
-	RecipeID             uint
-	Comment              string `form:"comment"`
-	Image                multipart.File
-	ImageName            string
-	DataLimit            int
-	DataOffset           int
+	ID         uint   `json:"-" form:"-"`
+	UserID     uint   `json:"-" form:"-"`
+	UserRole   string `json:"-" form:"-"`
+	RecipeID   uint   `json:"-" form:"-"`
+	Comment    string `form:"comment"`
+	Image      multipart.File
+	ImageName  string
+	DataLimit  int
+	DataOffset int
 }
 
 type CommentResponse struct {

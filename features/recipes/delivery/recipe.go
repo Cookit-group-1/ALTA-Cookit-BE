@@ -49,7 +49,11 @@ func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	files, fileNames, _ := helpers.ExtractMultipleFiles(e, "image")
+	files, fileNames, err := helpers.ExtractMultipleImageFiles(e, "image")
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	
 	for index, file := range files {
 		recipeRequest.Image = append(recipeRequest.Image, file)
 		recipeRequest.ImageName = append(recipeRequest.ImageName, fileNames[index])

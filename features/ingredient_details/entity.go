@@ -13,10 +13,10 @@ type IngredientDetailEntity struct {
 }
 
 type IngredientDetailRequest struct {
-	ID           uint
-	UserID       uint
-	RecipeID     uint
-	IngredientID uint
+	ID           uint   `json:"-" form:"-"`
+	UserID       uint   `json:"-" form:"-"`
+	RecipeID     uint   `json:"-" form:"-"`
+	IngredientID uint   `json:"-" form:"-"`
 	Name         string `json:"name" form:"name"`
 	Quantity     int    `json:"quantity" form:"quantity"`
 	Unit         string `json:"unit" form:"unit"`

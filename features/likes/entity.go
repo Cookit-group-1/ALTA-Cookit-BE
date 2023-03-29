@@ -11,9 +11,9 @@ type LikeEntity struct {
 }
 
 type LikeRequest struct {
-	ID       uint
-	UserID   uint
-	RecipeID uint
+	ID       uint `json:"-" form:"-"`
+	UserID   uint `json:"-" form:"-"`
+	RecipeID uint `json:"-" form:"-"`
 }
 
 type LikeDelivery_ interface {

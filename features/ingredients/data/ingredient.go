@@ -52,7 +52,7 @@ func (d *IngredientData) UpdateIngredientById(entity *ingredients.IngredientEnti
 }
 
 func (d *IngredientData) DeleteIngredientById(entity *ingredients.IngredientEntity) error {
-	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
+	tx := d.db.Unscoped().Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

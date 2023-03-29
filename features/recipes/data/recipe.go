@@ -152,7 +152,7 @@ func (d *RecipeData) DeleteRecipeById(entity *recipes.RecipeEntity) error {
 		}
 	}
 
-	tx := d.db.Where("id = ? AND user_id = ?", entity.ID, entity.UserID).Delete(&gorm)
+	tx := d.db.Where("id = ? AND user_id = ?", entity.ID, entity.UserID).Unscoped().Delete(&gorm)
 	if tx.Error != nil {
 		return tx.Error
 	}
