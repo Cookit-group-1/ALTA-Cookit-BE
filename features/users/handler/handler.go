@@ -265,7 +265,7 @@ func (uh *userHandler) ListUserRequest() echo.HandlerFunc {
 		}
 		dataCore, err := uh.srv.ListUserRequest(id)
 		if err != nil {
-			return c.JSON(helpers.ErrorResponse(err))
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}
 		result := []ListUserRequestedResponse{}
 		for i := 0; i < len(dataCore); i++ {
