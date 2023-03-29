@@ -29,3 +29,10 @@ type FollowService interface {
 	ShowAllFollower() ([]FollowCore, error)
 	ShowAllFollowing() ([]FollowCore, error)
 }
+
+type FollowData interface {
+	Follow(userID uint) error
+	Unfollow(userID uint) error
+	ShowAllFollower() ([]FollowCore, error)
+	ShowAllFollowing() ([]FollowCore, error)
+}
