@@ -3,6 +3,8 @@ package helpers
 import (
 	"alta-cookit-be/utils/consts"
 	"errors"
+	"fmt"
+	"math/rand"
 	"mime/multipart"
 	"net/url"
 	"strconv"
@@ -52,8 +54,8 @@ func ExtractQueryParams(queryParams url.Values) map[string]interface{} {
 	return extractedQueryParams
 }
 
-func CheckImageFile(filename string, size int64) error {
-	formatfile := strings.ToLower(filename[strings.LastIndex(filename, ".")+1:])
+func CheckImageFile(fileName string, size int64) error {
+	formatfile := strings.ToLower(fileName[strings.LastIndex(fileName, ".")+1:])
 	if formatfile != "jpg" && formatfile != "jpeg" && formatfile != "png" {
 		return errors.New(consts.ECHO_InvalidImageFileType)
 	}
@@ -63,6 +65,16 @@ func CheckImageFile(filename string, size int64) error {
 	}
 
 	return nil
+}
+
+func RandomString(n int) string {
+    var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+ 
+    s := make([]rune, n)
+    for i := range s {
+        s[i] = letters[rand.Intn(len(letters))]
+    }
+    return string(s)
 }
 
 func ExtractImageFile(c echo.Context, key string) (multipart.File, string, error) {
@@ -82,7 +94,7 @@ func ExtractImageFile(c echo.Context, key string) (multipart.File, string, error
 		return nil, "", err
 	}
 
-	return blobFile, f.Filename, nil
+	return blobFile, fmt.Sprintf("%s.%s", RandomString(50), f.Filename[strings.LastIndex(f.Filename, ".")+1:]), nil
 }
 
 func ExtractMultipleImageFiles(c echo.Context, key string) ([]multipart.File, []string, error) {
@@ -107,7 +119,7 @@ func ExtractMultipleImageFiles(c echo.Context, key string) ([]multipart.File, []
 		}
 
 		blobFiles = append(blobFiles, blobFile)
-		fileNames = append(fileNames, file.Filename)
+		fileNames = append(fileNames, fmt.Sprintf("%s.%s", RandomString(50), file.Filename[strings.LastIndex(file.Filename, ".")+1:]))
 	}
 
 	return blobFiles, fileNames, nil
