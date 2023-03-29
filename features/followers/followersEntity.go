@@ -24,15 +24,15 @@ type FollowHandler interface {
 }
 
 type FollowService interface {
-	Follow(userID uint) error
-	Unfollow(userID uint) error
+	Follow(userID, followingID uint) error
+	Unfollow(userID, followingID uint) error
 	ShowAllFollower() ([]FollowCore, error)
 	ShowAllFollowing() ([]FollowCore, error)
 }
 
 type FollowData interface {
-	Follow(userID uint) error
-	Unfollow(userID uint) error
+	Follow(userID, followingID uint) error
+	Unfollow(userID, followingID uint) error
 	ShowAllFollower() ([]FollowCore, error)
 	ShowAllFollowing() ([]FollowCore, error)
 }
