@@ -10,7 +10,7 @@ import (
 	"alta-cookit-be/app/config"
 	_cartModel "alta-cookit-be/features/carts/models"
 	_commentModel "alta-cookit-be/features/comments/models"
-	_followerModel "alta-cookit-be/features/followers/models"
+	_followerModel "alta-cookit-be/features/followers/data"
 	_imageModel "alta-cookit-be/features/images/models"
 	_ingredientDetailModel "alta-cookit-be/features/ingredient_details/models"
 	_ingredientModel "alta-cookit-be/features/ingredients/models"

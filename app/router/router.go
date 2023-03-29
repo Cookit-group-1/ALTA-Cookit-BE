@@ -6,9 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	_likeData "alta-cookit-be/features/likes/data"
-	_likeDelivery "alta-cookit-be/features/likes/delivery"
-	_likeService "alta-cookit-be/features/likes/service"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
@@ -21,6 +18,9 @@ import (
 	_ingredientData "alta-cookit-be/features/ingredients/data"
 	_ingredientDelivery "alta-cookit-be/features/ingredients/delivery"
 	_ingredientService "alta-cookit-be/features/ingredients/service"
+	_likeData "alta-cookit-be/features/likes/data"
+	_likeDelivery "alta-cookit-be/features/likes/delivery"
+	_likeService "alta-cookit-be/features/likes/service"
 	_recipeData "alta-cookit-be/features/recipes/data"
 	_recipeDelivery "alta-cookit-be/features/recipes/delivery"
 	_recipeService "alta-cookit-be/features/recipes/service"
@@ -30,6 +30,9 @@ import (
 	_userData "alta-cookit-be/features/users/data"
 	_userDelivery "alta-cookit-be/features/users/handler"
 	_userService "alta-cookit-be/features/users/services"
+	_followerData "alta-cookit-be/features/followers/data"
+	_followerService "alta-cookit-be/features/followers/services"
+	_followerDelivery "alta-cookit-be/features/followers/handler"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
@@ -57,6 +60,15 @@ func initUserRouter(db *gorm.DB, e *echo.Echo) {
 	// Admin
 	e.PUT("/users/approval/:id", userHandler.AdminApproval(), middlewares.JWTMiddleware())
 	e.GET("/users/listverify", userHandler.ListUserRequest(), middlewares.JWTMiddleware())
+}
+
+func initFollowerRouter(db *gorm.DB, e *echo.Echo) {
+	// userData := _userData.New(db)
+	follData := _followerData.New(db)
+	follService := _followerService.New(follData)
+	follHandler := _followerDelivery.New(follService)
+
+	e.POST("users/follow/:id", follHandler.Follow(), middlewares.JWTMiddleware())
 }
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
@@ -157,4 +169,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initIngredientRouter(db, e)
 	initIngredientDetailRouter(db, e)
 	initUserRouter(db, e)
+	initFollowerRouter(db, e)
 }
