@@ -48,7 +48,7 @@ func (s *IngredientDetailService) UpdateIngredientDetailById(entity *ingredient_
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	isEntitled := s.ingredientDetailData.ActionValidator(entity.ID, entity.IngredientID, entity.RecipeID, entity.UserID)
+	isEntitled := s.ingredientDetailData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
 	if !isEntitled {
 		return errors.New(consts.SERVER_ForbiddenRequest)
 	}
@@ -61,7 +61,7 @@ func (s *IngredientDetailService) UpdateIngredientDetailById(entity *ingredient_
 }
 
 func (s *IngredientDetailService) DeleteIngredientDetailById(entity *ingredient_details.IngredientDetailEntity) error {
-	isEntitled := s.ingredientDetailData.ActionValidator(entity.ID, entity.IngredientID, entity.RecipeID, entity.UserID)
+	isEntitled := s.ingredientDetailData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
 	if !isEntitled {
 		return errors.New(consts.SERVER_ForbiddenRequest)
 	}

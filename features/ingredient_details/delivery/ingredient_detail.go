@@ -54,10 +54,6 @@ func (d *IngredientDetailDelivery) UpdateIngredientDetailById (e echo.Context) e
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-	ingredientId, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientId)
-	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
-	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -69,7 +65,6 @@ func (d *IngredientDetailDelivery) UpdateIngredientDetailById (e echo.Context) e
 		return helpers.ReturnBadResponse(e, err)
 	}
 	ingredientDetailRequest.ID = id
-	ingredientDetailRequest.IngredientID = ingredientId
 	ingredientDetailRequest.RecipeID = recipeId
 	ingredientDetailRequest.UserID = userId
 
@@ -86,10 +81,6 @@ func (d *IngredientDetailDelivery) DeleteIngredientDetailById(e echo.Context) er
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
 	}
-	ingredientId, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientId)
-	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
-	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
 		return errors.New(consts.ECHO_InvaildIdParam)
@@ -101,7 +92,6 @@ func (d *IngredientDetailDelivery) DeleteIngredientDetailById(e echo.Context) er
 		return helpers.ReturnBadResponse(e, err)
 	}
 	ingredientDetailRequest.ID = id
-	ingredientDetailRequest.IngredientID = ingredientId
 	ingredientDetailRequest.RecipeID = recipeId
 	ingredientDetailRequest.UserID = userId
 
