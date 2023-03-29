@@ -832,6 +832,12 @@ paths:
           schema:
             type: integer
             example: 2
+        - name: id
+          in: query
+          description: recipe's id to looked for
+          schema:
+            type: integer
+            example: 2
         - name: user_id
           in: query
           description: recipes of user's id to looked for
@@ -1264,71 +1270,112 @@ paths:
                   value:
                     data:
                       {
-                        id: 3,
-                        username: "Biangkerokk77",
-                        user_role: "VerifiedUser",
-                        profile_picture: "https://storage.googleapis.com/alta-cookit/static/images/Dark%20Musquito.jpg",
-                        name: "Indomie Telur Spesial",
-                        description: "Indomie telur terenak sepanjang masa",
-                        images:
-                          [
+                        id: 2,
+                        user_id: 2,
+                        username: "Joko69",
+                        user_role: "User",
+                        profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                        recipe_id: 1,
+                        replied_recipe: {
+                          id: 1,
+                          user_id: 1,
+                          username: "Jordy77",
+                          user_role: "User",
+                          type: "Original",
+                          status: "None",
+                          name: "Indomie Spesial",
+                          description: "Indomie terenak sepanjang masa",
+                          total_like: 0,
+                          total_comment: 0,
+                          steps: [
                             {
-                              id: 3,
-                              url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial.jpg"
-                            }
-                          ],
-                        steps:
-                          [
-                            {
-                              id: 11,
-                              name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                              id: 1,
+                              name": "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
                             },
                             {
-                              id: 12,
+                              id: 2,
                               name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
                             },
                             {
-                              id: 13,
+                              id: 3,
                               name: "Setelah air mendidih, masukan mie"
                             },
                             {
-                              id: 14,
+                              id: 4,
                               name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
                             },
                             {
-                              id: 15,
+                              id: 5,
                               name: "Indomie siap disajikan"
-                            },
-                          ],
-                        ingredients:
-                          [
-                            {
-                              id: 3,
-                              name: Original,
-                              price: 11000,
-                              ingredient_details:
-                                [
-                                  {
-                                    id: 5,
-                                    name: "Bumbu Indomie (Original)",
-                                    quantity: 1,
-                                    uint: "pcs",
-                                  },
-                                  {
-                                    id: 6,
-                                    name: "Minyak Indomie (Original)",
-                                    quantity: 1,
-                                    uint: "pcs",
-                                  },
-                                  {
-                                    id: 7,
-                                    name: "Telur",
-                                    quantity: 1,
-                                    uint: "pcs",
-                                  },
-                                ],
                             }
                           ],
+                          ingredients: [
+                            {
+                              id: 1,
+                              name: "Original",
+                              price: 5000,
+                              ingredient_details: [
+                                {
+                                  id: 1,
+                                  name: "Bumbu Indomie (Original)",
+                                  quantity: 1
+                                },
+                                {
+                                  id: 2,
+                                  name: "Minyak Indomie (Original)",
+                                  quantity: 1
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        type: "Mixed",
+                        status: "None",
+                        name: "Indomie Spesial",
+                        description: "Indomie terenak sepanjang masa",
+                        total_like: 0,
+                        total_comment: 0,
+                        steps: [
+                          {
+                            id: 21,
+                            name: "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                          },
+                          {
+                            id: 22,
+                            name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                          },
+                          {
+                            id: 23,
+                            name: "Setelah air mendidih, masukan mie"
+                          },
+                          {
+                            id: 24,
+                            name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                          },
+                          {
+                            id: 25,
+                            name: "Indomie siap disajikan"
+                          }
+                        ],
+                        ingredients: [
+                          {
+                            id: 5,
+                            name: "Original",
+                            price: 5000,
+                            ingredient_details: [
+                              {
+                                id: 9,
+                                name: "Bumbu Indomie (Original)",
+                                quantity: 1
+                              },
+                              {
+                                id: 10,
+                                name: "Minyak Indomie (Original)",
+                                quantity: 1
+                              }
+                            ]
+                          }
+                        ]
                       }
                     message: "successfully insert user's recipe"
                 cooked:
@@ -1348,6 +1395,59 @@ paths:
                               url_image: "https://storage.googleapis.com/alta-cookit/static/images/Indomie%20Spesial%20Ala%20Ronny.jpg"
                             }
                           ],
+                        replied_recipe: {
+                          id: 1,
+                          user_id: 1,
+                          username: "Jordy77",
+                          user_role: "User",
+                          type: "Original",
+                          status: "None",
+                          name: "Indomie Spesial",
+                          description: "Indomie terenak sepanjang masa",
+                          total_like: 0,
+                          total_comment: 0,
+                          steps: [
+                            {
+                              id: 1,
+                              name": "Rebus air sebanyak 300ml dengan api sedang hingga mendidih"
+                            },
+                            {
+                              id: 2,
+                              name: "Sembari menunggu air yang mendidih, siapkan piring dan tuangkan bumbu ke piring tersebut"
+                            },
+                            {
+                              id: 3,
+                              name: "Setelah air mendidih, masukan mie"
+                            },
+                            {
+                              id: 4,
+                              name: "Setelah matang, tuangkan mie ke dalam mangkuk yang telah diisi bumbu"
+                            },
+                            {
+                              id: 5,
+                              name: "Indomie siap disajikan"
+                            }
+                          ],
+                          ingredients: [
+                            {
+                              id: 1,
+                              name: "Original",
+                              price: 5000,
+                              ingredient_details: [
+                                {
+                                  id: 1,
+                                  name: "Bumbu Indomie (Original)",
+                                  quantity: 1
+                                },
+                                {
+                                  id: 2,
+                                  name: "Minyak Indomie (Original)",
+                                  quantity: 1
+                                }
+                              ]
+                            }
+                          ]
+                        },
                         steps: [],
                         ingredients: [],
                       }
