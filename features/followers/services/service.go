@@ -32,7 +32,12 @@ func (fs *followService) ShowAllFollowing() ([]followers.FollowCore, error) {
 
 // Unfollow implements followers.FollowService
 func (fs *followService) Unfollow(userID uint, followingID uint) error {
-	panic("unimplemented")
+	err := fs.qry.Unfollow(userID, followingID)
+	if err != nil {
+		log.Println("query error", err.Error())
+		return errors.New("query error, following account fail")
+	}
+	return nil
 }
 
 func New(ud followers.FollowData) followers.FollowService {
