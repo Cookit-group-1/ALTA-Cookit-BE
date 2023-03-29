@@ -9,25 +9,25 @@ import (
 )
 
 type ImageEntity struct {
-	ID             uint
-	UserID         uint 
-	RecipeID       uint
-	Image          multipart.File
-	ImageName      string
-	UrlImage       string
-}
-
-type ImageRequest struct {
 	ID        uint
 	UserID    uint
 	RecipeID  uint
 	Image     multipart.File
 	ImageName string
+	UrlImage  string
+}
+
+type ImageRequest struct {
+	ID        uint `json:"-" form:"-"`
+	UserID    uint `json:"-" form:"-"`
+	RecipeID  uint `json:"-" form:"-"`
+	Image     multipart.File
+	ImageName string
 }
 
 type ImageResponse struct {
-	ID             uint   `json:"id,omitempty"`
-	UrlImage       string `json:"url_image,omitempty"`
+	ID       uint   `json:"id,omitempty"`
+	UrlImage string `json:"url_image,omitempty"`
 }
 
 type ImageDelivery_ interface {

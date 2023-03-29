@@ -122,7 +122,7 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 }
 
 func (d *CommentData) DeleteCommentById(entity *comments.CommentEntity) error {
-	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
+	tx := d.db.Unscoped().Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

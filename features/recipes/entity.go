@@ -22,10 +22,10 @@ type RecipeEntity struct {
 	UrlImage             string
 	Type                 string
 	Status               string
-	Name                 string 
-	Description          string 
-	TotalLike            int    `gorm:"column:total_like"`
-	TotalComment         int    `gorm:"column:total_comment"`
+	Name                 string
+	Description          string
+	TotalLike            int `gorm:"column:total_like"`
+	TotalComment         int `gorm:"column:total_comment"`
 	StepEntities         []steps.StepEntity
 	IngredientEntities   []ingredients.IngredientEntity
 	ImageEntities        []images.ImageEntity
@@ -35,10 +35,10 @@ type RecipeEntity struct {
 }
 
 type RecipeRequest struct {
-	ID                   uint
-	UserID               uint
-	UserRole             string
-	RecipeID             uint `json:"recipe_id" form:"recipe_id"`
+	ID                   uint   `json:"-" form:"-"`
+	UserID               uint   `json:"-" form:"-"`
+	UserRole             string `json:"-" form:"-"`
+	RecipeID             uint   `json:"recipe_id" form:"recipe_id"`
 	Image                []multipart.File
 	ImageName            []string
 	Type                 string                          `json:"type" form:"type"`

@@ -4,15 +4,15 @@ import "github.com/labstack/echo/v4"
 
 type StepEntity struct {
 	ID       uint
-	UserID   uint   
-	RecipeID uint   
+	UserID   uint
+	RecipeID uint
 	Name     string `validate:"required"`
 }
 
 type StepRequest struct {
-	ID       uint
-	UserID   uint
-	RecipeID uint
+	ID       uint   `json:"-" form:"-"`
+	UserID   uint   `json:"-" form:"-"`
+	RecipeID uint   `json:"-" form:"-"`
 	Name     string `json:"name" form:"name"`
 }
 

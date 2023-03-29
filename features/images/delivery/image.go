@@ -34,9 +34,9 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	files, fileNames, err := helpers.ExtractMultipleFiles(e, "image")
+	files, fileNames, err := helpers.ExtractMultipleImageFiles(e, "image")
 	if err != nil {
-		return e.JSON(http.StatusCreated, helpers.Response(consts.VALIDATION_InvalidInput))
+		return helpers.ReturnBadResponse(e, err)
 	}
 	for index, file := range files {
 		imageRequests = append(imageRequests, images.ImageRequest{
@@ -71,7 +71,10 @@ func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	file, fileName, _ := helpers.ExtractFile(e, "image")
+	file, fileName, _ := helpers.ExtractImageFile(e, "image")
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
 	imageRequest.ID = id
 	imageRequest.UserID = userId
 	imageRequest.RecipeID = recipeId
