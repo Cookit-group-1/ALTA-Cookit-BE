@@ -2,7 +2,7 @@ package carts
 
 import "github.com/labstack/echo/v4"
 
-type Recipe struct {
+type RecipeCore struct {
 	ID          uint
 	Name        string
 	SellerID    uint
@@ -10,16 +10,17 @@ type Recipe struct {
 	RecipeImage string
 }
 
-type Ingredient struct {
+type IngredientCore struct {
 	ID       uint
 	Quantity uint
 	Price    float64
-	Recipe   Recipe
+	Recipe   RecipeCore
 }
 
-type Carts struct {
+type CartsCore struct {
 	ID          uint
-	Ingredients []Ingredient
+	Ingredients []IngredientCore
+	Quantity    uint
 	TotalPrice  float64
 }
 
@@ -31,15 +32,15 @@ type CartHandler interface {
 }
 
 type CartService interface {
-	AddProduct(userID, ingredientID uint, newCart Carts) (Carts, error)
-	ShowAllProduct(userID uint) ([]Carts, error)
-	UpdateProduct(userID, ingredientID uint, updateCart Carts) (Carts, error)
+	AddProduct(userID, ingredientID uint, newCart CartsCore) (CartsCore, error)
+	ShowAllProduct(userID uint) ([]CartsCore, error)
+	UpdateProduct(userID, ingredientID uint, updateCart CartsCore) (CartsCore, error)
 	DeleteProduct(userID, ingredientID uint)
 }
 
 type CartData interface {
-	AddProduct(userID, ingredientID uint, newCart Carts) (Carts, error)
-	ShowAllProduct(userID uint) ([]Carts, error)
-	UpdateProduct(userID, ingredientID uint, updateCart Carts) (Carts, error)
+	AddProduct(userID, ingredientID uint, newCart CartsCore) (CartsCore, error)
+	ShowAllProduct(userID uint) ([]CartsCore, error)
+	UpdateProduct(userID, ingredientID uint, updateCart CartsCore) (CartsCore, error)
 	DeleteProduct(userID, ingredientID uint)
 }
