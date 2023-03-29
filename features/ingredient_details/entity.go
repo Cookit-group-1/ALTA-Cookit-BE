@@ -42,7 +42,7 @@ type IngredientDetailService_ interface {
 }
 
 type IngredientDetailData_ interface {
-	ActionValidator(id, ingredientId, recipeId, userId uint) bool
+	ActionValidator(id, recipeId, userId uint) bool
 	InsertIngredientDetail(ingredientDetailEntity *IngredientDetailEntity) (*IngredientDetailEntity, error)
 	UpdateIngredientDetailById(ingredientDetailEntity *IngredientDetailEntity) error
 	DeleteIngredientDetailById(ingredientDetailEntity *IngredientDetailEntity) error
