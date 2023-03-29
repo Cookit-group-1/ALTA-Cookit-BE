@@ -24,5 +24,8 @@ type FollowHandler interface {
 }
 
 type FollowService interface {
-
+	Follow(userID uint) error
+	Unfollow(userID uint) error
+	ShowAllFollower() ([]FollowCore, error)
+	ShowAllFollowing() ([]FollowCore, error)
 }
