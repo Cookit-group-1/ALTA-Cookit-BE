@@ -238,7 +238,7 @@ func (d *RecipeData) SelectRecipesTrending(entity *recipes.RecipeEntity) (*[]rec
 func (d *RecipeData) SelectRecipeDetailById(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
 	gorm := _recipeModel.Recipe{}
 
-	tx := d.db.Preload("Recipe").Preload("Steps").Preload("Ingredients").Preload("Images").Preload("Ingredients.IngredientDetails").Where("id = ?", entity.ID).First(&gorm)
+	tx := d.db.Preload("Recipe").Preload("Recipe.Steps").Preload("Recipe.Ingredients").Preload("Recipe.Images").Preload("Recipe.Ingredients.IngredientDetails").Preload("Steps").Preload("Ingredients").Preload("Images").Preload("Ingredients.IngredientDetails").Where("id = ?", entity.ID).First(&gorm)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
