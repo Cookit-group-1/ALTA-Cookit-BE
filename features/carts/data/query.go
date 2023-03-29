@@ -12,8 +12,7 @@ type CartQuery struct {
 
 // AddProduct implements carts.CartData
 func (cq *CartQuery) AddProduct(userID uint, ingredientID uint, newCart carts.CartsCore) (carts.CartsCore, error) {
-	 := panic("unimplemented")
-	
+	panic("unimplemented")
 }
 
 // DeleteProduct implements carts.CartData
