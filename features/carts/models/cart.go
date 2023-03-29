@@ -13,24 +13,24 @@ type Cart struct {
 	IngredientID uint
 	Quantity     uint `gorm:"not null;default:1"`
 	TotalPrice   float64
-	Ingredient   []Ingredient `gorm:"foreignKey:IngredientRefer"`
+	// Ingredient   []Ingredient `gorm:"foreignKey:IngredientRefer"`
 }
 
-type Ingredient struct {
-	gorm.Model
-	Quantity        uint
-	Price           float64
-	// IngredientRefer uint
-	Recipe          Recipe `gorm:"foreignKey:RecipeName"`
-}
+// type Ingredient struct {
+// 	gorm.Model
+// 	Quantity        uint
+// 	Price           float64
+// 	// IngredientRefer uint
+// 	Recipe          Recipe `gorm:"foreignKey:RecipeName"`
+// }
 
-type Recipe struct {
-	gorm.Model
-	RecipeName  string
-	RecipeImage string
-	SellerID    uint
-	SellerName  string
-}
+// type Recipe struct {
+// 	gorm.Model
+// 	RecipeName  string
+// 	RecipeImage string
+// 	SellerID    uint
+// 	SellerName  string
+// }
 
 func CartToCore(data Cart) carts.CartsCore {
 	return carts.CartsCore{
