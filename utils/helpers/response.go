@@ -43,6 +43,12 @@ func ReturnBadResponse(e echo.Context, err error) error {
 	case consts.ECHO_InvaildLimitParam:
 		return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
+	case consts.ECHO_InvalidImageFileType:
+		return e.JSON(http.StatusBadRequest, Response(err.Error()))
+	
+	case consts.ECHO_InvalidFileSize:
+		return e.JSON(http.StatusBadRequest, Response(err.Error()))
+
 	case consts.VALIDATION_InvalidInput:
 		return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
@@ -69,6 +75,7 @@ func ReturnBadResponse(e echo.Context, err error) error {
 
 	case consts.SERVER_InternalServerError:
 		return e.JSON(http.StatusInternalServerError, Response(err.Error()))
+		
 	case consts.AUTH_SecurePassword:
 		return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
