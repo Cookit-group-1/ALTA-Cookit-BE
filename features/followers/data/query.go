@@ -41,14 +41,15 @@ func (fq *FollowQuery) Follow(userID, followingID uint) error {
 }
 
 // ShowAllFollower implements followers.FollowData
-func (fq *FollowQuery) ShowAllFollower() ([]followers.FollowCore, error) {
+func (fq *FollowQuery) ShowAllFollower(userID uint) ([]followers.FollowCore, error) {
 	panic("unimplemented")
 }
 
 // ShowAllFollowing implements followers.FollowData
-func (fq *FollowQuery) ShowAllFollowing() ([]followers.FollowCore, error) {
+func (fq *FollowQuery) ShowAllFollowing(userID uint) ([]followers.FollowCore, error) {
 	following := []Follower{}
-	err := fq.db.Raw("SELECT u.id, u.username, u.profile_picture, u.role, f.from_user_id f.to_user_id FROM users u JOIN followers f ON u.id = f.from_user_id;").Find(&following).Error
+	log.Println(following)
+	err := fq.db.Raw("SELECT u.id, u.username, u.profile_picture, u.role, f.to_user_id FROM users u JOIN followers f ON u.id = f.from_user_id WHERE u.id = ?", userID).Scan(&following).Error
 	if err != nil {
 		log.Println("no data processed", err.Error())
 		return []followers.FollowCore{}, errors.New("no following data found")

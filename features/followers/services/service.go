@@ -22,13 +22,13 @@ func (fs *followService) Follow(userID uint, followingID uint) error {
 }
 
 // ShowAllFollower implements followers.FollowService
-func (fs *followService) ShowAllFollower() ([]followers.FollowCore, error) {
+func (fs *followService) ShowAllFollower(userID uint) ([]followers.FollowCore, error) {
 	panic("unimplemented")
 }
 
 // ShowAllFollowing implements followers.FollowService
-func (fs *followService) ShowAllFollowing() ([]followers.FollowCore, error) {
-	res, err := fs.qry.ShowAllFollowing()
+func (fs *followService) ShowAllFollowing(userID uint) ([]followers.FollowCore, error) {
+	res, err := fs.qry.ShowAllFollowing(userID)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "user") {

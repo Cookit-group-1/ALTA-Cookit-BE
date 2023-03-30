@@ -5,15 +5,15 @@ import (
 )
 
 type FollowCore struct {
-	ID                  uint
-	FollowersFromUserID uint
-	FollowingToUserID   uint
-	FollowersName       string
-	FollowingName       string
-	FollowersImage      string
-	FollowingImage      string
-	AmountFollowing     uint
-	AmountFollowers     uint
+	ID              uint
+	FromUserID      uint
+	ToUserID        uint
+	Username        string
+	ProfilePicture  string
+	AmountFollowing uint
+	AmountFollowers uint
+	Role            string
+	UserID          uint
 }
 
 type FollowHandler interface {
@@ -26,13 +26,13 @@ type FollowHandler interface {
 type FollowService interface {
 	Follow(userID, followingID uint) error
 	Unfollow(userID, followingID uint) error
-	ShowAllFollower() ([]FollowCore, error)
-	ShowAllFollowing() ([]FollowCore, error)
+	ShowAllFollower(userID uint) ([]FollowCore, error)
+	ShowAllFollowing(userID uint) ([]FollowCore, error)
 }
 
 type FollowData interface {
 	Follow(userID, followingID uint) error
 	Unfollow(userID, followingID uint) error
-	ShowAllFollower() ([]FollowCore, error)
-	ShowAllFollowing() ([]FollowCore, error)
+	ShowAllFollower(userID uint) ([]FollowCore, error)
+	ShowAllFollowing(userID uint) ([]FollowCore, error)
 }
