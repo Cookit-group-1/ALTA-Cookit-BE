@@ -22,11 +22,6 @@ func New(cartData carts.CartData_) carts.CartService_ {
 }
 
 func (s *CartService) SelectCartsByUserId(entity *carts.CartEntity) (*[]carts.CartEntity, error) {
-	err := s.validate.Struct(entity)
-	if err != nil {
-		return nil, errors.New(consts.VALIDATION_InvalidInput)
-	}
-
 	isEntitled := s.cartData.ActionValidator(entity.ID, entity.UserID)
 	if !isEntitled {
 		return nil, errors.New(consts.SERVER_ForbiddenRequest)
