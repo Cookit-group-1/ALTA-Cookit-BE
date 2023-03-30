@@ -2,11 +2,13 @@ package transaction_details
 
 import (
 	"alta-cookit-be/features/images"
+
+	"github.com/labstack/echo/v4"
 )
 
 type TransactionDetailEntity struct {
 	ID                  uint
-	UserID              uint
+	LoggedInUserID      uint
 	SellerUserID        uint
 	SellerUsername      string
 	IngredientID        uint
@@ -18,9 +20,10 @@ type TransactionDetailEntity struct {
 }
 
 type TransactionDetailRequest struct {
-	ID           uint `json:"-" form:"-"`
-	IngredientID uint `json:"ingredient_id" form:"ingredient_id"`
-	Quantity     int  `json:"quantity" form:"quantity"`
+	ID             uint `json:"-" form:"-"`
+	LoggedInUserID uint `json:"-" form:"-"`
+	IngredientID   uint `json:"ingredient_id" form:"ingredient_id"`
+	Quantity       int  `json:"quantity" form:"quantity"`
 }
 
 type TransactionDetailResponse struct {
@@ -32,4 +35,16 @@ type TransactionDetailResponse struct {
 	IngredientName       string                 `json:"ingredient_name,omitempty"`
 	Price                float64                `json:"price,omitempty"`
 	Quantity             int                    `json:"quantity,omitempty"`
+}
+
+type TransactionDetailDelivery_ interface {
+	SelectTransactionDetailById(e echo.Context) error
+}
+
+type TransactionDetailService_ interface {
+	SelectTransactionDetailById(transactionEntity *TransactionDetailEntity) (*TransactionDetailEntity, error)
+}
+
+type TransactionDetailData_ interface {
+	SelectTransactionDetailById(transactionEntity *TransactionDetailEntity) (*TransactionDetailEntity, error)
 }

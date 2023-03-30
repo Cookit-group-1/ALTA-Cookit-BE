@@ -7,9 +7,10 @@ import (
 
 func ConvertToEntity(request *transaction_details.TransactionDetailRequest) *transaction_details.TransactionDetailEntity {
 	return &transaction_details.TransactionDetailEntity{
-		ID:           request.ID,
-		IngredientID: request.IngredientID,
-		Quantity:     request.Quantity,
+		ID:             request.ID,
+		LoggedInUserID: request.LoggedInUserID,
+		IngredientID:   request.IngredientID,
+		Quantity:       request.Quantity,
 	}
 }
 

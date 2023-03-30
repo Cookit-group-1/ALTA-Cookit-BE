@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type TransactionsDetail struct {
+type TransactionDetail struct {
 	gorm.Model
 	TransactionID uint
 	IngredientID  uint

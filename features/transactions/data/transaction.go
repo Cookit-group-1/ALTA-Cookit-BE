@@ -43,10 +43,19 @@ func (d *TransactionData) ActionValidator(id, customerUserId uint) bool {
 	return tempGorm.ID != 0
 }
 
+func (d *TransactionData) SelectTransactionByTransactionDetailId(transactionDetailId uint) *_transactionModel.Transaction {
+	tempGorm := _transactionModel.Transaction{}
+
+	subQuery := d.db.Table("transaction_details").Where("id = ?", transactionDetailId).Select("transaction_id")
+	d.db.Where("id IN (?)", subQuery).Find(&tempGorm)
+
+	return &tempGorm
+}
+
 func (d *TransactionData) SelectTransactionByUserId(entity *transactions.TransactionEntity) (*[]transactions.TransactionEntity, error) {
 	gorms := []_transactionModel.Transaction{}
 
-	tx := d.db.Preload("transaction_details").Where("user_id = ?", entity.CustomerUserId).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Preload("TransactionDetails").Where("user_id = ?", entity.CustomerUserId).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -54,12 +63,12 @@ func (d *TransactionData) SelectTransactionByUserId(entity *transactions.Transac
 	entities := []transactions.TransactionEntity{}
 	for _, gorm := range gorms {
 		subEntities := []transaction_details.TransactionDetailEntity{}
-		for _, subGorm := range gorm.TransactionDetail {
+		for _, subGorm := range gorm.TransactionDetails {
 			userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
 			userGorm := _userModel.CoreToModel(*userEntity)
-			recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
+			recipeGorm := d.recipeData.SelectRecipeByIngredientId(subGorm.IngredientID)
 			imageGorms := d.imageData.SelectImagesByRecipeId(recipeGorm.ID)
-			ingredientGorm := d.ingredientData.SelectIngredientById(gorm.IngredientID)
+			ingredientGorm := d.ingredientData.SelectIngredientById(subGorm.IngredientID)
 			subEntities = append(subEntities, *_transactionDetailData.ConvertToEntity(&subGorm, &userGorm, recipeGorm, imageGorms, ingredientGorm))
 		}
 		entities = append(entities, *ConvertToEntity(&gorm, &subEntities))
@@ -71,12 +80,12 @@ func (d *TransactionData) SelectTransactionByUserId(entity *transactions.Transac
 func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEntity) (*transactions.TransactionEntity, error) {
 	gorm := ConvertToGorm(entity)
 	subEntities := []transaction_details.TransactionDetailEntity{}
-	for _, subGorm := range gorm.TransactionDetail {
+	for _, subGorm := range gorm.TransactionDetails {
 		userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
 		userGorm := _userModel.CoreToModel(*userEntity)
-		recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
+		recipeGorm := d.recipeData.SelectRecipeByIngredientId(subGorm.IngredientID)
 		imageGorms := d.imageData.SelectImagesByRecipeId(recipeGorm.ID)
-		ingredientGorm := d.ingredientData.SelectIngredientById(gorm.IngredientID)
+		ingredientGorm := d.ingredientData.SelectIngredientById(subGorm.IngredientID)
 		subEntities = append(subEntities, *_transactionDetailData.ConvertToEntity(&subGorm, &userGorm, recipeGorm, imageGorms, ingredientGorm))
 	}
 
