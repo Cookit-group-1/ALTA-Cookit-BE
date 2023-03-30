@@ -168,7 +168,7 @@ func initCartRouter(db *gorm.DB, e *echo.Echo) {
 	imageData := _imageData.New(db)
 	recipeData := _recipeData.New(db, userData, imageData)
 	ingredientData := _ingredientData.New(db)
-	data := _cartData.New(db, recipeData, ingredientData)
+	data := _cartData.New(db, userData, recipeData, imageData, ingredientData)
 	service := _cartService.New(data)
 	handler := _cartDelivery.New(service)
 
