@@ -28,6 +28,17 @@ func (d *IngredientData) ActionValidator(id, recipeId, userId uint) bool {
 	return tempGorm.ID != 0
 }
 
+func (d *IngredientData) SelectIngredientById(id uint) *_ingredientModel.Ingredient {
+	tempGorm := _ingredientModel.Ingredient{}
+	d.db.Where("id = ?", id).Find(&tempGorm)
+
+	if tempGorm.ID == 0 {
+		return nil
+	}
+
+	return &tempGorm
+}
+
 func (d *IngredientData) InsertIngredient (entity *ingredients.IngredientEntity) (*ingredients.IngredientEntity, error) {
 	gorm := ConvertToGorm(entity)
 	tx := d.db.Create(gorm)

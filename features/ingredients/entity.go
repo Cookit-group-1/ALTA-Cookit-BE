@@ -4,6 +4,8 @@ import (
 	"alta-cookit-be/features/ingredient_details"
 
 	"github.com/labstack/echo/v4"
+
+	_ingredientModel "alta-cookit-be/features/ingredients/models"
 )
 
 type IngredientEntity struct {
@@ -47,6 +49,7 @@ type IngredientService_ interface {
 
 type IngredientData_ interface {
 	ActionValidator(id, recipeId, userId uint) bool
+	SelectIngredientById(id uint) *_ingredientModel.Ingredient
 	InsertIngredient(ingredientEntity *IngredientEntity) (*IngredientEntity, error)
 	UpdateIngredientById(ingredientEntity *IngredientEntity) error
 	DeleteIngredientById(ingredientEntity *IngredientEntity) error
