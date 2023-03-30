@@ -3690,26 +3690,23 @@ paths:
                       type: string
               example:
                 data:
-                  {
-                    carts:
-                      [
+                  [
+                    {  
+                      id: 55,
+                      id_seller: 1,
+                      seller_username: "admin",
+                      recipe_images: [
                         {
                           id: 1,
-                          recipe_name: "Soto Rawon",
-                          ingredient_name: "Paket Couple",
-                          price: 100000,
-                          quantity: 1,
-                        },
-                        {
-                          id: 2,
-                          recipe_name: "Soto Rawon",
-                          ingredient_name: "Paket 5 Orang",
-                          price: 350000,
-                          quantity: 1,
-                        },
+                          url_image: "https://storage.googleapis.com/alta-cookit/static/images/kK8Fko0zU8GeOMMndYh680f1bSqi7r9aTUxHvlHotPVSkCGnG2.jpg"
+                        }
                       ],
-                    total_page: 1,
-                  }
+                      recipe_name: "Indomie Spesial",
+                      ingredient_name: "Original",
+                      price: 10000,
+                      quantity: 2
+                    },
+                  ]
                 message: "succesfully read list of user's carts"
         400:
           description: "bad request"
@@ -3727,6 +3724,7 @@ paths:
                 Invalid limit param:
                   value:
                     message: invalid limit param
+                
         500:
           description: "internal server error"
           content:
@@ -3772,11 +3770,21 @@ paths:
                 $ref: "#/components/schemas/responseObject"
               example:
                 data:
-                  id: 1
-                  recipe_name: "Soto Rawon"
-                  ingredient_name: "Paket 5 Orang"
-                  price: 700000
-                  quantity: 2
+                  {  
+                    id: 55,
+                    id_seller: 1,
+                    seller_username: "admin",
+                    recipe_images: [
+                      {
+                        id: 1,
+                        url_image: "https://storage.googleapis.com/alta-cookit/static/images/kK8Fko0zU8GeOMMndYh680f1bSqi7r9aTUxHvlHotPVSkCGnG2.jpg"
+                      }
+                    ],
+                    recipe_name: "Indomie Spesial",
+                    ingredient_name: "Original",
+                    price: 10000,
+                    quantity: 2
+                  }
                 message: "succesfully insert user's cart"
         400:
           description: "bad request"
@@ -3982,54 +3990,50 @@ paths:
                       type: string
               example:
                 data:
-                  {
-                    transactions:
-                      [
-                        {
-                          transaction_details:
-                            [
-                              {
-                              id: 1,
-                              recipe_name: "Soto Rawon",
-                              ingredient_name: "Paket Couple",
-                              price: 100000,
-                              quantity: 1,
-                              },
-                              {
-                                id: 2,
-                                recipe_name: "Soto Rawon",
-                                ingredient_name: "Paket 5 Orang",
-                                price: 350000,
-                                quantity: 1,
-                              },
-                            ],
-                          total_price: 450000,
-                          created_at: "23-03-2023",
-                        },
-                        {
-                          transaction_details:
-                            [
-                              {
-                                id: 3,
-                                recipe_name: "Milky Cheese Cake",
-                                ingredient_name: "Paket Mini",
-                                price: 75000,
-                                quantity: 1,
-                              },
-                              {
-                                id: 4,
-                                recipe_name: "Milky Cheese Cake",
-                                ingredient_name: "Paket Original",
-                                price: 225000,
-                                quantity: 1,
-                              },
-                            ],
-                          total_price: 300000,
-                          created_at: "24-03-2023",
-                        },
-                      ],
-                    total_page: 1,
-                  }
+                  [
+                    {
+                      transaction_details:
+                        [
+                          {
+                          id: 1,
+                          recipe_name: "Soto Rawon",
+                          ingredient_name: "Paket Couple",
+                          price: 100000,
+                          quantity: 1,
+                          },
+                          {
+                            id: 2,
+                            recipe_name: "Soto Rawon",
+                            ingredient_name: "Paket 5 Orang",
+                            price: 350000,
+                            quantity: 1,
+                          },
+                        ],
+                      total_price: 450000,
+                      created_at: "23-03-2023",
+                    },
+                    {
+                      transaction_details:
+                        [
+                          {
+                            id: 3,
+                            recipe_name: "Milky Cheese Cake",
+                            ingredient_name: "Paket Mini",
+                            price: 75000,
+                            quantity: 1,
+                          },
+                          {
+                            id: 4,
+                            recipe_name: "Milky Cheese Cake",
+                            ingredient_name: "Paket Original",
+                            price: 225000,
+                            quantity: 1,
+                          },
+                        ],
+                      total_price: 300000,
+                      created_at: "24-03-2023",
+                    },
+                  ]
                 message: "succesfully read list of user's transactions"
         400:
           description: "bad request"
@@ -4047,6 +4051,9 @@ paths:
                 Invalid limit param:
                   value:
                     message: invalid limit param
+                Foridden Request:
+                  value:
+                    message: forbidden request
         500:
           description: "internal server error"
           content:
