@@ -24,3 +24,19 @@ func ToListFollowingResponse(data followers.FollowCore) ListFollowingResponse {
 		User:     UserResp{UserID: data.UserID, Username: data.Username, ProfilePicture: data.ProfilePicture, Role: data.Role},
 	}
 }
+
+type ListFollowerResponse struct {
+	ID         uint     `json:"id"`
+	UserID     uint     `json:"user_id"`
+	FromUserID uint     `json:"from_user_id"`
+	User       UserResp `json:"user"`
+}
+
+func ToListFollowerResponse(data followers.FollowCore) ListFollowerResponse {
+	return ListFollowerResponse{
+		ID:         data.UserID,
+		UserID:     data.UserID,
+		FromUserID: data.FromUserID,
+		User:       UserResp{UserID: data.UserID, Username: data.Username, ProfilePicture: data.ProfilePicture, Role: data.Role},
+	}
+}
