@@ -46,8 +46,25 @@ func (*followHander) ShowAllFollowing() echo.HandlerFunc {
 }
 
 // Unfollow implements followers.FollowHandler
-func (*followHander) Unfollow() echo.HandlerFunc {
-	panic("unimplemented")
+func (fh *followHander) Unfollow() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		uID := c.Param("id")
+		followingID, _ := strconv.Atoi(uID)
+		id, _, err := middlewares.ExtractToken(c)
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "error from server"})
+		}
+		err = fh.srv.Unfollow(id, uint(followingID))
+		if id == uint(followingID) {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you cannot unfollow your self"})
+		}
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "please follow this users first to unfollow"})
+		}
+		return c.JSON(http.StatusCreated, map[string]interface{}{
+			"message": "success unfollow this user",
+		})
+	}
 }
 
 func New(srv followers.FollowService) followers.FollowHandler {

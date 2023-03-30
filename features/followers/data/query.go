@@ -56,7 +56,7 @@ func (fq *FollowQuery) Unfollow(userID, followingID uint) error {
 		FromUserID: userID,
 		ToUserID: followingID,
 	}
-	unfollowQry := fq.db.Delete(&res)
+	unfollowQry := fq.db.Unscoped().Where("from_user_id = ? AND to_user_id = ?", userID, followingID).Delete(&res)
 
 	rowAffect := unfollowQry.RowsAffected
 	if rowAffect <= 0 {
