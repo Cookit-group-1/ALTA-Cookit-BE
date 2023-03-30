@@ -73,7 +73,7 @@ func (fh *followHander) Unfollow() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you cannot unfollow your self"})
 		}
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "please follow this users first to unfollow"})
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "please follow this users first to unfollow or user not found"})
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "success unfollow this user",
