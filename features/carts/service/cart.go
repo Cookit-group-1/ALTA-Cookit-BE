@@ -27,10 +27,10 @@ func (s *CartService) SelectCartsByUserId(entity *carts.CartEntity) (*[]carts.Ca
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	// isEntitled := s.cartData.ActionValidator(entity.RecipeID, entity.UserID)
-	// if !isEntitled {
-	// 	return nil, errors.New(consts.SERVER_ForbiddenRequest)
-	// }
+	isEntitled := s.cartData.ActionValidator(entity.ID, entity.UserID)
+	if !isEntitled {
+		return nil, errors.New(consts.SERVER_ForbiddenRequest)
+	}
 
 	outputs, err := s.cartData.SelectCartsByUserId(entity)
 	if err != nil {
@@ -45,10 +45,10 @@ func (s *CartService) InsertCart(entity *carts.CartEntity) (*carts.CartEntity, e
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	// isEntitled := s.cartData.ActionValidator(entity.RecipeID, entity.UserID)
-	// if !isEntitled {
-	// 	return nil, errors.New(consts.SERVER_ForbiddenRequest)
-	// }
+	isEntitled := s.cartData.ActionValidator(entity.ID, entity.UserID)
+	if !isEntitled {
+		return nil, errors.New(consts.SERVER_ForbiddenRequest)
+	}
 
 	output, err := s.cartData.InsertCart(entity)
 	if err != nil {
@@ -63,10 +63,10 @@ func (s *CartService) UpdateCartById(entity *carts.CartEntity) error {
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	// isEntitled := s.ingredientData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
-	// if !isEntitled {
-	// 	return errors.New(consts.SERVER_ForbiddenRequest)
-	// }
+	isEntitled := s.cartData.ActionValidator(entity.ID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
 
 	err = s.cartData.UpdateCartById(entity)
 	if err != nil {
@@ -76,10 +76,10 @@ func (s *CartService) UpdateCartById(entity *carts.CartEntity) error {
 }
 
 func (s *CartService) DeleteCartById(entity *carts.CartEntity) error {
-	// isEntitled := s.ingredientData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
-	// if !isEntitled {
-	// 	return errors.New(consts.SERVER_ForbiddenRequest)
-	// }
+	isEntitled := s.cartData.ActionValidator(entity.ID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
 
 	err := s.cartData.DeleteCartById(entity)
 	if err != nil {
