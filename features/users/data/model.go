@@ -22,8 +22,8 @@ type User struct {
 	GoogleId       string                          `gorm:"type:VARCHAR(1000)"`
 	Password       string                          `gorm:"not null;type:VARCHAR(1000)"`
 	Approvement    string                          //no, requested and accepted
-	FromFollowers  []_followerModel.Follower       `gorm:"foreignKey:FromUserID;constraint:OnDelete:CASCADE:FollowerRefer;"`
-	ToFollowers    []_followerModel.Follower       `gorm:"foreignKey:ToUserID;constraint:OnDelete:CASCADE:FollowerRefer;"`
+	FromFollowers  []_followerModel.Follower       `gorm:"foreignKey:FromUserID;constraint:OnDelete:CASCADE;"`
+	ToFollowers    []_followerModel.Follower       `gorm:"foreignKey:ToUserID;constraint:OnDelete:CASCADE;"`
 	Recipe         []_recipeModel.Recipe           `gorm:"constraint:OnDelete:CASCADE;"`
 	Likes          []_likeModel.Like               `gorm:"constraint:OnDelete:CASCADE;"`
 	Comments       []_commentModel.Comment         `gorm:"constraint:OnDelete:CASCADE;"`

@@ -36,6 +36,9 @@ import (
 	_userData "alta-cookit-be/features/users/data"
 	_userDelivery "alta-cookit-be/features/users/handler"
 	_userService "alta-cookit-be/features/users/services"
+	_transactionData "alta-cookit-be/features/transactions/data"
+	_transactionService "alta-cookit-be/features/transactions/service"
+	_transactionDelivery "alta-cookit-be/features/transactions/delivery"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
@@ -181,6 +184,20 @@ func initCartRouter(db *gorm.DB, e *echo.Echo) {
 	e.DELETE(fmt.Sprintf("/users/carts/:%s", consts.ECHO_P_CartId), handler.DeleteCartById, middlewares.JWTMiddleware())
 }
 
+func initTransactionRouter(db *gorm.DB, e *echo.Echo) {
+	userData := _userData.New(db)
+	imageData := _imageData.New(db)
+	recipeData := _recipeData.New(db, userData, imageData)
+	ingredientData := _ingredientData.New(db)
+	data := _transactionData.New(db, userData, recipeData, imageData, ingredientData)
+	service := _transactionService.New(data)
+	handler := _transactionDelivery.New(service)
+
+	e.GET("/users/transactions", handler.SelectTransactionByUserId, middlewares.JWTMiddleware())
+	e.POST("/users/transactions", handler.InsertTransaction, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/users/transactions/:%s", consts.ECHO_P_TransactionId), handler.UpdateTransactionById, middlewares.JWTMiddleware())
+}
+
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initRecipeRouter(db, e)
 	initImageRouter(db, e)
@@ -192,4 +209,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initUserRouter(db, e)
 	initFollowerRouter(db, e)
 	initCartRouter(db, e)
+	initTransactionRouter(db, e)
 }

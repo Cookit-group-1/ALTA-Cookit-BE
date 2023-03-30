@@ -8,7 +8,6 @@ import (
 	"alta-cookit-be/features/users"
 	"alta-cookit-be/utils/consts"
 	"errors"
-	"fmt"
 	"strings"
 
 	_cartModel "alta-cookit-be/features/carts/models"
@@ -55,7 +54,6 @@ func (d *CartData) SelectCartsByUserId(entity *carts.CartEntity) (*[]carts.CartE
 		userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
 		userGorm := _userModel.CoreToModel(*userEntity)
 		recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
-		fmt.Println(recipeGorm)
 		imageGorms := d.imageData.SelectImagesByRecipeId(recipeGorm.ID)
 		ingredientGorm := d.ingredientData.SelectIngredientById(gorm.IngredientID)
 		entities = append(entities, *ConvertToEntity(&gorm, &userGorm, recipeGorm, imageGorms, ingredientGorm))
