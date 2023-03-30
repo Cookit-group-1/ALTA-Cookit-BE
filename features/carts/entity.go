@@ -32,7 +32,7 @@ type CartRequest struct {
 
 type CartResponse struct {
 	ID                   uint                   `json:"id,omitempty"`
-	SellerUserID         uint                   `json:"seller_user_id,omitempty"`
+	SellerUserID         uint                   `json:"id_seller,omitempty"`
 	SellerUsername       string                 `json:"seller_user_username,omitempty"`
 	RecipeImageResponses []images.ImageResponse `json:"recipe_images,omitempty"`
 	RecipeName           string                 `json:"recipe_name,omitempty"`
