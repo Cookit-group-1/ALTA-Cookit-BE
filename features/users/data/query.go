@@ -22,10 +22,6 @@ func (uq *UserQuery) SelectUserById(user users.Core) *users.Core {
 	existUser := CoreToModel(user)
 	uq.db.Where("id = ?", existUser.ID).Find(&existUser)
 
-	if existUser.Username == "" {
-		return nil
-	}
-
 	user = ModelToCore(existUser)
 	return &user
 }

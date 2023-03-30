@@ -2,6 +2,7 @@ package delivery
 
 import (
 	"alta-cookit-be/features/carts"
+	_imageDelivery "alta-cookit-be/features/images/delivery"
 )
 
 func ConvertToEntity(request *carts.CartRequest) *carts.CartEntity {
@@ -23,11 +24,14 @@ func ConvertToEntities(requests *[]carts.CartRequest) *[]carts.CartEntity {
 
 func ConvertToResponse(entity *carts.CartEntity) carts.CartResponse {
 	return carts.CartResponse{
-		ID:             entity.ID,
-		RecipeName:     entity.RecipeName,
-		IngredientName: entity.IngredientName,
-		Price:          entity.Price,
-		Quantity:       entity.Quantity,
+		ID:                   entity.ID,
+		SellerUserID:         entity.SellerUserID,
+		SellerUsername:       entity.SellerUsername,
+		RecipeImageResponses: _imageDelivery.ConvertToResponses(&entity.RecipeImageEntities),
+		RecipeName:           entity.RecipeName,
+		IngredientName:       entity.IngredientName,
+		Price:                entity.Price,
+		Quantity:             entity.Quantity,
 	}
 }
 

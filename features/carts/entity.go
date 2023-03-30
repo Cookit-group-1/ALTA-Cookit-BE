@@ -1,17 +1,24 @@
 package carts
 
-import "github.com/labstack/echo/v4"
+import (
+	"alta-cookit-be/features/images"
+
+	"github.com/labstack/echo/v4"
+)
 
 type CartEntity struct {
-	ID             uint
-	UserID         uint
-	IngredientID   uint
-	RecipeName     string
-	IngredientName string
-	Price          float64
-	Quantity       int `validate:"required"`
-	DataLimit      int
-	DataOffset     int
+	ID                  uint
+	UserID              uint
+	SellerUserID        uint
+	SellerUsername      string
+	IngredientID        uint
+	RecipeImageEntities []images.ImageEntity
+	RecipeName          string
+	IngredientName      string
+	Price               float64
+	Quantity            int `validate:"required"`
+	DataLimit           int
+	DataOffset          int
 }
 
 type CartRequest struct {
@@ -24,11 +31,14 @@ type CartRequest struct {
 }
 
 type CartResponse struct {
-	ID             uint    `json:"id,omitempty"`
-	RecipeName     string  `json:"recipe_name,omitempty"`
-	IngredientName string  `json:"ingredient_name,omitempty"`
-	Price          float64 `json:"price,omitempty"`
-	Quantity       int     `json:"quantity,omitempty"`
+	ID                   uint                   `json:"id,omitempty"`
+	SellerUserID         uint                   `json:"seller_user_id,omitempty"`
+	SellerUsername       string                 `json:"seller_user_username,omitempty"`
+	RecipeImageResponses []images.ImageResponse `json:"recipe_images,omitempty"`
+	RecipeName           string                 `json:"recipe_name,omitempty"`
+	IngredientName       string                 `json:"ingredient_name,omitempty"`
+	Price                float64                `json:"price,omitempty"`
+	Quantity             int                    `json:"quantity,omitempty"`
 }
 
 type CartDelivery_ interface {

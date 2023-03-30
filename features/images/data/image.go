@@ -30,7 +30,7 @@ func (d *ImageData) ActionValidator(id, recipeId, userId uint) bool {
 
 func (d *ImageData) SelectImagesByRecipeId(recipeId uint) *[]_imageModel.Image {
 	tempGorms := []_imageModel.Image{}
-	d.db.Where("recipe_id = ?", recipeId).Find(&tempGorms)
+	d.db.Debug().Where("recipe_id = ?", recipeId).Find(&tempGorms)
 	
 	return &tempGorms
 }

@@ -45,11 +45,6 @@ func (s *CartService) InsertCart(entity *carts.CartEntity) (*carts.CartEntity, e
 		return nil, errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	isEntitled := s.cartData.ActionValidator(entity.ID, entity.UserID)
-	if !isEntitled {
-		return nil, errors.New(consts.SERVER_ForbiddenRequest)
-	}
-
 	output, err := s.cartData.InsertCart(entity)
 	if err != nil {
 		return nil, err
