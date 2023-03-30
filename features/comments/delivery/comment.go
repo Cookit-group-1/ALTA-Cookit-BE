@@ -58,7 +58,10 @@ func (d *CommentDelivery) InsertComment(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	file, fileName, _ := helpers.ExtractImageFile(e, "image")
+	file, fileName, err := helpers.ExtractImageFile(e, "image")
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
 	commentRequest.RecipeID = recipeId
 	commentRequest.UserID = userId
 	commentRequest.Image = file
