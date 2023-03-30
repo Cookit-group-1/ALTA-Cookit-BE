@@ -32,10 +32,6 @@ func (d *IngredientData) SelectIngredientById(id uint) *_ingredientModel.Ingredi
 	tempGorm := _ingredientModel.Ingredient{}
 	d.db.Where("id = ?", id).Find(&tempGorm)
 
-	if tempGorm.ID == 0 {
-		return nil
-	}
-
 	return &tempGorm
 }
 
