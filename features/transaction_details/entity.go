@@ -46,5 +46,6 @@ type TransactionDetailService_ interface {
 }
 
 type TransactionDetailData_ interface {
+	ActionValidator(id, loggedInUserId uint) bool
 	SelectTransactionDetailById(transactionEntity *TransactionDetailEntity) (*TransactionDetailEntity, error)
 }
