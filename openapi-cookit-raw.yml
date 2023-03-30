@@ -3974,6 +3974,16 @@ paths:
           schema:
             type: integer
             example: 2
+        - name: status
+          in: query
+          description: transaction's status filter
+          schema:
+            type: string
+            enum:
+              - Unpaid
+              - Shipped
+              - Received
+              - Complete
       responses:
         200:
           description: success get list of user's transactions
@@ -3992,47 +4002,24 @@ paths:
                 data:
                   [
                     {
-                      transaction_details:
-                        [
-                          {
+                      id: 1,
+                      transaction_details: [
+                        {
                           id: 1,
-                          recipe_name: "Soto Rawon",
-                          ingredient_name: "Paket Couple",
-                          price: 100000,
-                          quantity: 1,
-                          },
-                          {
-                            id: 2,
-                            recipe_name: "Soto Rawon",
-                            ingredient_name: "Paket 5 Orang",
-                            price: 350000,
-                            quantity: 1,
-                          },
-                        ],
-                      total_price: 450000,
-                      created_at: "23-03-2023",
-                    },
-                    {
-                      transaction_details:
-                        [
-                          {
-                            id: 3,
-                            recipe_name: "Milky Cheese Cake",
-                            ingredient_name: "Paket Mini",
-                            price: 75000,
-                            quantity: 1,
-                          },
-                          {
-                            id: 4,
-                            recipe_name: "Milky Cheese Cake",
-                            ingredient_name: "Paket Original",
-                            price: 225000,
-                            quantity: 1,
-                          },
-                        ],
-                      total_price: 300000,
-                      created_at: "24-03-2023",
-                    },
+                          id_seller: 1,
+                          seller_user_username: "admin",
+                          recipe_name: "Indomie Spesial",
+                          ingredient_name: "Original",
+                          price: 25000,
+                          quantity: 5
+                        }
+                      ],
+                      customer_id: 1,
+                      status: "Unpaid",
+                      payment_method: "None",
+                      total_price: 25000,
+                      created_at: "2023-03-31"
+                    }
                   ]
                 message: "succesfully read list of user's transactions"
         400:
@@ -4051,9 +4038,6 @@ paths:
                 Invalid limit param:
                   value:
                     message: invalid limit param
-                Foridden Request:
-                  value:
-                    message: forbidden request
         500:
           description: "internal server error"
           content:
@@ -4095,11 +4079,7 @@ paths:
                   [
                     {
                       ingredient_id: 1,
-                      quantity: 1
-                    },
-                    {
-                      ingredient_id: 2,
-                      quantity: 1
+                      quantity: 5
                     },
                   ]
               }
@@ -4113,25 +4093,23 @@ paths:
               example:
                 data:
                   {
-                    transaction_details:
-                      [
-                        {
+                    id: 1,
+                    transaction_details: [
+                      {
                         id: 1,
-                        recipe_name: "Soto Rawon",
-                        ingredient_name: "Paket Couple",
-                        price: 100000,
-                        quantity: 1,
-                        },
-                        {
-                          id: 2,
-                          recipe_name: "Soto Rawon",
-                          ingredient_name: "Paket 5 Orang",
-                          price: 350000,
-                          quantity: 1,
-                        },
-                      ],
-                    total_price: 450000,
-                    created_at: "23-03-2023",
+                        id_seller: 1,
+                        seller_user_username: "admin",
+                        recipe_name: "Indomie Spesial",
+                        ingredient_name: "Original",
+                        price: 25000,
+                        quantity: 5
+                      }
+                    ],
+                    customer_id: 1,
+                    status: "Unpaid",
+                    payment_method: "None",
+                    total_price: 25000,
+                    created_at: "2023-03-31"
                   }
                 message: "succesfully insert user's transaction"
         400:
@@ -4153,6 +4131,82 @@ paths:
                 Forbidden Request:
                   value:
                     message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  ####################################
+  #  Transaction Details
+  ####################################
+  /users/transactions/transaction_detail/{transaction_detail_id}:
+    get:
+      tags:
+        - Transaction Details
+      summary: get user's transaction detail
+      description: feature for getting user's transaction detail
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: transaction_detail_id
+          required: true
+          in: path
+          description: transaction detail's of of user's transaction
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: success get user's transaction detail
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                    message:
+                      type: string
+              example:
+                data:
+                  {
+                    id: 1,
+                    id_seller: 1,
+                    seller_user_username: "admin",
+                    recipe_name: "Indomie Spesial",
+                    ingredient_name: "Original",
+                    price: 25000,
+                    quantity: 5
+                  }
+                message: "succesfully read user's transaction detail"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                    value:
+                      message: forbidden request
         500:
           description: "internal server error"
           content:
