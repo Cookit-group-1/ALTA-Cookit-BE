@@ -34,25 +34,25 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	file, fileName, _ := helpers.ExtractImageFile(e, "image")
-	imageRequests = append(imageRequests, images.ImageRequest{
-		UserID: userId,
-		RecipeID: recipeId,
-		Image: file,
-		ImageName: fileName,
-	})
-	// files, fileNames, err := helpers.ExtractMultipleImageFiles(e, "image")
-	// if err != nil {
-	// 	return helpers.ReturnBadResponse(e, err)
-	// }
-	// for index, file := range files {
-	// 	imageRequests = append(imageRequests, images.ImageRequest{
-	// 		UserID: userId,
-	// 		RecipeID: recipeId,
-	// 		Image: file,
-	// 		ImageName: fileNames[index],
-	// 	})
-	// }
+	// file, fileName, _ := helpers.ExtractImageFile(e, "image")
+	// imageRequests = append(imageRequests, images.ImageRequest{
+	// 	UserID: userId,
+	// 	RecipeID: recipeId,
+	// 	Image: file,
+	// 	ImageName: fileName,
+	// })
+	files, fileNames, err := helpers.ExtractMultipleImageFiles(e, "image")
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	for index, file := range files {
+		imageRequests = append(imageRequests, images.ImageRequest{
+			UserID: userId,
+			RecipeID: recipeId,
+			Image: file,
+			ImageName: fileNames[index],
+		})
+	}
 
 	output, err := d.imageService.InsertImage(ConvertToEntities(&imageRequests))
 	if err != nil {
