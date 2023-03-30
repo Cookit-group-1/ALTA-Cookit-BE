@@ -41,8 +41,22 @@ func (*followHander) ShowAllFollower() echo.HandlerFunc {
 }
 
 // ShowAllFollowing implements followers.FollowHandler
-func (*followHander) ShowAllFollowing() echo.HandlerFunc {
-	panic("unimplemented")
+func (fh *followHander) ShowAllFollowing() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		dataCore, err := fh.srv.ShowAllFollowing(id)
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+		}
+		result := []ListFollowingResponse{}
+		for i := 0; i < len(result); i++ {
+			result = append(result, ToListFollowingResponse(dataCore[i]))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all following users",
+		})
+	}
 }
 
 // Unfollow implements followers.FollowHandler
@@ -59,7 +73,7 @@ func (fh *followHander) Unfollow() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you cannot unfollow your self"})
 		}
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "please follow this users first to unfollow"})
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "please follow this users first to unfollow or user not found"})
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "success unfollow this user",

@@ -4,6 +4,7 @@ import (
 	"alta-cookit-be/features/followers"
 	"errors"
 	"log"
+	"strings"
 )
 
 type followService struct {
@@ -21,13 +22,31 @@ func (fs *followService) Follow(userID uint, followingID uint) error {
 }
 
 // ShowAllFollower implements followers.FollowService
-func (fs *followService) ShowAllFollower() ([]followers.FollowCore, error) {
-	panic("unimplemented")
+func (fs *followService) ShowAllFollower(userID uint) ([]followers.FollowCore, error) {
+	res, err := fs.qry.ShowAllFollower(userID)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "user") {
+			return []followers.FollowCore{}, errors.New("user not found")
+		} else {
+			return []followers.FollowCore{}, errors.New("internal server error")
+		}
+	}
+	return res, nil
 }
 
 // ShowAllFollowing implements followers.FollowService
-func (fs *followService) ShowAllFollowing() ([]followers.FollowCore, error) {
-	panic("unimplemented")
+func (fs *followService) ShowAllFollowing(userID uint) ([]followers.FollowCore, error) {
+	res, err := fs.qry.ShowAllFollowing(userID)
+
+	if err != nil {
+		if strings.Contains(err.Error(), "user") {
+			return []followers.FollowCore{}, errors.New("user not found")
+		} else {
+			return []followers.FollowCore{}, errors.New("internal server error")
+		}
+	}
+	return res, nil
 }
 
 // Unfollow implements followers.FollowService

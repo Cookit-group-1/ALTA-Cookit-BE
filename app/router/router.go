@@ -6,9 +6,15 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	_cartData "alta-cookit-be/features/carts/data"
+	_cartDelivery "alta-cookit-be/features/carts/delivery"
+	_cartService "alta-cookit-be/features/carts/service"
 	_commentData "alta-cookit-be/features/comments/data"
 	_commentDelivery "alta-cookit-be/features/comments/delivery"
 	_commentService "alta-cookit-be/features/comments/service"
+	_followerData "alta-cookit-be/features/followers/data"
+	_followerDelivery "alta-cookit-be/features/followers/handler"
+	_followerService "alta-cookit-be/features/followers/services"
 	_imageData "alta-cookit-be/features/images/data"
 	_imageDelivery "alta-cookit-be/features/images/delivery"
 	_imageService "alta-cookit-be/features/images/service"
@@ -30,12 +36,6 @@ import (
 	_userData "alta-cookit-be/features/users/data"
 	_userDelivery "alta-cookit-be/features/users/handler"
 	_userService "alta-cookit-be/features/users/services"
-	_followerData "alta-cookit-be/features/followers/data"
-	_followerService "alta-cookit-be/features/followers/services"
-	_followerDelivery "alta-cookit-be/features/followers/handler"
-	_cartData "alta-cookit-be/features/carts/data"
-	_cartService "alta-cookit-be/features/carts/service"
-	_cartDelivery "alta-cookit-be/features/carts/delivery"
 	_transactionData "alta-cookit-be/features/transactions/data"
 	_transactionService "alta-cookit-be/features/transactions/service"
 	_transactionDelivery "alta-cookit-be/features/transactions/delivery"
@@ -76,6 +76,8 @@ func initFollowerRouter(db *gorm.DB, e *echo.Echo) {
 
 	e.POST("users/follow/:id", follHandler.Follow(), middlewares.JWTMiddleware())
 	e.DELETE("users/unfollow/:id", follHandler.Unfollow(), middlewares.JWTMiddleware())
+	// e.GET("users/following", follHandler.ShowAllFollowing(), middlewares.JWTMiddleware())
+	// e.GET("users/follower", follHandler.ShowAllFollower(), middlewares.JWTMiddleware())
 }
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {

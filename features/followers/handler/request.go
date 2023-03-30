@@ -12,7 +12,7 @@ func ReqToCore(data interface{}) *followers.FollowCore {
 	switch data.(type) {
 	case FollowingRequest:
 		cnv := data.(FollowingRequest)
-		res.FollowingToUserID = cnv.ToUserID
+		res.ToUserID = cnv.ToUserID
 
 	default:
 		return nil
