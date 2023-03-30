@@ -39,6 +39,9 @@ import (
 	_transactionData "alta-cookit-be/features/transactions/data"
 	_transactionService "alta-cookit-be/features/transactions/service"
 	_transactionDelivery "alta-cookit-be/features/transactions/delivery"
+	_transactionDetailData "alta-cookit-be/features/transaction_details/data"
+	_transactionDetailService "alta-cookit-be/features/transaction_details/service"
+	_transactionDetailDelivery "alta-cookit-be/features/transaction_details/delivery"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
@@ -198,6 +201,19 @@ func initTransactionRouter(db *gorm.DB, e *echo.Echo) {
 	e.PUT(fmt.Sprintf("/users/transactions/:%s", consts.ECHO_P_TransactionId), handler.UpdateTransactionById, middlewares.JWTMiddleware())
 }
 
+func initTransactionDetailRouter(db *gorm.DB, e *echo.Echo) {
+	userData := _userData.New(db)
+	imageData := _imageData.New(db)
+	recipeData := _recipeData.New(db, userData, imageData)
+	ingredientData := _ingredientData.New(db)
+	transactionData := _transactionData.New(db, userData, recipeData, imageData, ingredientData)
+	data := _transactionDetailData.New(db, userData, recipeData, imageData, ingredientData, transactionData)
+	service := _transactionDetailService.New(data)
+	handler := _transactionDetailDelivery.New(service)
+
+	e.GET(fmt.Sprintf("/users/transactions/transactionDetails/:%s", consts.ECHO_P_TransactionDetailId), handler.SelectTransactionDetailById, middlewares.JWTMiddleware())
+}
+
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initRecipeRouter(db, e)
 	initImageRouter(db, e)
@@ -210,4 +226,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	initFollowerRouter(db, e)
 	initCartRouter(db, e)
 	initTransactionRouter(db, e)
+	initTransactionDetailRouter(db, e)
 }

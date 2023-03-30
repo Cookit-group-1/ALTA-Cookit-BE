@@ -40,11 +40,11 @@ func initSuperAdmin(db *gorm.DB) {
 	hash, _ := helpers.GeneratePassword("admin")
 	userGorm := _userData.User{
 		ProfilePicture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-		Username: "admin",
-		Bio: "admin",
-		Role: "Admin",
-		Email: "admin@admin.com",
-		Password: hash,
+		Username:       "admin",
+		Bio:            "admin",
+		Role:           "Admin",
+		Email:          "admin@admin.com",
+		Password:       hash,
 	}
 	db.Model(userGorm).Where("role = 'Admin'").First(&userGorm)
 	if userGorm.ID == 0 {
@@ -57,7 +57,7 @@ func InitialMigration(db *gorm.DB) {
 		_userData.User{}, _cartModel.Cart{}, _commentModel.Comment{},
 		_followerModel.Follower{}, _imageModel.Image{}, _ingredientDetailModel.IngredientDetail{},
 		_ingredientModel.Ingredient{}, _likeModel.Like{}, _recipeModel.Recipe{}, _stepModel.Step{},
-		_transactionModel.Transaction{}, _transactionDetailModel.TransactionsDetail{},
+		_transactionModel.Transaction{}, _transactionDetailModel.TransactionDetail{},
 	)
 	initSuperAdmin(db)
 }
