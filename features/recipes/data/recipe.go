@@ -39,6 +39,19 @@ func (d *RecipeData) ActionValidator(recipeId, userId uint) bool {
 	return tempGorm.ID != 0
 }
 
+func (d *RecipeData) SelectRecipeByIngredientId(ingredientId uint) *_recipeModel.Recipe {
+	tempGorm := _recipeModel.Recipe{}
+
+	subQuery := d.db.Table("ingredients").Where("id = ?", ingredientId).Select("recipe_id")
+	d.db.Where("recipe_id IN (?)", subQuery).Find(&tempGorm)
+
+	if tempGorm.ID == 0 {
+		return nil
+	}
+
+	return &tempGorm
+}
+
 func (d *RecipeData) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	gorms := []_recipeModel.Recipe{}
 
