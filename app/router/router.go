@@ -196,7 +196,7 @@ func initTransactionRouter(db *gorm.DB, e *echo.Echo) {
 	service := _transactionService.New(data)
 	handler := _transactionDelivery.New(service)
 
-	e.GET("/users/transactions", handler.SelectTransactionByUserId, middlewares.JWTMiddleware())
+	e.GET("/users/transactions", handler.SelectTransactionsByUserId, middlewares.JWTMiddleware())
 	e.POST("/users/transactions", handler.InsertTransaction, middlewares.JWTMiddleware())
 	e.PUT(fmt.Sprintf("/users/transactions/:%s", consts.ECHO_P_TransactionId), handler.UpdateTransactionById, middlewares.JWTMiddleware())
 }
