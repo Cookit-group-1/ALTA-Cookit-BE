@@ -6,6 +6,7 @@ import (
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -51,6 +52,7 @@ func (d *TransactionDelivery) InsertTransaction(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 	transactionRequest.CustomerUserId = userId
+	fmt.Println(transactionRequest.TransactionDetailRequests[0].IngredientID)
 
 	output, err := d.transactionService.InsertTransaction(ConvertToEntity(&transactionRequest))
 	if err != nil {

@@ -48,10 +48,10 @@ func (s *TransactionService) UpdateTransactionById(entity *transactions.Transact
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
 
-	// isEntitled := s.transactionData.ActionValidator(entity.ID, entity.UserID)
-	// if !isEntitled {
-	// 	return errors.New(consts.SERVER_ForbiddenRequest)
-	// }
+	isEntitled := s.transactionData.ActionValidator(entity.ID, entity.CustomerUserId)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
 
 	err = s.transactionData.UpdateTransactionById(entity)
 	if err != nil {

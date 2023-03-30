@@ -10,8 +10,8 @@ import (
 	_userModel "alta-cookit-be/features/users/data"
 )
 
-func ConvertToGorm(entity *transaction_details.TransactionDetailEntity) *_transactionDetailModel.TransactionsDetail {
-	gorm := _transactionDetailModel.TransactionsDetail{
+func ConvertToGorm(entity *transaction_details.TransactionDetailEntity) *_transactionDetailModel.TransactionDetail {
+	gorm := _transactionDetailModel.TransactionDetail{
 		IngredientID: entity.IngredientID,
 		Quantity:     entity.Quantity,
 	}
@@ -21,19 +21,19 @@ func ConvertToGorm(entity *transaction_details.TransactionDetailEntity) *_transa
 	return &gorm
 }
 
-func ConvertToGorms(entities *[]transaction_details.TransactionDetailEntity) *[]_transactionDetailModel.TransactionsDetail {
-	gorms := []_transactionDetailModel.TransactionsDetail{}
+func ConvertToGorms(entities *[]transaction_details.TransactionDetailEntity) *[]_transactionDetailModel.TransactionDetail {
+	gorms := []_transactionDetailModel.TransactionDetail{}
 	for _, entity := range *entities {
 		gorms = append(gorms, *ConvertToGorm(&entity))
 	}
 	return &gorms
 }
 
-func ConvertToEntity(gorm *_transactionDetailModel.TransactionsDetail, userGorm *_userModel.User, recipeGorm *_recipeModel.Recipe, imageGorms *[]_imageModel.Image, ingredientGorm *_ingredientModel.Ingredient) *transaction_details.TransactionDetailEntity {
+func ConvertToEntity(gorm *_transactionDetailModel.TransactionDetail, userGorm *_userModel.User, recipeGorm *_recipeModel.Recipe, imageGorms *[]_imageModel.Image, ingredientGorm *_ingredientModel.Ingredient) *transaction_details.TransactionDetailEntity {
 	entity := transaction_details.TransactionDetailEntity{
-		ID:       gorm.ID,
-		UserID:   gorm.ID,
-		Quantity: gorm.Quantity,
+		ID:             gorm.ID,
+		LoggedInUserID: gorm.ID,
+		Quantity:       gorm.Quantity,
 	}
 	if userGorm != nil {
 		entity.SellerUserID = userGorm.ID
