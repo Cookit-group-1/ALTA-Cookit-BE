@@ -6,6 +6,8 @@ import (
 	"alta-cookit-be/features/steps"
 	"mime/multipart"
 
+	_recipeModel "alta-cookit-be/features/recipes/models"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -94,6 +96,7 @@ type RecipeService_ interface {
 
 type RecipeData_ interface {
 	ActionValidator(recipeId, userId uint) bool
+	SelectRecipeByIngredientId(ingredientId uint) *_recipeModel.Recipe
 	SelectRecipes(entity *RecipeEntity) (*[]RecipeEntity, error)
 	InsertRecipe(entity *RecipeEntity) (*RecipeEntity, error)
 	UpdateRecipeById(entity *RecipeEntity) error
