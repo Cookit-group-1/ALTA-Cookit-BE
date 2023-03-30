@@ -22,7 +22,7 @@ func New(transactionService transactions.TransactionService_) transactions.Trans
 	}
 }
 
-func (d *TransactionDelivery) SelectTransactionByUserId(e echo.Context) error {
+func (d *TransactionDelivery) SelectTransactionsByUserId(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	page, limit := helpers.ExtractPageLimit(e)
 	limit, offset := helpers.LimitOffsetConvert(page, limit)
@@ -35,8 +35,9 @@ func (d *TransactionDelivery) SelectTransactionByUserId(e echo.Context) error {
 	transactionRequest.CustomerUserId = userId
 	transactionRequest.DataLimit = limit
 	transactionRequest.DataOffset = offset
+	transactionRequest.ExtractedQueryParams = helpers.ExtractQueryParams(e.QueryParams())
 
-	outputs, err := d.transactionService.SelectTransactionByUserId(ConvertToEntity(&transactionRequest))
+	outputs, err := d.transactionService.SelectTransactionsByUserId(ConvertToEntity(&transactionRequest))
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}

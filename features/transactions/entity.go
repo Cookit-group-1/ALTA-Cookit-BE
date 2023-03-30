@@ -19,6 +19,7 @@ type TransactionEntity struct {
 	CreatedAt                 time.Time
 	DataLimit                 int
 	DataOffset                int
+	ExtractedQueryParams      map[string]interface{}
 }
 
 type TransactionRequest struct {
@@ -29,6 +30,7 @@ type TransactionRequest struct {
 	PaymentMethod             string                                         `json:"payment_method" form:"payment_method"`
 	DataLimit                 int
 	DataOffset                int
+	ExtractedQueryParams      map[string]interface{}
 }
 
 type TransactionResponse struct {
@@ -42,13 +44,13 @@ type TransactionResponse struct {
 }
 
 type TransactionDelivery_ interface {
-	SelectTransactionByUserId(e echo.Context) error
+	SelectTransactionsByUserId(e echo.Context) error
 	InsertTransaction(e echo.Context) error
 	UpdateTransactionById(e echo.Context) error
 }
 
 type TransactionService_ interface {
-	SelectTransactionByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
+	SelectTransactionsByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
 	InsertTransaction(transactionEntity *TransactionEntity) (*TransactionEntity, error)
 	UpdateTransactionById(transactionEntity *TransactionEntity) error
 }
@@ -56,7 +58,7 @@ type TransactionService_ interface {
 type TransactionData_ interface {
 	ActionValidator(id, customerUserId uint) bool
 	SelectTransactionByTransactionDetailId(transactionDetailId uint) *_transactionModel.Transaction
-	SelectTransactionByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
+	SelectTransactionsByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
 	InsertTransaction(transactionEntity *TransactionEntity) (*TransactionEntity, error)
 	UpdateTransactionById(transactionEntity *TransactionEntity) error
 }

@@ -14,6 +14,7 @@ func ConvertToEntity(request *transactions.TransactionRequest) *transactions.Tra
 		PaymentMethod:             request.PaymentMethod,
 		DataLimit:                 request.DataLimit,
 		DataOffset:                request.DataOffset,
+		ExtractedQueryParams:      request.ExtractedQueryParams,
 	}
 }
 
