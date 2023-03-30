@@ -9,6 +9,7 @@ import (
 	"alta-cookit-be/features/users"
 	"alta-cookit-be/utils/consts"
 	"errors"
+	"fmt"
 	"strings"
 
 	_transactionDetailData "alta-cookit-be/features/transaction_details/data"
@@ -52,10 +53,22 @@ func (d *TransactionData) SelectTransactionByTransactionDetailId(transactionDeta
 	return &tempGorm
 }
 
-func (d *TransactionData) SelectTransactionByUserId(entity *transactions.TransactionEntity) (*[]transactions.TransactionEntity, error) {
+func (d *TransactionData) SelectTransactionsByUserId(entity *transactions.TransactionEntity) (*[]transactions.TransactionEntity, error) {
 	gorms := []_transactionModel.Transaction{}
 
-	tx := d.db.Preload("TransactionDetails").Where("user_id = ?", entity.CustomerUserId).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	qString := ""
+	for key, val := range entity.ExtractedQueryParams {
+		if qString != "" {
+			qString += " AND "
+		}
+		if key == "name" {
+			qString += fmt.Sprintf("%s LIKE %s%s%s ", key, "'%", val, "%'")
+		} else {
+			qString += fmt.Sprintf("%s = '%s'", key, val)
+		}
+	}
+
+	tx := d.db.Debug().Preload("TransactionDetails").Where("user_id = ?", entity.CustomerUserId).Where(qString).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

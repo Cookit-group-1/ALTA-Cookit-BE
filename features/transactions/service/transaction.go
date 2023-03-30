@@ -21,8 +21,8 @@ func New(transactionData transactions.TransactionData_) transactions.Transaction
 	}
 }
 
-func (s *TransactionService) SelectTransactionByUserId(entity *transactions.TransactionEntity) (*[]transactions.TransactionEntity, error) {
-	outputs, err := s.transactionData.SelectTransactionByUserId(entity)
+func (s *TransactionService) SelectTransactionsByUserId(entity *transactions.TransactionEntity) (*[]transactions.TransactionEntity, error) {
+	outputs, err := s.transactionData.SelectTransactionsByUserId(entity)
 	if err != nil {
 		return nil, err
 	}
