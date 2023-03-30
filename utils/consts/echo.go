@@ -10,6 +10,7 @@ const (
 	ECHO_P_CartId             = "cart_id"
 	ECHO_P_StepId             = "step_id"
 	ECHO_P_ImageId            = "image_id"
+	ECHO_P_TransactionId      = "transaction_id"
 )
 
 const (
