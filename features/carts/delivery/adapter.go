@@ -35,12 +35,10 @@ func ConvertToResponse(entity *carts.CartEntity) carts.CartResponse {
 	}
 }
 
-func ConvertToResponses(entities *[]carts.CartEntity) map[string]any {
-	outputs, responses := map[string]any{}, []carts.CartResponse{}
+func ConvertToResponses(entities *[]carts.CartEntity) []carts.CartResponse {
+	responses := []carts.CartResponse{}
 	for _, entity := range *entities {
 		responses = append(responses, ConvertToResponse(&entity))
 	}
-	outputs["carts"] = responses
-	outputs["cart_length"] = len(*entities)
-	return outputs
+	return responses
 }
