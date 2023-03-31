@@ -4000,27 +4000,32 @@ paths:
                       type: string
               example:
                 data:
-                  [
-                    {
-                      id: 1,
-                      transaction_details: [
+                  {
+                    carts: 
+                      [
                         {
                           id: 1,
-                          id_seller: 1,
-                          seller_user_username: "admin",
-                          recipe_name: "Indomie Spesial",
-                          ingredient_name: "Original",
-                          price: 25000,
-                          quantity: 5
+                          transaction_details: [
+                            {
+                              id: 1,
+                              id_seller: 1,
+                              seller_user_username: "admin",
+                              recipe_name: "Indomie Spesial",
+                              ingredient_name: "Original",
+                              price: 25000,
+                              quantity: 5
+                            }
+                          ],
+                          customer_id: 1,
+                          status: "Unpaid",
+                          payment_method: "None",
+                          total_price: 25000,
+                          created_at: "2023-03-31"
                         }
                       ],
-                      customer_id: 1,
-                      status: "Unpaid",
-                      payment_method: "None",
-                      total_price: 25000,
-                      created_at: "2023-03-31"
-                    }
-                  ]
+                    cart_length: 1,
+                  }
+                  
                 message: "succesfully read list of user's transactions"
         400:
           description: "bad request"
