@@ -10,6 +10,7 @@ func ConvertToEntity(request *transactions.TransactionRequest) *transactions.Tra
 		ID:                        request.ID,
 		TransactionDetailEntities: *_transactionDetailDelivery.ConvertToEntities(&request.TransactionDetailRequests),
 		OrderID:                   request.OrderID,
+		TransactionStatus:         request.TransactionStatus,
 		CustomerUserId:            request.CustomerUserId,
 		PaymentMethod:             request.PaymentMethod,
 		DataLimit:                 request.DataLimit,

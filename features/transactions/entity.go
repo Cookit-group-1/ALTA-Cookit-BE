@@ -13,6 +13,7 @@ type TransactionEntity struct {
 	ID                        uint
 	TransactionDetailEntities []transaction_details.TransactionDetailEntity
 	OrderID                   string
+	TransactionStatus         string
 	VirtualAccountNumber      string
 	CustomerUserId            uint
 	Status                    string
@@ -27,6 +28,7 @@ type TransactionEntity struct {
 type TransactionRequest struct {
 	ID                        uint                                           `json:"-" form:"-"`
 	OrderID                   string                                         `json:"order_id,omitempty"`
+	TransactionStatus         string                                         `json:"transaction_status,omitempty"`
 	TransactionDetailRequests []transaction_details.TransactionDetailRequest `json:"transaction_details" form:"transaction_details"`
 	CustomerUserId            uint                                           `json:"-" form:"-"`
 	PaymentMethod             string                                         `json:"payment_method" form:"payment_method"`

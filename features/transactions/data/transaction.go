@@ -133,7 +133,7 @@ func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEnti
 }
 
 func (d *TransactionData) UpdateTransactionStatusById(entity *transactions.TransactionEntity) error {
-	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
+	tx := d.db.Table("transactions").Where("id = ?", entity.ID).Update("status", entity.Status)
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -144,7 +144,7 @@ func (d *TransactionData) UpdateTransactionStatusById(entity *transactions.Trans
 }
 
 func (d *TransactionData) UpdateTransactionStatusByOrderId(entity *transactions.TransactionEntity) error {
-	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
+	tx := d.db.Where("order_id = ?", entity.OrderID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

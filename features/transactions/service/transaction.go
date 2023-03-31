@@ -67,10 +67,17 @@ func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.Tr
 	}
 
 	gorm := s.transactionData.SelectTransactionById(entity.ID)
-	if gorm.Status == consts.TRANSACTION_E_Unpaid {
-		return errors.New(consts.SERVER_ForbiddenRequest)
+	switch gorm.Status {
+		case consts.TRANSACTION_E_Unpaid:
+			return errors.New(consts.SERVER_ForbiddenRequest)
+		case consts.TRANSACTION_E_Shipped:
+			entity.Status = consts.TRANSACTION_E_Received
+		case consts.TRANSACTION_E_Received:
+			entity.Status = consts.TRANSACTION_E_Complete
+		default:
+			return nil
 	}
-
+			
 	err = s.transactionData.UpdateTransactionStatusById(entity)
 	if err != nil {
 		return err
@@ -79,10 +86,12 @@ func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.Tr
 }
 
 func (s *TransactionService) UpdateTransactionStatusByOrderId(entity *transactions.TransactionEntity) error {
-	entity.Status = consts.TRANSACTION_E_Shipped
-	err := s.transactionData.UpdateTransactionStatusByOrderId(entity)
-	if err != nil {
-		return err
+	if entity.TransactionStatus == "settlement" {
+		entity.Status = consts.TRANSACTION_E_Shipped
+		err := s.transactionData.UpdateTransactionStatusByOrderId(entity)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
