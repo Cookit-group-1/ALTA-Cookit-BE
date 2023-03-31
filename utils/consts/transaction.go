@@ -5,6 +5,7 @@ const (
 	TRANSACTION_E_Shipped  = "Shipped"
 	TRANSACTION_E_Received = "Received"
 	TRANSACTION_E_Complete = "Complete"
+	TRANSACTION_E_NONE     = "None"
 	TRANSACTION_E_COD      = "COD"
 	TRANSACTION_E_SeaBank  = "SeaBank"
 	TRANSACTION_E_BCA      = "BCA"
@@ -18,7 +19,7 @@ const (
 const (
 	TRANSACTION_SuccessReadUserTransactionList string = "succesfully read list of user's transactions"
 	TRANSACTION_SuccessInsertUserTransaction   string = "succesfully insert user's transaction"
-	TRANSACTION_SuccessUpdateUserTransaction   string = "succesfully update user's transaction"
+	TRANSACTION_SuccessUpdateUserStatusTransaction   string = "succesfully update user's status transaction"
 )
 
 // Failed
