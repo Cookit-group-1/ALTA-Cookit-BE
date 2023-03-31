@@ -11,7 +11,7 @@ type TransactionDetailEntity struct {
 	LoggedInUserID      uint
 	SellerUserID        uint
 	SellerUsername      string
-	IngredientID        uint
+	IngredientID        uint `validate:"required"`
 	RecipeImageEntities []images.ImageEntity
 	RecipeName          string
 	IngredientName      string
