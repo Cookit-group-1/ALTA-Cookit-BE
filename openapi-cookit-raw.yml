@@ -3854,10 +3854,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
-                data:
-                  id: 1
-                  price: 350000
-                  quantity: 1
                 message: "succesfully update user's cart"
         400:
           description: "bad request"
@@ -4054,7 +4050,7 @@ paths:
       tags:
         - Transactions
       summary: insert new user's transaction
-      description: feature for insert new user's transaction
+      description: "feature for insert new user's transaction (Payment Method : COD, BCA, BNI, BRI, Mandiri, Permata)"
       security:
         - JWTAuth: []
       requestBody:
@@ -4068,11 +4064,21 @@ paths:
                 required:
                   - ingredient_id
                   - quantity
+                  - payment_method
                 properties:
                   ingredient_id:
                     type: integer
                   quantity:
                     type: integer
+                  payment_method:
+                    type: string
+                    enum:
+                      - "COD"
+                      - "BCA"
+                      - "BNI"
+                      - "BRI"
+                      - "Mandiri"
+                      - "Permata"
             example:
               {
                 transaction_details:
@@ -4081,7 +4087,8 @@ paths:
                       ingredient_id: 1,
                       quantity: 5
                     },
-                  ]
+                  ],
+                payment_method: "BCA"
               }
       responses:
         201:
@@ -4094,6 +4101,8 @@ paths:
                 data:
                   {
                     id: 1,
+                    order_id: "fe931dce-c4e8-4033-858b-f2d890d70fbd",
+                    virtual_account_number: "76364347481",
                     transaction_details: [
                       {
                         id: 1,
@@ -4128,6 +4137,59 @@ paths:
                 Invalid Ingredient:
                   value:
                     message: invalid ingredient
+                Forbidden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
+  /users/transactions/{transaction_id}/status:
+    put:
+      tags:
+        - Transactions
+      summary: update user's status transaction
+      description: feature for update user's status transaction
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: transaction_id
+          description: user's transaction id to be updated
+          required: true
+          in: path
+          schema:
+            type: integer
+            example: 1
+      responses:
+        201:
+          description: success update user's status transaction
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "succesfully update user's status transaction"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Record Not Found:
+                  value:
+                    message: record not found
                 Forbidden Request:
                   value:
                     message: forbidden request
