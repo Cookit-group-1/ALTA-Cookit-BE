@@ -12,6 +12,8 @@ import (
 type TransactionEntity struct {
 	ID                        uint
 	TransactionDetailEntities []transaction_details.TransactionDetailEntity
+	OrderID                   string
+	VirtualAccountNumber      string
 	CustomerUserId            uint
 	Status                    string
 	PaymentMethod             string
@@ -24,9 +26,9 @@ type TransactionEntity struct {
 
 type TransactionRequest struct {
 	ID                        uint                                           `json:"-" form:"-"`
+	OrderID                   string                                         `json:"order_id,omitempty"`
 	TransactionDetailRequests []transaction_details.TransactionDetailRequest `json:"transaction_details" form:"transaction_details"`
 	CustomerUserId            uint                                           `json:"-" form:"-"`
-	Status                    string                                         `json:"status" form:"status"`
 	PaymentMethod             string                                         `json:"payment_method" form:"payment_method"`
 	DataLimit                 int
 	DataOffset                int
@@ -35,6 +37,8 @@ type TransactionRequest struct {
 
 type TransactionResponse struct {
 	ID                         uint                                            `json:"id,omitempty"`
+	OrderID                    string                                          `json:"order_id,omitempty"`
+	VirtualAccountNumber       string                                          `json:"virtual_account_number,omitempty"`
 	TransactionDetailResponses []transaction_details.TransactionDetailResponse `json:"transaction_details,omitempty"`
 	CustomerUserId             uint                                            `json:"customer_id,omitempty"`
 	Status                     string                                          `json:"status,omitempty"`
@@ -46,19 +50,23 @@ type TransactionResponse struct {
 type TransactionDelivery_ interface {
 	SelectTransactionsByUserId(e echo.Context) error
 	InsertTransaction(e echo.Context) error
-	UpdateTransactionById(e echo.Context) error
+	UpdateTransactionStatusById(e echo.Context) error
+	UpdateTransactionStatusByOrderId(e echo.Context) error
 }
 
 type TransactionService_ interface {
 	SelectTransactionsByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
 	InsertTransaction(transactionEntity *TransactionEntity) (*TransactionEntity, error)
-	UpdateTransactionById(transactionEntity *TransactionEntity) error
+	UpdateTransactionStatusById(transactionEntity *TransactionEntity) error
+	UpdateTransactionStatusByOrderId(transactionEntity *TransactionEntity) error
 }
 
 type TransactionData_ interface {
 	ActionValidator(id, customerUserId uint) bool
+	SelectTransactionById(id uint) *_transactionModel.Transaction
 	SelectTransactionByTransactionDetailId(transactionDetailId uint) *_transactionModel.Transaction
 	SelectTransactionsByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
 	InsertTransaction(transactionEntity *TransactionEntity) (*TransactionEntity, error)
-	UpdateTransactionById(transactionEntity *TransactionEntity) error
+	UpdateTransactionStatusById(transactionEntity *TransactionEntity) error
+	UpdateTransactionStatusByOrderId(transactionEntity *TransactionEntity) error
 }

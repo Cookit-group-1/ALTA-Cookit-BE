@@ -6,7 +6,6 @@ import (
 	"alta-cookit-be/utils/consts"
 	"alta-cookit-be/utils/helpers"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -53,7 +52,6 @@ func (d *TransactionDelivery) InsertTransaction(e echo.Context) error {
 		return helpers.ReturnBadResponse(e, err)
 	}
 	transactionRequest.CustomerUserId = userId
-	fmt.Println(transactionRequest.TransactionDetailRequests[0].IngredientID)
 
 	output, err := d.transactionService.InsertTransaction(ConvertToEntity(&transactionRequest))
 	if err != nil {
@@ -62,7 +60,7 @@ func (d *TransactionDelivery) InsertTransaction(e echo.Context) error {
 	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.TRANSACTION_SuccessInsertUserTransaction, ConvertToResponse(output)))
 }
 
-func (d *TransactionDelivery) UpdateTransactionById(e echo.Context) error {
+func (d *TransactionDelivery) UpdateTransactionStatusById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_TransactionId)
 	if err != nil {
@@ -77,7 +75,21 @@ func (d *TransactionDelivery) UpdateTransactionById(e echo.Context) error {
 	transactionRequest.ID = id
 	transactionRequest.CustomerUserId = userId
 
-	err = d.transactionService.UpdateTransactionById(ConvertToEntity(&transactionRequest))
+	err = d.transactionService.UpdateTransactionStatusById(ConvertToEntity(&transactionRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusCreated, helpers.Response(consts.CART_SuccessUpdateUserCart))
+}
+
+func (d *TransactionDelivery) UpdateTransactionStatusByOrderId(e echo.Context) error {
+	transactionRequest := transactions.TransactionRequest{}
+	err := e.Bind(&transactionRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+
+	err = d.transactionService.UpdateTransactionStatusByOrderId(ConvertToEntity(&transactionRequest))
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}

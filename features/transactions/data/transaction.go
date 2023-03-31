@@ -44,6 +44,14 @@ func (d *TransactionData) ActionValidator(id, customerUserId uint) bool {
 	return tempGorm.ID != 0
 }
 
+func (d *TransactionData) SelectTransactionById(id uint) *_transactionModel.Transaction {
+	tempGorm := _transactionModel.Transaction{}
+
+	d.db.Where("id = ?", id).Find(&tempGorm)
+
+	return &tempGorm
+}
+
 func (d *TransactionData) SelectTransactionByTransactionDetailId(transactionDetailId uint) *_transactionModel.Transaction {
 	tempGorm := _transactionModel.Transaction{}
 
@@ -117,10 +125,25 @@ func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEnti
 		return nil, tx.Error
 	}
 
+	for index, _ := range subEntities {
+		subEntities[index].ID = gorm.TransactionDetails[index].ID
+	}
+
 	return ConvertToEntity(gorm, &subEntities), nil
 }
 
-func (d *TransactionData) UpdateTransactionById(entity *transactions.TransactionEntity) error {
+func (d *TransactionData) UpdateTransactionStatusById(entity *transactions.TransactionEntity) error {
+	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New(consts.GORM_RecordNotFound)
+	}
+	return nil
+}
+
+func (d *TransactionData) UpdateTransactionStatusByOrderId(entity *transactions.TransactionEntity) error {
 	tx := d.db.Where("id = ?", entity.ID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error

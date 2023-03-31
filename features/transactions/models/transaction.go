@@ -8,9 +8,10 @@ import (
 
 type Transaction struct {
 	gorm.Model
+	OrderID            string `gorm:"default:'';not null;type:VARCHAR(50)"`
 	UserID             uint
 	TransactionDetails []_transactionDetailModel.TransactionDetail `gorm:"constraint:OnDelete:CASCADE;"`
 	Status             string                                      `gorm:"not null;type:enum('Unpaid', 'Shipped', 'Received', 'Complete');default:'Unpaid'"`
-	PaymentMethod      string                                      `gorm:"not null;type:enum('None', 'COD', 'SeaBank', 'BCA', 'BNI', 'Mandiri', 'QRIS', 'Gopay');default:'None'"`
+	PaymentMethod      string                                      `gorm:"not null;type:enum('None', 'COD', 'BCA', 'BNI', 'BRI', 'Mandiri', 'Permata');default:'None'"`
 	TotalPrice         float64                                     `gorm:"not null"`
 }
