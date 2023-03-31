@@ -63,9 +63,9 @@ func (fq *FollowQuery) ShowAllFollower(userID uint) ([]followers.FollowCore, err
 
 // ShowAllFollowing implements followers.FollowData
 func (fq *FollowQuery) ShowAllFollowing(userID uint) ([]followers.FollowCore, error) {
-	following := []Follower{}
+	following := []Followings{}
 	log.Println(following)
-	err := fq.db.Raw("SELECT u.id, u.username, u.profile_picture, u.role, f.to_user_id FROM users u JOIN followers f ON u.id = f.from_user_id WHERE u.id = ?", userID).Scan(&following).Error
+	err := fq.db.Raw("SELECT u.id as user_id, u.username, u.profile_picture, u.role, f.to_user_id as following_user_id FROM users u LEFT JOIN followers f ON u.id = f.from_user_id WHERE u.id = ?", userID).Scan(&following).Error
 	if err != nil {
 		log.Println("no data processed", err.Error())
 		return []followers.FollowCore{}, errors.New("no following data found")
@@ -73,7 +73,7 @@ func (fq *FollowQuery) ShowAllFollowing(userID uint) ([]followers.FollowCore, er
 
 	res := []followers.FollowCore{}
 	for i := 0; i < len(following); i++ {
-		res = append(res, DataToCore(following[i]))
+		res = append(res, FollowingDataToCore(following[i]))
 
 	}
 	if len(res) == 0 {

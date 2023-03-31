@@ -17,6 +17,34 @@ type Follower struct {
 	UserRefer      uint
 }
 
+type Followings struct {
+	ID             uint
+	Username       string
+	ProfilePicture string
+	Role           string
+	ToUserID       uint
+}
+
+func FollowingDataToCore(data Followings) followers.FollowCore {
+	return followers.FollowCore{
+		UserID:             data.ID,
+		Username:       data.Username,
+		ProfilePicture: data.ProfilePicture,
+		Role:           data.Role,
+		ToUserID:       data.ToUserID,
+	}
+}
+
+func CoreToFollowingData(data followers.FollowCore) Followings {
+	return Followings{
+		ID:             data.UserID,
+		Username:       data.Username,
+		ProfilePicture: data.ProfilePicture,
+		Role:           data.Role,
+		ToUserID:       data.ToUserID,
+	}
+}
+
 func DataToCore(data Follower) followers.FollowCore {
 	return followers.FollowCore{
 		ID:             data.ID,

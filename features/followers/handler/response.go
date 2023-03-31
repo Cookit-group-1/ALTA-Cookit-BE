@@ -11,7 +11,7 @@ type UserResp struct {
 
 type ListFollowingResponse struct {
 	ID       uint     `json:"id"`
-	UserID   uint     `json:"user_id"`
+	// UserID   uint     `json:"user_id"`
 	ToUserID uint     `json:"to_user_id"`
 	User     UserResp `json:"user"`
 }
@@ -19,7 +19,7 @@ type ListFollowingResponse struct {
 func ToListFollowingResponse(data followers.FollowCore) ListFollowingResponse {
 	return ListFollowingResponse{
 		ID:       data.UserID,
-		UserID:   data.UserID,
+		// UserID:   data.UserID,
 		ToUserID: data.ToUserID,
 		User:     UserResp{UserID: data.UserID, Username: data.Username, ProfilePicture: data.ProfilePicture, Role: data.Role},
 	}

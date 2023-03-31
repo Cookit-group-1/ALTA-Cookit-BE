@@ -79,7 +79,7 @@ func initFollowerRouter(db *gorm.DB, e *echo.Echo) {
 
 	e.POST("users/follow/:id", follHandler.Follow(), middlewares.JWTMiddleware())
 	e.DELETE("users/unfollow/:id", follHandler.Unfollow(), middlewares.JWTMiddleware())
-	// e.GET("users/following", follHandler.ShowAllFollowing(), middlewares.JWTMiddleware())
+	e.GET("users/following", follHandler.ShowAllFollowing(), middlewares.JWTMiddleware())
 	// e.GET("users/follower", follHandler.ShowAllFollower(), middlewares.JWTMiddleware())
 }
 
