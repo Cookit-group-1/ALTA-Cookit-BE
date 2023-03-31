@@ -51,9 +51,9 @@ func (d *CartData) SelectCartsByUserId(entity *carts.CartEntity) (*[]carts.CartE
 
 	entities := []carts.CartEntity{}
 	for _, gorm := range gorms {
-		userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
-		userGorm := _userModel.CoreToModel(*userEntity)
 		recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
+		userEntity := d.userData.SelectUserById(users.Core{ID: recipeGorm.UserID})
+		userGorm := _userModel.CoreToModel(*userEntity)
 		imageGorms := d.imageData.SelectImagesByRecipeId(recipeGorm.ID)
 		ingredientGorm := d.ingredientData.SelectIngredientById(gorm.IngredientID)
 		entities = append(entities, *ConvertToEntity(&gorm, &userGorm, recipeGorm, imageGorms, ingredientGorm))
@@ -75,9 +75,9 @@ func (d *CartData) InsertCart(entity *carts.CartEntity) (*carts.CartEntity, erro
 		return nil, tx.Error
 	}
 
-	userEntity := d.userData.SelectUserById(users.Core{ID: gorm.UserID})
-	userGorm := _userModel.CoreToModel(*userEntity)
 	recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
+	userEntity := d.userData.SelectUserById(users.Core{ID: recipeGorm.UserID})
+	userGorm := _userModel.CoreToModel(*userEntity)
 	imageGorms := d.imageData.SelectImagesByRecipeId(recipeGorm.ID)
 	ingredientGorm := d.ingredientData.SelectIngredientById(gorm.IngredientID)
 	return ConvertToEntity(gorm, &userGorm, recipeGorm, imageGorms, ingredientGorm), nil

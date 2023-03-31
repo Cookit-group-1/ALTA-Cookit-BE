@@ -49,10 +49,9 @@ func (d *TransactionDetailData) SelectTransactionDetailById(entity *transaction_
 		return nil, tx.Error
 	}
 
-	transactionGorm := d.transactionData.SelectTransactionByTransactionDetailId(entity.ID)
-	userEntity := d.userData.SelectUserById(users.Core{ID: transactionGorm.UserID})
-	userGorm := _userModel.CoreToModel(*userEntity)
 	recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
+	userEntity := d.userData.SelectUserById(users.Core{ID: recipeGorm.UserID})
+	userGorm := _userModel.CoreToModel(*userEntity)
 	imageGorms := d.imageData.SelectImagesByRecipeId(recipeGorm.ID)
 	ingredientGorm := d.ingredientData.SelectIngredientById(gorm.IngredientID)
 	return ConvertToEntity(&gorm, &userGorm, recipeGorm, imageGorms, ingredientGorm), nil
