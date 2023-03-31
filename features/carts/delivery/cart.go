@@ -39,7 +39,7 @@ func (d *CartDeliery) SelectCartsByUserId(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.CART_SuccessInsertUserCart, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.CART_SuccessReadUserCartList, ConvertToResponses(outputs)))
 }
 
 func (d *CartDeliery) InsertCart(e echo.Context) error {

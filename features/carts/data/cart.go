@@ -44,7 +44,7 @@ func (d *CartData) ActionValidator(id, userId uint) bool {
 func (d *CartData) SelectCartsByUserId(entity *carts.CartEntity) (*[]carts.CartEntity, error) {
 	gorms := []_cartModel.Cart{}
 
-	tx := d.db.Where("user_id = ?", entity.UserID).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Where("user_id = ?", entity.UserID).Limit(entity.DataLimit).Offset(entity.DataOffset).Order("created_at desc").Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
