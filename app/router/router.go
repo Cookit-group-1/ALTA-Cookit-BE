@@ -198,7 +198,8 @@ func initTransactionRouter(db *gorm.DB, e *echo.Echo) {
 
 	e.GET("/users/transactions", handler.SelectTransactionsByUserId, middlewares.JWTMiddleware())
 	e.POST("/users/transactions", handler.InsertTransaction, middlewares.JWTMiddleware())
-	e.PUT(fmt.Sprintf("/users/transactions/:%s", consts.ECHO_P_TransactionId), handler.UpdateTransactionById, middlewares.JWTMiddleware())
+	e.PUT(fmt.Sprintf("/users/transactions/:%s", consts.ECHO_P_TransactionId), handler.UpdateTransactionStatusById, middlewares.JWTMiddleware())
+	e.POST("/users/transactions", handler.UpdateTransactionStatusByOrderId, middlewares.JWTMiddleware())
 }
 
 func initTransactionDetailRouter(db *gorm.DB, e *echo.Echo) {

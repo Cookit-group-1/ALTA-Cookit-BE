@@ -9,28 +9,28 @@ import (
 )
 
 var (
-	SECRET_JWT        string = ""
-	GCP_PROJECT_ID    string = ""
-	GCP_BUCKET_NAME   string = ""
-	AWS_REGION               = ""
-	ACCESS_KEY_ID            = ""
-	ACCESS_KEY_SECRET        = ""
-	// MIDTRANS_SERVER_KEY string = ""
+	SECRET_JWT          string = ""
+	GCP_PROJECT_ID      string = ""
+	GCP_BUCKET_NAME     string = ""
+	AWS_REGION                 = ""
+	ACCESS_KEY_ID              = ""
+	ACCESS_KEY_SECRET          = ""
+	MIDTRANS_SERVER_KEY string = ""
 )
 
 type AppConfig struct {
-	DB_USERNAME       string
-	DB_PASSWORD       string
-	DB_HOSTNAME       string
-	DB_PORT           int
-	DB_NAME           string
-	JWT_KEY           string
-	GCP_PROJECT_ID    string
-	GCP_BUCKET_NAME   string
-	AWS_REGION        string
-	ACCESS_KEY_ID     string
-	ACCESS_KEY_SECRET string
-	// MIDTRANS_SERVER_KEY string
+	DB_USERNAME         string
+	DB_PASSWORD         string
+	DB_HOSTNAME         string
+	DB_PORT             int
+	DB_NAME             string
+	JWT_KEY             string
+	GCP_PROJECT_ID      string
+	GCP_BUCKET_NAME     string
+	AWS_REGION          string
+	ACCESS_KEY_ID       string
+	ACCESS_KEY_SECRET   string
+	MIDTRANS_SERVER_KEY string
 }
 
 func InitConfig() *AppConfig {
@@ -74,10 +74,10 @@ func ReadEnv() *AppConfig {
 		app.GCP_BUCKET_NAME = val
 		isRead = false
 	}
-	// if val, found := os.LookupEnv("MIDTRANS_SERVER_KEY"); found {
-	// 	app.MIDTRANS_SERVER_KEY = val
-	// 	isRead = false
-	// }
+	if val, found := os.LookupEnv("MIDTRANS_SERVER_KEY"); found {
+		app.MIDTRANS_SERVER_KEY = val
+		isRead = false
+	}
 
 	// looking image env for aws s3 bucket
 	if val, found := os.LookupEnv("AWS_REGION"); found {
@@ -115,7 +115,7 @@ func ReadEnv() *AppConfig {
 		app.AWS_REGION = viper.Get("AWS_REGION").(string)
 		app.ACCESS_KEY_ID = viper.Get("ACCESS_KEY_ID").(string)
 		app.ACCESS_KEY_SECRET = viper.Get("ACCESS_KEY_SECRET").(string)
-		// app.MIDTRANS_SERVER_KEY = viper.Get("MIDTRANS_SERVER_KEY").(string)
+		app.MIDTRANS_SERVER_KEY = viper.Get("MIDTRANS_SERVER_KEY").(string)
 
 	}
 
@@ -125,6 +125,6 @@ func ReadEnv() *AppConfig {
 	AWS_REGION = app.AWS_REGION
 	ACCESS_KEY_ID = app.ACCESS_KEY_ID
 	ACCESS_KEY_SECRET = app.ACCESS_KEY_SECRET
-	// MIDTRANS_SERVER_KEY = app.MIDTRANS_SERVER_KEY
+	MIDTRANS_SERVER_KEY = app.MIDTRANS_SERVER_KEY
 	return &app
 }
