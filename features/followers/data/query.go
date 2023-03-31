@@ -42,30 +42,28 @@ func (fq *FollowQuery) Follow(userID, followingID uint) error {
 
 // ShowAllFollower implements followers.FollowData
 func (fq *FollowQuery) ShowAllFollower(userID uint) ([]followers.FollowCore, error) {
-	follower := []Follower{}
-	log.Println(follower)
-	err := fq.db.Raw("SELECT u.id, u.username, u.profile_picture, u.role, f.to_user_id FROM users u JOIN followers f ON u.id = f.from_user_id WHERE u.id = ?", userID).Scan(&follower).Error
+	showFollower := []Follower{}
+	err := fq.db.Raw("SELECT f.id, f.from_user_id, f.to_user_id, u.username, u.profile_picture, u.role FROM followers f JOIN users u ON f.from_user_id = u.id where to_user_id = ?", userID).Find(&showFollower).Error
 	if err != nil {
 		log.Println("no data processed", err.Error())
-		return []followers.FollowCore{}, errors.New("no following data found")
+		return []followers.FollowCore{}, errors.New("no followers data found")
 	}
 
 	res := []followers.FollowCore{}
-	for i := 0; i < len(follower); i++ {
-		res = append(res, DataToCore(follower[i]))
+	for i := 0; i < len(showFollower); i++ {
+		res = append(res, DataToCore(showFollower[i]))
 
 	}
 	if len(res) == 0 {
-		return []followers.FollowCore{}, errors.New("no following data found")
+		return []followers.FollowCore{}, errors.New("no followers data found")
 	}
 	return res, nil
 }
 
 // ShowAllFollowing implements followers.FollowData
 func (fq *FollowQuery) ShowAllFollowing(userID uint) ([]followers.FollowCore, error) {
-	following := []Followings{}
-	log.Println(following)
-	err := fq.db.Raw("SELECT u.id as user_id, u.username, u.profile_picture, u.role, f.to_user_id as following_user_id FROM users u LEFT JOIN followers f ON u.id = f.from_user_id WHERE u.id = ?", userID).Scan(&following).Error
+	following := []Follower{}
+	err := fq.db.Raw("SELECT f.id, f.from_user_id, f.to_user_id, u.username, u.profile_picture, u.role FROM followers f JOIN users u ON f.to_user_id = u.id where from_user_id= ?", userID).Scan(&following).Error
 	if err != nil {
 		log.Println("no data processed", err.Error())
 		return []followers.FollowCore{}, errors.New("no following data found")
@@ -73,7 +71,7 @@ func (fq *FollowQuery) ShowAllFollowing(userID uint) ([]followers.FollowCore, er
 
 	res := []followers.FollowCore{}
 	for i := 0; i < len(following); i++ {
-		res = append(res, FollowingDataToCore(following[i]))
+		res = append(res, DataToCore(following[i]))
 
 	}
 	if len(res) == 0 {

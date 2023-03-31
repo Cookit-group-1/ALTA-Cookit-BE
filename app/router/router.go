@@ -37,8 +37,8 @@ import (
 	_userDelivery "alta-cookit-be/features/users/handler"
 	_userService "alta-cookit-be/features/users/services"
 	_transactionData "alta-cookit-be/features/transactions/data"
-	_transactionService "alta-cookit-be/features/transactions/service"
-	_transactionDelivery "alta-cookit-be/features/transactions/delivery"
+	// _transactionService "alta-cookit-be/features/transactions/service"
+	// _transactionDelivery "alta-cookit-be/features/transactions/delivery"
 	_transactionDetailData "alta-cookit-be/features/transaction_details/data"
 	_transactionDetailService "alta-cookit-be/features/transaction_details/service"
 	_transactionDetailDelivery "alta-cookit-be/features/transaction_details/delivery"
@@ -80,7 +80,7 @@ func initFollowerRouter(db *gorm.DB, e *echo.Echo) {
 	e.POST("users/follow/:id", follHandler.Follow(), middlewares.JWTMiddleware())
 	e.DELETE("users/unfollow/:id", follHandler.Unfollow(), middlewares.JWTMiddleware())
 	e.GET("users/following", follHandler.ShowAllFollowing(), middlewares.JWTMiddleware())
-	// e.GET("users/follower", follHandler.ShowAllFollower(), middlewares.JWTMiddleware())
+	e.GET("users/follower", follHandler.ShowAllFollower(), middlewares.JWTMiddleware())
 }
 
 func initRecipeRouter(db *gorm.DB, e *echo.Echo) {
@@ -188,13 +188,13 @@ func initCartRouter(db *gorm.DB, e *echo.Echo) {
 }
 
 func initTransactionRouter(db *gorm.DB, e *echo.Echo) {
-	userData := _userData.New(db)
-	imageData := _imageData.New(db)
-	recipeData := _recipeData.New(db, userData, imageData)
-	ingredientData := _ingredientData.New(db)
-	data := _transactionData.New(db, userData, recipeData, imageData, ingredientData)
-	service := _transactionService.New(data)
-	handler := _transactionDelivery.New(service)
+	// userData := _userData.New(db)
+	// imageData := _imageData.New(db)
+	// recipeData := _recipeData.New(db, userData, imageData)
+	// ingredientData := _ingredientData.New(db)
+	// data := _transactionData.New(db, userData, recipeData, imageData, ingredientData)
+	// service := _transactionService.New(data)
+	// handler := _transactionDelivery.New(service)
 
 	e.GET("/users/transactions", handler.SelectTransactionsByUserId, middlewares.JWTMiddleware())
 	e.POST("/users/transactions", handler.InsertTransaction, middlewares.JWTMiddleware())

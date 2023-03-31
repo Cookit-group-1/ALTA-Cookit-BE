@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	// "github.com/jinzhu/copier"
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,7 +21,7 @@ func (fh *followHander) Follow() echo.HandlerFunc {
 		followingID, _ := strconv.Atoi(uID)
 		id, _, err := middlewares.ExtractToken(c)
 		if err != nil {
-			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "error from server"})
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "error from server"})
 		}
 		err = fh.srv.Follow(id, uint(followingID))
 		if id == uint(followingID) {
@@ -36,8 +37,25 @@ func (fh *followHander) Follow() echo.HandlerFunc {
 }
 
 // ShowAllFollower implements followers.FollowHandler
-func (*followHander) ShowAllFollower() echo.HandlerFunc {
-	panic("unimplemented")
+func (fh *followHander) ShowAllFollower() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, _, _ := middlewares.ExtractToken(c)
+		dataCore, err := fh.srv.ShowAllFollower(id)
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+		}
+		result := []ListFollowerResponse{}
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+		}
+		for _, val := range dataCore {
+			result = append(result, ToListFollowerResponse(val))
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    result,
+			"message": "success show all follower users",
+		})
+	}
 }
 
 // ShowAllFollowing implements followers.FollowHandler
@@ -49,8 +67,11 @@ func (fh *followHander) ShowAllFollowing() echo.HandlerFunc {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}
 		result := []ListFollowingResponse{}
-		for i := 0; i < len(result); i++ {
-			result = append(result, ToListFollowingResponse(dataCore[i]))
+		if err != nil {
+			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+		}
+		for _, val := range dataCore {
+			result = append(result, ToListFollowingResponse(val))
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    result,
