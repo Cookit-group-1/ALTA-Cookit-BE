@@ -9,8 +9,8 @@ func ConvertToEntity(request *transactions.TransactionRequest) *transactions.Tra
 	return &transactions.TransactionEntity{
 		ID:                        request.ID,
 		TransactionDetailEntities: *_transactionDetailDelivery.ConvertToEntities(&request.TransactionDetailRequests),
+		OrderID:                   request.OrderID,
 		CustomerUserId:            request.CustomerUserId,
-		Status:                    request.Status,
 		PaymentMethod:             request.PaymentMethod,
 		DataLimit:                 request.DataLimit,
 		DataOffset:                request.DataOffset,
@@ -30,6 +30,8 @@ func ConvertToResponse(entity *transactions.TransactionEntity) transactions.Tran
 	return transactions.TransactionResponse{
 		ID:                         entity.ID,
 		TransactionDetailResponses: _transactionDetailDelivery.ConvertToResponses(&entity.TransactionDetailEntities),
+		OrderID:                    entity.OrderID,
+		VirtualAccountNumber:       entity.VirtualAccountNumber,
 		CustomerUserId:             entity.CustomerUserId,
 		Status:                     entity.Status,
 		PaymentMethod:              entity.PaymentMethod,
