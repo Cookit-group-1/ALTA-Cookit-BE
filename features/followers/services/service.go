@@ -16,7 +16,7 @@ func (fs *followService) Follow(userID uint, followingID uint) error {
 	err := fs.qry.Follow(userID, followingID)
 	if err != nil {
 		log.Println("query error", err.Error())
-		return errors.New("query error, following account fail")
+		return errors.New("query error, data not found")
 	}
 	return nil
 }
