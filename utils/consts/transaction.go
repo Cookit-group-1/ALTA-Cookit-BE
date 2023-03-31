@@ -10,9 +10,9 @@ const (
 	TRANSACTION_E_SeaBank  = "SeaBank"
 	TRANSACTION_E_BCA      = "BCA"
 	TRANSACTION_E_BNI      = "BNI"
+	TRANSACTION_E_BRI      = "BRI"
 	TRANSACTION_E_Mandiri  = "Mandiri"
-	TRANSACTION_E_QRIS     = "QRIS"
-	TRANSACTION_E_GoPay    = "GoPay"
+	TRANSACTION_E_Permata  = "Permata"
 )
 
 // Success
