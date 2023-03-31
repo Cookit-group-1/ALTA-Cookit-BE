@@ -68,7 +68,7 @@ func (d *TransactionData) SelectTransactionsByUserId(entity *transactions.Transa
 		}
 	}
 
-	tx := d.db.Debug().Preload("TransactionDetails").Where("user_id = ?", entity.CustomerUserId).Where(qString).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Debug().Preload("TransactionDetails").Where("user_id = ?", entity.CustomerUserId).Where(qString).Limit(entity.DataLimit).Offset(entity.DataOffset).Order("created_at desc").Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
