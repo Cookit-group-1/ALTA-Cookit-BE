@@ -7,6 +7,8 @@ import (
 	"alta-cookit-be/features/transaction_details"
 	"alta-cookit-be/features/transactions"
 	"alta-cookit-be/features/users"
+	"alta-cookit-be/utils/consts"
+	"errors"
 
 	_transactionDetailModel "alta-cookit-be/features/transaction_details/models"
 	_userModel "alta-cookit-be/features/users/data"
@@ -47,6 +49,9 @@ func (d *TransactionDetailData) SelectTransactionDetailById(entity *transaction_
 	tx := d.db.Where("id = ?", entity.ID).Find(&gorm)
 	if tx.Error != nil {
 		return nil, tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return nil, errors.New(consts.GORM_RecordNotFound)
 	}
 
 	recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
