@@ -3702,6 +3702,7 @@ paths:
                         }
                       ],
                       recipe_name: "Indomie Spesial",
+                      ingredient_id: 1,
                       ingredient_name: "Original",
                       price: 10000,
                       quantity: 2
@@ -3781,6 +3782,7 @@ paths:
                       }
                     ],
                     recipe_name: "Indomie Spesial",
+                    ingredient_id: 1,
                     ingredient_name: "Original",
                     price: 10000,
                     quantity: 2
