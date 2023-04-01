@@ -63,7 +63,7 @@ func (d *RecipeData) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.Rec
 		}
 	}
 
-	tx := d.db.Preload("Recipe").Preload("Recipe.Images").Preload("Images").Preload("Ingredients").Where(qString).Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Preload("Recipe").Preload("Recipe.Images").Preload("Images").Preload("Ingredients").Where(qString).Limit(entity.DataLimit).Offset(entity.DataOffset).Order("created_at desc").Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
