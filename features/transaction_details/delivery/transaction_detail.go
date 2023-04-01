@@ -40,5 +40,5 @@ func (d *TransactionDetailDelivery) SelectTransactionDetailById(e echo.Context) 
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.TRANSACTION_DETAIL_SuccessReadUserTransactionDetailList, ConvertToResponse(output)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.TRANSACTION_DETAIL_SuccessReadUserTransactionDetailList, ConvertToResponse(output)))
 }

@@ -40,7 +40,7 @@ func (d *TransactionDelivery) SelectTransactionsByUserId(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.TRANSACTION_SuccessReadUserTransactionList, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.TRANSACTION_SuccessReadUserTransactionList, ConvertToResponses(outputs)))
 }
 
 func (d *TransactionDelivery) InsertTransaction(e echo.Context) error {
@@ -79,7 +79,7 @@ func (d *TransactionDelivery) UpdateTransactionStatusById(e echo.Context) error 
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.CART_SuccessUpdateUserCart))
+	return e.JSON(http.StatusOK, helpers.Response(consts.CART_SuccessUpdateUserCart))
 }
 
 func (d *TransactionDelivery) UpdateTransactionStatusByMidtrans(e echo.Context) error {
@@ -93,5 +93,5 @@ func (d *TransactionDelivery) UpdateTransactionStatusByMidtrans(e echo.Context) 
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.CART_SuccessUpdateUserCart))
+	return e.JSON(http.StatusOK, helpers.Response(consts.CART_SuccessUpdateUserCart))
 }

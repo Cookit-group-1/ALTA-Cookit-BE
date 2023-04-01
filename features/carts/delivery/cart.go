@@ -39,7 +39,7 @@ func (d *CartDeliery) SelectCartsByUserId(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.CART_SuccessReadUserCartList, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.CART_SuccessReadUserCartList, ConvertToResponses(outputs)))
 }
 
 func (d *CartDeliery) InsertCart(e echo.Context) error {
@@ -78,7 +78,7 @@ func (d *CartDeliery) UpdateCartById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.CART_SuccessUpdateUserCart))
+	return e.JSON(http.StatusOK, helpers.Response(consts.CART_SuccessUpdateUserCart))
 }
 
 func (d *CartDeliery) DeleteCartById(e echo.Context) error {
@@ -100,5 +100,5 @@ func (d *CartDeliery) DeleteCartById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.CART_SuccessDeleteUserCart))
+	return e.JSON(http.StatusOK, helpers.Response(consts.CART_SuccessDeleteUserCart))
 }
