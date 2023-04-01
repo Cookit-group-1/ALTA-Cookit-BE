@@ -36,6 +36,7 @@ type CartResponse struct {
 	SellerUsername       string                 `json:"seller_user_username,omitempty"`
 	RecipeImageResponses []images.ImageResponse `json:"recipe_images,omitempty"`
 	RecipeName           string                 `json:"recipe_name,omitempty"`
+	IngredientID         uint                   `json:"ingredient_id,omitempty"`
 	IngredientName       string                 `json:"ingredient_name,omitempty"`
 	Price                float64                `json:"price,omitempty"`
 	Quantity             int                    `json:"quantity,omitempty"`

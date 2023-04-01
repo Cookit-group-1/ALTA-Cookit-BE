@@ -47,6 +47,7 @@ func ConvertToEntity(gorm *_cartModel.Cart, userGorm *_userModel.User, recipeGor
 		entity.RecipeImageEntities = *_imageData.ConvertToEntities(imageGorms)
 	}
 	if ingredientGorm != nil {
+		entity.IngredientID = ingredientGorm.ID
 		entity.IngredientName = ingredientGorm.Name
 		entity.Price = ingredientGorm.Price
 	}

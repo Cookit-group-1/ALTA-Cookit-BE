@@ -29,6 +29,7 @@ func ConvertToResponse(entity *carts.CartEntity) carts.CartResponse {
 		SellerUsername:       entity.SellerUsername,
 		RecipeImageResponses: _imageDelivery.ConvertToResponses(&entity.RecipeImageEntities),
 		RecipeName:           entity.RecipeName,
+		IngredientID:         entity.IngredientID,
 		IngredientName:       entity.IngredientName,
 		Price:                entity.Price,
 		Quantity:             entity.Quantity,
