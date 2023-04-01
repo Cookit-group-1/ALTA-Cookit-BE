@@ -4052,7 +4052,7 @@ paths:
       tags:
         - Transactions
       summary: insert new user's transaction
-      description: "feature for insert new user's transaction (Payment Method : COD, BCA, BNI, BRI, Mandiri, Permata)"
+      description: "feature for insert new user's transaction (Payment Method : COD, BCA, BNI, BRI)"
       security:
         - JWTAuth: []
       requestBody:
