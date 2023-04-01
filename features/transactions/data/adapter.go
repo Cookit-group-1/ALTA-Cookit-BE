@@ -11,13 +11,14 @@ import (
 
 func ConvertToGorm(entity *transactions.TransactionEntity) *_transactionModel.Transaction {
 	gorm := _transactionModel.Transaction{
-		OrderID:            (uuid.New()).String(),
-		UserID:             entity.CustomerUserId,
-		TransactionDetails: *_transactionDetailData.ConvertToGorms(&entity.TransactionDetailEntities),
-		Status:             entity.Status,
-		PaymentMethod:      entity.PaymentMethod,
-		ShippingFee:        entity.ShippingFee,
-		ShippingMethod:     entity.ShippingMethod,
+		OrderID:              (uuid.New()).String(),
+		VirtualAccountNumber: entity.VirtualAccountNumber,
+		UserID:               entity.CustomerUserId,
+		TransactionDetails:   *_transactionDetailData.ConvertToGorms(&entity.TransactionDetailEntities),
+		Status:               entity.Status,
+		PaymentMethod:        entity.PaymentMethod,
+		ShippingFee:          entity.ShippingFee,
+		ShippingMethod:       entity.ShippingMethod,
 	}
 	if entity.ID != 0 {
 		gorm.ID = entity.ID
@@ -38,6 +39,7 @@ func ConvertToEntity(gorm *_transactionModel.Transaction, transactionDetailEntit
 		ID:                        gorm.ID,
 		TransactionDetailEntities: *transactionDetailEntities,
 		OrderID:                   gorm.OrderID,
+		VirtualAccountNumber:      gorm.VirtualAccountNumber,
 		CustomerUserId:            gorm.UserID,
 		Status:                    gorm.Status,
 		PaymentMethod:             gorm.PaymentMethod,
