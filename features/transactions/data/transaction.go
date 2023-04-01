@@ -100,6 +100,9 @@ func (d *TransactionData) SelectTransactionsByUserId(entity *transactions.Transa
 
 func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEntity) (*transactions.TransactionEntity, error) {
 	gorm := ConvertToGorm(entity)
+	if entity.ID != 0 {
+		d.db.Where("id = ?", entity.ID).Updates(&gorm)
+	}
 	subEntities := []transaction_details.TransactionDetailEntity{}
 	for _, subGorm := range gorm.TransactionDetails {
 		recipeGorm := d.recipeData.SelectRecipeByIngredientId(subGorm.IngredientID)
