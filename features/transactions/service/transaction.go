@@ -4,7 +4,6 @@ import (
 	"alta-cookit-be/app/payment"
 	"alta-cookit-be/features/transactions"
 	"alta-cookit-be/utils/consts"
-	"strings"
 
 	"errors"
 
@@ -45,7 +44,7 @@ func (s *TransactionService) InsertTransaction(entity *transactions.TransactionE
 	}
 
 	if output.PaymentMethod != consts.TRANSACTION_E_NONE && output.PaymentMethod != consts.TRANSACTION_E_COD {
-		viruatlAccountNumber, err := s.paymentGateway.ChargeTransaction(output.OrderID, strings.ToLower(output.PaymentMethod), output.TransactionDetailEntities)
+		viruatlAccountNumber, err := s.paymentGateway.ChargeTransaction(*output)
 		if err != nil {
 			return nil, errors.New(consts.SERVER_InternalServerError)
 		}
@@ -73,20 +72,20 @@ func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.Tr
 
 	gorm := s.transactionData.SelectTransactionById(entity.ID)
 	switch gorm.Status {
-		case consts.TRANSACTION_E_Unpaid:
-			if gorm.PaymentMethod != consts.TRANSACTION_E_NONE && gorm.PaymentMethod != consts.TRANSACTION_E_COD {
-				entity.Status = consts.TRANSACTION_E_Shipped
-			} else {
-				return errors.New(consts.SERVER_ForbiddenRequest)
-			}
-		case consts.TRANSACTION_E_Shipped:
-			entity.Status = consts.TRANSACTION_E_Received
-		case consts.TRANSACTION_E_Received:
-			entity.Status = consts.TRANSACTION_E_Complete
-		default:
-			return nil
+	case consts.TRANSACTION_E_Unpaid:
+		if gorm.PaymentMethod != consts.TRANSACTION_E_NONE && gorm.PaymentMethod != consts.TRANSACTION_E_COD {
+			return errors.New(consts.SERVER_ForbiddenRequest)
+		} else {
+			entity.Status = consts.TRANSACTION_E_Shipped
+		}
+	case consts.TRANSACTION_E_Shipped:
+		entity.Status = consts.TRANSACTION_E_Received
+	case consts.TRANSACTION_E_Received:
+		entity.Status = consts.TRANSACTION_E_Complete
+	default:
+		return nil
 	}
-			
+
 	err = s.transactionData.UpdateTransactionStatusById(entity)
 	if err != nil {
 		return err
@@ -94,10 +93,10 @@ func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.Tr
 	return nil
 }
 
-func (s *TransactionService) UpdateTransactionStatusByOrderId(entity *transactions.TransactionEntity) error {
+func (s *TransactionService) UpdateTransactionStatusByMidtrans(entity *transactions.TransactionEntity) error {
 	if entity.TransactionStatus == "settlement" {
 		entity.Status = consts.TRANSACTION_E_Shipped
-		err := s.transactionData.UpdateTransactionStatusByOrderId(entity)
+		err := s.transactionData.UpdateTransactionStatusByMidtrans(entity)
 		if err != nil {
 			return err
 		}

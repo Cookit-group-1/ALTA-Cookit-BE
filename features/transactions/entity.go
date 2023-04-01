@@ -59,14 +59,14 @@ type TransactionDelivery_ interface {
 	SelectTransactionsByUserId(e echo.Context) error
 	InsertTransaction(e echo.Context) error
 	UpdateTransactionStatusById(e echo.Context) error
-	UpdateTransactionStatusByOrderId(e echo.Context) error
+	UpdateTransactionStatusByMidtrans(e echo.Context) error
 }
 
 type TransactionService_ interface {
 	SelectTransactionsByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
 	InsertTransaction(transactionEntity *TransactionEntity) (*TransactionEntity, error)
 	UpdateTransactionStatusById(transactionEntity *TransactionEntity) error
-	UpdateTransactionStatusByOrderId(transactionEntity *TransactionEntity) error
+	UpdateTransactionStatusByMidtrans(transactionEntity *TransactionEntity) error
 }
 
 type TransactionData_ interface {
@@ -76,5 +76,5 @@ type TransactionData_ interface {
 	SelectTransactionsByUserId(transactionEntity *TransactionEntity) (*[]TransactionEntity, error)
 	InsertTransaction(transactionEntity *TransactionEntity) (*TransactionEntity, error)
 	UpdateTransactionStatusById(transactionEntity *TransactionEntity) error
-	UpdateTransactionStatusByOrderId(transactionEntity *TransactionEntity) error
+	UpdateTransactionStatusByMidtrans(transactionEntity *TransactionEntity) error
 }

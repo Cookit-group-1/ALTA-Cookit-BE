@@ -82,14 +82,14 @@ func (d *TransactionDelivery) UpdateTransactionStatusById(e echo.Context) error 
 	return e.JSON(http.StatusCreated, helpers.Response(consts.CART_SuccessUpdateUserCart))
 }
 
-func (d *TransactionDelivery) UpdateTransactionStatusByOrderId(e echo.Context) error {
+func (d *TransactionDelivery) UpdateTransactionStatusByMidtrans(e echo.Context) error {
 	transactionRequest := transactions.TransactionRequest{}
 	err := e.Bind(&transactionRequest)
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
 
-	err = d.transactionService.UpdateTransactionStatusByOrderId(ConvertToEntity(&transactionRequest))
+	err = d.transactionService.UpdateTransactionStatusByMidtrans(ConvertToEntity(&transactionRequest))
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
