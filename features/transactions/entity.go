@@ -18,6 +18,8 @@ type TransactionEntity struct {
 	CustomerUserId            uint
 	Status                    string
 	PaymentMethod             string
+	ShippingFee               float64 `validate:"required"`
+	ShippingMethod            string  `validate:"required"`
 	TotalPrice                float64
 	CreatedAt                 time.Time
 	DataLimit                 int
@@ -28,10 +30,12 @@ type TransactionEntity struct {
 type TransactionRequest struct {
 	ID                        uint                                           `json:"-" form:"-"`
 	OrderID                   string                                         `json:"order_id,omitempty"`
-	TransactionStatus         string                                         `json:"transaction_status,omitempty"`
+	TransactionStatus         string                                         `json:"transaction_status" form:"transaction_status"`
 	TransactionDetailRequests []transaction_details.TransactionDetailRequest `json:"transaction_details" form:"transaction_details"`
 	CustomerUserId            uint                                           `json:"-" form:"-"`
 	PaymentMethod             string                                         `json:"payment_method" form:"payment_method"`
+	ShippingFee               float64                                        `json:"shipping_fee" form:"shipping_fee"`
+	ShippingMethod            string                                         `json:"shipping_method" form:"shipping_method"`
 	DataLimit                 int
 	DataOffset                int
 	ExtractedQueryParams      map[string]interface{}
@@ -45,6 +49,8 @@ type TransactionResponse struct {
 	CustomerUserId             uint                                            `json:"customer_id,omitempty"`
 	Status                     string                                          `json:"status,omitempty"`
 	PaymentMethod              string                                          `json:"payment_method,omitempty"`
+	ShippingFee                float64                                         `json:"shipping_fee,omitempty"`
+	ShippingMethod             string                                          `json:"shipping_method,omitempty"`
 	TotalPrice                 float64                                         `json:"total_price,omitempty"`
 	CreatedAt                  string                                          `json:"created_at,omitempty"`
 }

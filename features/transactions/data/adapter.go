@@ -16,6 +16,8 @@ func ConvertToGorm(entity *transactions.TransactionEntity) *_transactionModel.Tr
 		TransactionDetails: *_transactionDetailData.ConvertToGorms(&entity.TransactionDetailEntities),
 		Status:             entity.Status,
 		PaymentMethod:      entity.PaymentMethod,
+		ShippingFee:        entity.ShippingFee,
+		ShippingMethod:     entity.ShippingMethod,
 	}
 	if entity.ID != 0 {
 		gorm.ID = entity.ID
@@ -39,6 +41,8 @@ func ConvertToEntity(gorm *_transactionModel.Transaction, transactionDetailEntit
 		CustomerUserId:            gorm.UserID,
 		Status:                    gorm.Status,
 		PaymentMethod:             gorm.PaymentMethod,
+		ShippingFee:               gorm.ShippingFee,
+		ShippingMethod:            gorm.ShippingMethod,
 		TotalPrice:                gorm.TotalPrice,
 		CreatedAt:                 gorm.CreatedAt,
 	}
