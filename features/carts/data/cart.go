@@ -36,7 +36,7 @@ func New(db *gorm.DB, userData users.UserData, recipeData recipes.RecipeData_, i
 
 func (d *CartData) ActionValidator(id, userId uint) bool {
 	tempGorm := _cartModel.Cart{}
-	d.db.Model(&tempGorm).Where("id = ? AND user_id = ?", id, userId).Find(&tempGorm)
+	d.db.Debug().Model(&tempGorm).Where("id = ? AND user_id = ?", id, userId).Find(&tempGorm)
 
 	return tempGorm.ID != 0
 }
@@ -64,15 +64,21 @@ func (d *CartData) SelectCartsByUserId(entity *carts.CartEntity) (*[]carts.CartE
 
 func (d *CartData) InsertCart(entity *carts.CartEntity) (*carts.CartEntity, error) {
 	gorm := ConvertToGorm(entity)
-	tx := d.db.Create(gorm)
-	if tx.Error != nil {
-		if strings.Contains(tx.Error.Error(), "user_id") {
-			return nil, errors.New(consts.USER_InvalidUser)
+	tx := d.db.Debug().Where("user_id = ? AND ingredient_id = ?", entity.UserID, entity.IngredientID).Find(&gorm)
+	if tx.RowsAffected != 0 {
+		gorm.Quantity += entity.Quantity
+		tx.Updates(&gorm)
+	} else {
+		tx := d.db.Debug().Create(gorm)
+		if tx.Error != nil {
+			if strings.Contains(tx.Error.Error(), "user_id") {
+				return nil, errors.New(consts.USER_InvalidUser)
+			}
+			if strings.Contains(tx.Error.Error(), "ingredient_id") {
+				return nil, errors.New(consts.INGREDIENT_InvalidIngredient)
+			}
+			return nil, tx.Error
 		}
-		if strings.Contains(tx.Error.Error(), "ingredient_id") {
-			return nil, errors.New(consts.INGREDIENT_InvalidIngredient)
-		}
-		return nil, tx.Error
 	}
 
 	recipeGorm := d.recipeData.SelectRecipeByIngredientId(gorm.IngredientID)
