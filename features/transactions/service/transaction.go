@@ -75,9 +75,9 @@ func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.Tr
 	switch gorm.Status {
 		case consts.TRANSACTION_E_Unpaid:
 			if gorm.PaymentMethod != consts.TRANSACTION_E_NONE && gorm.PaymentMethod != consts.TRANSACTION_E_COD {
-				return errors.New(consts.SERVER_ForbiddenRequest)
-			} else {
 				entity.Status = consts.TRANSACTION_E_Shipped
+			} else {
+				return errors.New(consts.SERVER_ForbiddenRequest)
 			}
 		case consts.TRANSACTION_E_Shipped:
 			entity.Status = consts.TRANSACTION_E_Received
