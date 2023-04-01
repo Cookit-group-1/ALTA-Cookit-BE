@@ -101,7 +101,8 @@ func (d *TransactionData) SelectTransactionsByUserId(entity *transactions.Transa
 func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEntity) (*transactions.TransactionEntity, error) {
 	gorm := ConvertToGorm(entity)
 	if entity.ID != 0 {
-		d.db.Debug().Where("id = ?", entity.ID).Updates(&gorm)
+		fmt.Println(entity.ID)
+		d.db.Model(&gorm).Where("id = ?", entity.ID).Update("virtual_account_number", entity.VirtualAccountNumber)
 		return nil, nil
 	}
 	subEntities := []transaction_details.TransactionDetailEntity{}
@@ -148,8 +149,8 @@ func (d *TransactionData) UpdateTransactionStatusById(entity *transactions.Trans
 	return nil
 }
 
-func (d *TransactionData) UpdateTransactionStatusByOrderId(entity *transactions.TransactionEntity) error {
-	tx := d.db.Where("order_id = ?", entity.OrderID).Updates(ConvertToGorm(entity))
+func (d *TransactionData) UpdateTransactionStatusByMidtrans(entity *transactions.TransactionEntity) error {
+	tx := d.db.Debug().Where("order_id = ?", entity.OrderID).Updates(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
