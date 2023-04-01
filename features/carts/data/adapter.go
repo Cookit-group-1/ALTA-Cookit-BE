@@ -48,7 +48,7 @@ func ConvertToEntity(gorm *_cartModel.Cart, userGorm *_userModel.User, recipeGor
 	}
 	if ingredientGorm != nil {
 		entity.IngredientName = ingredientGorm.Name
-		entity.Price = ingredientGorm.Price * float64(gorm.Quantity)
+		entity.Price = ingredientGorm.Price
 	}
 	return &entity
 }
