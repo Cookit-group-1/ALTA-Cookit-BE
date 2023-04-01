@@ -113,6 +113,7 @@ func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEnti
 	for _, subEntity := range subEntities {
 		gorm.TotalPrice += subEntity.Price
 	}
+	gorm.TotalPrice += gorm.ShippingFee
 
 	tx := d.db.Create(gorm)
 	if tx.Error != nil {

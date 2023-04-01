@@ -13,6 +13,8 @@ func ConvertToEntity(request *transactions.TransactionRequest) *transactions.Tra
 		TransactionStatus:         request.TransactionStatus,
 		CustomerUserId:            request.CustomerUserId,
 		PaymentMethod:             request.PaymentMethod,
+		ShippingFee:               request.ShippingFee,
+		ShippingMethod:            request.ShippingMethod,
 		DataLimit:                 request.DataLimit,
 		DataOffset:                request.DataOffset,
 		ExtractedQueryParams:      request.ExtractedQueryParams,
@@ -36,6 +38,8 @@ func ConvertToResponse(entity *transactions.TransactionEntity) transactions.Tran
 		CustomerUserId:             entity.CustomerUserId,
 		Status:                     entity.Status,
 		PaymentMethod:              entity.PaymentMethod,
+		ShippingFee:                entity.ShippingFee,
+		ShippingMethod:             entity.ShippingMethod,
 		TotalPrice:                 entity.TotalPrice,
 		CreatedAt:                  entity.CreatedAt.Format("2006-01-02"),
 	}

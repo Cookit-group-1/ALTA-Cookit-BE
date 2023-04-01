@@ -13,5 +13,7 @@ type Transaction struct {
 	TransactionDetails []_transactionDetailModel.TransactionDetail `gorm:"constraint:OnDelete:CASCADE;"`
 	Status             string                                      `gorm:"not null;type:enum('Unpaid', 'Shipped', 'Received', 'Complete');default:'Unpaid'"`
 	PaymentMethod      string                                      `gorm:"not null;type:enum('None', 'COD', 'BCA', 'BNI', 'BRI', 'Mandiri', 'Permata');default:'None'"`
+	ShippingFee        float64                                     `gorm:"not null"`
+	ShippingMethod     string                                      `gorm:"default:''"`
 	TotalPrice         float64                                     `gorm:"not null"`
 }
