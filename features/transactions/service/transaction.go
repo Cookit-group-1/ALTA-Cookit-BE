@@ -53,7 +53,7 @@ func (s *TransactionService) InsertTransaction(entity *transactions.TransactionE
 		output.VirtualAccountNumber = viruatlAccountNumber
 	}
 
-	output, err = s.transactionData.InsertTransaction(output)
+	_, err = s.transactionData.InsertTransaction(output)
 	if err != nil {
 		return nil, err
 	}
