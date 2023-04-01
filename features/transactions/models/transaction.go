@@ -8,7 +8,7 @@ import (
 
 type Transaction struct {
 	gorm.Model
-	OrderID              string `gorm:"default:'';not null;type:VARCHAR(50)"`
+  OrderID              string `gorm:"default:'';not null;type:VARCHAR(50)"`
 	VirtualAccountNumber string `gorm:"not null"`
 	UserID               uint
 	TransactionDetails   []_transactionDetailModel.TransactionDetail `gorm:"constraint:OnDelete:CASCADE;"`
