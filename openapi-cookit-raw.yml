@@ -4015,6 +4015,8 @@ paths:
                       customer_id: 1,
                       status: "Unpaid",
                       payment_method: "None",
+                      shipping_fee: 9000,
+                      shipping_method: "Shopee Food",
                       total_price: 25000,
                       created_at: "2023-03-31"
                     }
@@ -4090,7 +4092,9 @@ paths:
                       quantity: 5
                     },
                   ],
-                payment_method: "BCA"
+                payment_method: "BCA",
+                shipping_fee: 9000,
+                shipping_method: "Shopee Food",
               }
       responses:
         201:
@@ -4119,6 +4123,8 @@ paths:
                     customer_id: 1,
                     status: "Unpaid",
                     payment_method: "None",
+                    shipping_fee: 9000,
+                    shipping_method: "Shopee Food",
                     total_price: 25000,
                     created_at: "2023-03-31"
                   }
