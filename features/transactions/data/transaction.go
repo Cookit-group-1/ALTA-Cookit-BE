@@ -100,6 +100,10 @@ func (d *TransactionData) SelectTransactionsByUserId(entity *transactions.Transa
 
 func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEntity) (*transactions.TransactionEntity, error) {
 	gorm := ConvertToGorm(entity)
+	if entity.ID != 0 {
+		d.db.Debug().Where("id = ?", entity.ID).Updates(&gorm)
+		return nil, nil
+	}
 	subEntities := []transaction_details.TransactionDetailEntity{}
 	for _, subGorm := range gorm.TransactionDetails {
 		recipeGorm := d.recipeData.SelectRecipeByIngredientId(subGorm.IngredientID)
@@ -115,19 +119,15 @@ func (d *TransactionData) InsertTransaction(entity *transactions.TransactionEnti
 	}
 	gorm.TotalPrice += gorm.ShippingFee
 
-	if entity.ID != 0 {
-		d.db.Where("id = ?", entity.ID).Updates(&gorm)
-	} else {
-		tx := d.db.Create(gorm)
-		if tx.Error != nil {
-			if strings.Contains(tx.Error.Error(), "user_id") {
-				return nil, errors.New(consts.USER_InvalidUser)
-			}
-			if strings.Contains(tx.Error.Error(), "ingredient_id") {
-				return nil, errors.New(consts.INGREDIENT_InvalidIngredient)
-			}
-			return nil, tx.Error
+	tx := d.db.Create(gorm)
+	if tx.Error != nil {
+		if strings.Contains(tx.Error.Error(), "user_id") {
+			return nil, errors.New(consts.USER_InvalidUser)
 		}
+		if strings.Contains(tx.Error.Error(), "ingredient_id") {
+			return nil, errors.New(consts.INGREDIENT_InvalidIngredient)
+		}
+		return nil, tx.Error
 	}
 
 	for index, _ := range subEntities {
