@@ -88,17 +88,11 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 			return c.JSON(helpers.ErrorResponse(err))
 		}
 
-		followersAmount, err := uh.getAmmountFollower(id)
+		followersAmount, _ := uh.getAmmountFollower(id)
 		// err handling
-		if err != nil {
-			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not fund"})
-		}
 
-		followingAmount, err := uh.flwSrv.ShowAllFollowing(id)
+		followingAmount, _ := uh.flwSrv.ShowAllFollowing(id)
 		// err handling
-		if err != nil {
-			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not fund"})
-		}
 
 		profileRes := ToProfileResponse(dataCore)
 		profileRes.FollowersAmount = followersAmount
