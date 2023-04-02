@@ -60,11 +60,6 @@ func (s *TransactionService) InsertTransaction(entity *transactions.TransactionE
 }
 
 func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.TransactionEntity) error {
-	err := s.validate.Struct(entity)
-	if err != nil {
-		return errors.New(consts.VALIDATION_InvalidInput)
-	}
-
 	isEntitled := s.transactionData.ActionValidator(entity.ID, entity.CustomerUserId)
 	if !isEntitled {
 		return errors.New(consts.SERVER_ForbiddenRequest)
@@ -86,7 +81,7 @@ func (s *TransactionService) UpdateTransactionStatusById(entity *transactions.Tr
 		return nil
 	}
 
-	err = s.transactionData.UpdateTransactionStatusById(entity)
+	err := s.transactionData.UpdateTransactionStatusById(entity)
 	if err != nil {
 		return err
 	}
