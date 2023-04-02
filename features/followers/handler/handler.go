@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	// "github.com/jinzhu/copier"
 	"github.com/labstack/echo/v4"
 )
 
@@ -19,9 +18,12 @@ func (fh *followHander) Follow() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		uID := c.Param("id")
 		followingID, _ := strconv.Atoi(uID)
-		id, _, err := middlewares.ExtractToken(c)
+		id, role, err := middlewares.ExtractToken(c)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "error from server"})
+		}
+		if role == "Admin" {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot acces credentials data"})
 		}
 		err = fh.srv.Follow(id, uint(followingID))
 		if id == uint(followingID) {
@@ -85,9 +87,12 @@ func (fh *followHander) Unfollow() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		uID := c.Param("id")
 		followingID, _ := strconv.Atoi(uID)
-		id, _, err := middlewares.ExtractToken(c)
+		id, role, err := middlewares.ExtractToken(c)
 		if err != nil {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "error from server"})
+		}
+		if role == "Admin" {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot acces credentials data"})
 		}
 		err = fh.srv.Unfollow(id, uint(followingID))
 		if id == uint(followingID) {

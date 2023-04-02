@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"alta-cookit-be/features/followers"
 	"alta-cookit-be/features/users"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
@@ -14,12 +15,14 @@ import (
 )
 
 type userHandler struct {
-	srv users.UserService
+	srv    users.UserService
+	flwSrv followers.FollowService
 }
 
-func New(srv users.UserService) users.UserHandler {
+func New(srv users.UserService, flwSrvc followers.FollowService) users.UserHandler {
 	return &userHandler{
-		srv: srv,
+		srv:    srv,
+		flwSrv: flwSrvc,
 	}
 }
 
@@ -84,7 +87,18 @@ func (uh *userHandler) Profile() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(helpers.ErrorResponse(err))
 		}
-		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.USER_SuccessGetProfile, ToProfileResponse(dataCore)))
+
+		followersAmount, _ := uh.getAmmountFollower(id)
+		// err handling
+
+		followingAmount, _ := uh.flwSrv.ShowAllFollowing(id)
+		// err handling
+
+		profileRes := ToProfileResponse(dataCore)
+		profileRes.FollowersAmount = followersAmount
+		profileRes.FollowingAmount = uint(len(followingAmount))
+
+		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.USER_SuccessGetProfile, profileRes))
 	}
 }
 
@@ -276,4 +290,12 @@ func (uh *userHandler) ListUserRequest() echo.HandlerFunc {
 			"message": "success show all requested users",
 		})
 	}
+}
+
+func (uh *userHandler) getAmmountFollower(userID uint) (uint, error) {
+	rAmmountFollower, err := uh.flwSrv.ShowAllFollower(userID)
+	if err != nil {
+		return 0, err
+	}
+	return uint(len(rAmmountFollower)), err
 }

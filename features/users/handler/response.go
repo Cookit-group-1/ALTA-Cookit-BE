@@ -11,6 +11,8 @@ type ProfileResponse struct {
 	Username       string `json:"username"`
 	Bio            string `json:"bio"`
 	Role           string `json:"role"`
+	FollowersAmount 	   uint    `json:"followers"`
+	FollowingAmount 	   uint    `json:"following"`
 }
 
 func ToProfileResponse(data users.Core) ProfileResponse {
