@@ -23,7 +23,11 @@ func New(db *gorm.DB) ingredients.IngredientData_ {
 
 func (d *IngredientData) ActionValidator(id, recipeId, userId uint) bool {
 	tempGorm := _ingredientModel.Ingredient{}
-	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = ingredients.recipe_id").Where("ingredients.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	if id != 0 {
+		d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = ingredients.recipe_id").Where("ingredients.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	} else {
+		d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = ingredients.recipe_id").Where("ingredients.recipe_id = ? AND rs.user_id = ?", recipeId, userId).First(&tempGorm)
+	}
 
 	return tempGorm.ID != 0
 }
@@ -60,6 +64,17 @@ func (d *IngredientData) UpdateIngredientById(entity *ingredients.IngredientEnti
 
 func (d *IngredientData) DeleteIngredientById(entity *ingredients.IngredientEntity) error {
 	tx := d.db.Unscoped().Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0{
+		return errors.New(consts.GORM_RecordNotFound)
+	}
+	return nil
+}
+
+func (d *IngredientData) DeleteIngredientByRecipeId(entity *ingredients.IngredientEntity) error {
+	tx := d.db.Unscoped().Where("recipe_id = ?", entity.RecipeID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

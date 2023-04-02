@@ -39,12 +39,14 @@ type IngredientDelivery_ interface {
 	InsertIngredient(e echo.Context) error
 	UpdateIngredientById(e echo.Context) error
 	DeleteIngredientById(e echo.Context) error
+	DeleteIngredientByRecipeId(e echo.Context) error
 }
 
 type IngredientService_ interface {
 	InsertIngredient(ingredientEntity *IngredientEntity) (*IngredientEntity, error)
 	UpdateIngredientById(ingredientEntity *IngredientEntity) error
 	DeleteIngredientById(ingredientEntity *IngredientEntity) error
+	DeleteIngredientByRecipeId(ingredientEntity *IngredientEntity) error
 }
 
 type IngredientData_ interface {
@@ -53,4 +55,5 @@ type IngredientData_ interface {
 	InsertIngredient(ingredientEntity *IngredientEntity) (*IngredientEntity, error)
 	UpdateIngredientById(ingredientEntity *IngredientEntity) error
 	DeleteIngredientById(ingredientEntity *IngredientEntity) error
+	DeleteIngredientByRecipeId(ingredientEntity *IngredientEntity) error
 }

@@ -99,3 +99,26 @@ func (d *IngredientDelivery) DeleteIngredientById(e echo.Context) error {
 	}
 	return e.JSON(http.StatusOK, helpers.Response(consts.INGREDIENT_SuccessDeleteRecipeIngredient))
 }
+
+func (d *IngredientDelivery) DeleteIngredientByRecipeId(e echo.Context) error {
+	userId, userRole, _ := middlewares.ExtractToken(e)
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
+	if err != nil {
+		return errors.New(consts.ECHO_InvaildIdParam)
+	}
+
+	ingredientRequest := ingredients.IngredientRequest{}
+	err = e.Bind(&ingredientRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	ingredientRequest.UserID = userId
+	ingredientRequest.RecipeID = recipeId
+	ingredientRequest.UserRole = userRole
+
+	err = d.ingredientService.DeleteIngredientByRecipeId(ConvertToEntity(&ingredientRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusOK, helpers.Response(consts.INGREDIENT_SuccessDeleteRecipeIngredient))
+}
