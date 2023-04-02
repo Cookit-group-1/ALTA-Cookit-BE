@@ -33,23 +33,24 @@ import (
 	_stepData "alta-cookit-be/features/steps/data"
 	_stepDelivery "alta-cookit-be/features/steps/delivery"
 	_stepService "alta-cookit-be/features/steps/service"
+	_transactionDetailData "alta-cookit-be/features/transaction_details/data"
+	_transactionDetailDelivery "alta-cookit-be/features/transaction_details/delivery"
+	_transactionDetailService "alta-cookit-be/features/transaction_details/service"
+	_transactionData "alta-cookit-be/features/transactions/data"
+	_transactionDelivery "alta-cookit-be/features/transactions/delivery"
+	_transactionService "alta-cookit-be/features/transactions/service"
 	_userData "alta-cookit-be/features/users/data"
 	_userDelivery "alta-cookit-be/features/users/handler"
 	_userService "alta-cookit-be/features/users/services"
-	_transactionData "alta-cookit-be/features/transactions/data"
-	_transactionService "alta-cookit-be/features/transactions/service"
-	_transactionDelivery "alta-cookit-be/features/transactions/delivery"
-	_transactionDetailData "alta-cookit-be/features/transaction_details/data"
-	_transactionDetailService "alta-cookit-be/features/transaction_details/service"
-	_transactionDetailDelivery "alta-cookit-be/features/transaction_details/delivery"
 	"alta-cookit-be/middlewares"
 	"alta-cookit-be/utils/consts"
 )
 
 func initUserRouter(db *gorm.DB, e *echo.Echo) {
+	followService := _followerService.New(_followerData.New(db))
 	userData := _userData.New(db)
 	userService := _userService.New(userData)
-	userHandler := _userDelivery.New(userService)
+	userHandler := _userDelivery.New(userService, followService)
 
 	// Auth
 	e.POST("/login", userHandler.Login())
