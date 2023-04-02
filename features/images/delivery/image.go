@@ -121,3 +121,25 @@ func (d *ImageDelivery) DeleteImageById(e echo.Context) error {
 	}
 	return e.JSON(http.StatusOK, helpers.Response(consts.IMAGE_SuccessDeleteRecipeImage))
 }
+
+func (d *ImageDelivery) DeleteImageByRecipeId(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
+	if err != nil {
+		return errors.New(consts.ECHO_InvaildIdParam)
+	}
+
+	imageRequest := images.ImageRequest{}
+	err = e.Bind(&imageRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	imageRequest.RecipeID = recipeId
+	imageRequest.UserID = userId
+
+	err = d.imageService.DeleteImageByRecipeId(ConvertToEntity(&imageRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusOK, helpers.Response(consts.IMAGE_SuccessDeleteRecipeImage))
+}

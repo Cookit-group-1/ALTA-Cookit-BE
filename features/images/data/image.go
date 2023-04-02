@@ -23,7 +23,11 @@ func New(db *gorm.DB) images.ImageData_ {
 
 func (d *ImageData) ActionValidator(id, recipeId, userId uint) bool {
 	tempGorm := _imageModel.Image{}
-	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = images.recipe_id").Where("images.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	if id != 0 {
+		d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = images.recipe_id").Where("images.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	} else {
+		d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = images.recipe_id").Where("images.recipe_id = ? AND rs.user_id = ?", recipeId, userId).First(&tempGorm)
+	}
 
 	return tempGorm.ID != 0
 }
@@ -92,6 +96,17 @@ func (d *ImageData) UpdateImageById(entity *images.ImageEntity) (*images.ImageEn
 
 func (d *ImageData) DeleteImageById(entity *images.ImageEntity) error {
 	tx := d.db.Unscoped().Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return errors.New(consts.GORM_RecordNotFound)
+	}
+	return nil
+}
+
+func (d *ImageData) DeleteImageByRecipeId(entity *images.ImageEntity) error {
+	tx := d.db.Unscoped().Where("recipe_id = ?", entity.RecipeID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}

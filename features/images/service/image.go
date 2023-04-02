@@ -61,3 +61,16 @@ func (s *ImageService) DeleteImageById(entity *images.ImageEntity) error {
 	}
 	return nil
 }
+
+func (s *ImageService) DeleteImageByRecipeId(entity *images.ImageEntity) error {
+	isEntitled := s.imageData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
+	err := s.imageData.DeleteImageByRecipeId(entity)
+	if err != nil {
+		return err
+	}
+	return nil
+}

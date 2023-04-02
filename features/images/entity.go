@@ -34,12 +34,14 @@ type ImageDelivery_ interface {
 	InsertImage(e echo.Context) error
 	UpdateImageById(e echo.Context) error
 	DeleteImageById(e echo.Context) error
+	DeleteImageByRecipeId(e echo.Context) error
 }
 
 type ImageService_ interface {
 	InsertImage(imageEntity *[]ImageEntity) (*[]ImageEntity, error)
 	UpdateImageById(imageEntity *ImageEntity) (*ImageEntity, error)
 	DeleteImageById(imageEntity *ImageEntity) error
+	DeleteImageByRecipeId(imageEntity *ImageEntity) error
 }
 
 type ImageData_ interface {
@@ -48,4 +50,5 @@ type ImageData_ interface {
 	InsertImage(imageEntity *[]ImageEntity) (*[]ImageEntity, error)
 	UpdateImageById(imageEntity *ImageEntity) (*ImageEntity, error)
 	DeleteImageById(imageEntity *ImageEntity) error
+	DeleteImageByRecipeId(imageEntity *ImageEntity) error
 }
