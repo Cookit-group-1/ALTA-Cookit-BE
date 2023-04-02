@@ -110,6 +110,7 @@ func initImageRouter(db *gorm.DB, e *echo.Echo) {
 	e.POST(fmt.Sprintf("/recipes/:%s/images", consts.ECHO_P_RecipeId), handler.InsertImage, middlewares.JWTMiddleware())
 	e.PUT(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.UpdateImageById, middlewares.JWTMiddleware())
 	e.DELETE(fmt.Sprintf("/recipes/:%s/images/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_ImageId), handler.DeleteImageById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/images", consts.ECHO_P_RecipeId), handler.DeleteImageByRecipeId, middlewares.JWTMiddleware())
 }
 
 func initLikeRouter(db *gorm.DB, e *echo.Echo) {
@@ -144,6 +145,7 @@ func initStepRouter(db *gorm.DB, e *echo.Echo) {
 	e.POST(fmt.Sprintf("/recipes/:%s/steps", consts.ECHO_P_RecipeId), handler.InsertStep, middlewares.JWTMiddleware())
 	e.PUT(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.UpdateStepById, middlewares.JWTMiddleware())
 	e.DELETE(fmt.Sprintf("/recipes/:%s/steps/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_StepId), handler.DeleteStepById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/steps", consts.ECHO_P_RecipeId), handler.DeleteStepByRecipeId, middlewares.JWTMiddleware())
 }
 
 func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
@@ -157,6 +159,7 @@ func initIngredientRouter(db *gorm.DB, e *echo.Echo) {
 	e.POST(fmt.Sprintf("/recipes/:%s/ingredients", consts.ECHO_P_RecipeId), handler.InsertIngredient, middlewares.JWTMiddleware())
 	e.PUT(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.UpdateIngredientById, middlewares.JWTMiddleware())
 	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients/:%s", consts.ECHO_P_RecipeId, consts.ECHO_P_IngredientId), handler.DeleteIngredientById, middlewares.JWTMiddleware())
+	e.DELETE(fmt.Sprintf("/recipes/:%s/ingredients", consts.ECHO_P_RecipeId), handler.DeleteIngredientByRecipeId, middlewares.JWTMiddleware())
 }
 
 func initIngredientDetailRouter(db *gorm.DB, e *echo.Echo) {
