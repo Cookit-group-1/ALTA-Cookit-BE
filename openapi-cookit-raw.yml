@@ -130,6 +130,8 @@ paths:
                   bio: "I love cooking"
                   role: "User"
                   profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                  following: 12
+                  follower: 5
                 message: "success show profile"
         404:
           description: data not found
@@ -397,7 +399,7 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-  /users/followed:
+  /users/follower:
     get:
       tags:
         - Users
@@ -434,28 +436,31 @@ paths:
                           username: "intanpermana12",
                           user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                          is_followed_back: false,
+                          from_user_id: 14,
+                          to_user_id: 2
                         },
                         {
                           id: 2,
                           username: "rebecca027",
                           user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                          is_followed_back: true,
+                          from_user_id: 12,
+                          to_user_id: 2
                         },
                         {
                           id: 3,
                           username: "richard49",
                           user_role: "User",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-                          is_followed_back: false,
+                          from_user_id: 1,
+                          to_user_id: 2
                         },
                       ],
                     total_page: 1,
                   }
-                message: "succesfully read followers data"
-        400:
-          description: "bad request"
+                message: "success show all follower users"
+        404:
+          description: "status not found"
           content:
             application/json:
               schema:
@@ -464,12 +469,9 @@ paths:
                   message:
                     type: string
               examples:
-                Invalid page param:
+                data not found:
                   value:
-                    message: invalid page param
-                Invalid limit param:
-                  value:
-                    message: invalid limit param
+                    message: data not found
         500:
           description: "internal server error"
           content:
@@ -519,25 +521,31 @@ paths:
                           username: "intanpermana12",
                           user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                          from_user_id: 3,
+                          to_user_id: 10
                         },
                         {
                           id: 2,
                           username: "rebecca027",
                           user_role: "VerifiedUser",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                          from_user_id: 3,
+                          to_user_id: 4
                         },
                         {
                           id: 3,
                           username: "richard49",
                           user_role: "User",
                           profile_picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                          from_user_id: 3,
+                          to_user_id: 13
                         },
                       ],
                     total_page: 1,
                   }
-                message: "succesfully read followers data"
-        400:
-          description: "bad request"
+                message: "success show all following users"
+        404:
+          description: "status not found"
           content:
             application/json:
               schema:
@@ -546,12 +554,9 @@ paths:
                   message:
                     type: string
               examples:
-                Invalid page param:
+                data not found:
                   value:
-                    message: invalid page param
-                Invalid limit param:
-                  value:
-                    message: invalid limit param
+                    message: data not found
         500:
           description: "internal server error"
           content:
@@ -690,7 +695,7 @@ paths:
   ####################################
   #  FOLLOWERS
   ####################################
-  /users/followers:
+  /users/follow/{id}:
     post:
       tags:
         - Followers
@@ -698,19 +703,14 @@ paths:
       description: feature for following an user
       security:
         - JWTAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - to_user_id
-              properties:
-                to_user_id:
-                  type: integer
-            example:
-              to_user_id: 2
+      parameters:
+        - name: id
+          in: path
+          description: follower's id to be follow
+          required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         201:
           description: success following an user
@@ -722,7 +722,7 @@ paths:
                   message:
                     type: string
               example:
-                message: "succesfully following an user"
+                message: "success follow this user"
         400:
           description: "bad request"
           content:
@@ -738,7 +738,7 @@ paths:
                     message: invalid user
                 Already Following:
                   value:
-                    message: already following
+                    message: you already follow this user
                       
         500:
           description: "internal server error"
@@ -752,7 +752,7 @@ paths:
               example:
                 message: internal server error
 
-  /users/followers/{follower_id}:
+  /users/followers/{id}:
     delete:
       tags:
         - Followers
@@ -761,7 +761,7 @@ paths:
       security:
         - JWTAuth: []
       parameters:
-        - name: follower_id
+        - name: id
           in: path
           description: follower's id to be deleted
           required: true
@@ -779,7 +779,7 @@ paths:
                   message:
                     type: string
               example:
-                message: "succesfully unfollowing an user"
+                message: "success unfollow this user"
         400:
           description: "bad request"
           content:
@@ -796,9 +796,9 @@ paths:
                 Record Not Found:
                   value:
                     message: record not found
-                Foridden Request:
+                already unfollow:
                   value:
-                    message: forbidden request
+                    message: please follow this users first to unfollow or user not found
         500:
           description: "internal server error"
           content:
