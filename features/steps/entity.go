@@ -25,12 +25,14 @@ type StepDelivery_ interface {
 	InsertStep(e echo.Context) error
 	UpdateStepById(e echo.Context) error
 	DeleteStepById(e echo.Context) error
+	DeleteStepByRecipeId(e echo.Context) error
 }
 
 type StepService_ interface {
 	InsertStep(stepEntity *StepEntity) (*StepEntity, error)
 	UpdateStepById(stepEntity *StepEntity) error
 	DeleteStepById(stepEntity *StepEntity) error
+	DeleteStepByRecipeId(stepEntity *StepEntity) error
 }
 
 type StepData_ interface {
@@ -38,4 +40,5 @@ type StepData_ interface {
 	InsertStep(stepEntity *StepEntity) (*StepEntity, error)
 	UpdateStepById(istepEntity *StepEntity) error
 	DeleteStepById(stepEntity *StepEntity) error
+	DeleteStepByRecipeId(stepEntity *StepEntity) error
 }

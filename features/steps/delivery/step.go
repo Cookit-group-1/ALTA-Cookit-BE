@@ -96,3 +96,25 @@ func (d *StepDelivery) DeleteStepById(e echo.Context) error {
 	}
 	return e.JSON(http.StatusOK, helpers.Response(consts.STEP_SuccessDeleteRecipeStep))
 }
+
+func (d *StepDelivery) DeleteStepByRecipeId(e echo.Context) error {
+	userId, _, _ := middlewares.ExtractToken(e)
+	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
+	if err != nil {
+		return errors.New(consts.ECHO_InvaildIdParam)
+	}
+
+	stepRequest := steps.StepRequest{}
+	err = e.Bind(&stepRequest)
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	stepRequest.UserID = userId
+	stepRequest.RecipeID = recipeId
+
+	err = d.stepService.DeleteStepByRecipeId(ConvertToEntity(&stepRequest))
+	if err != nil {
+		return helpers.ReturnBadResponse(e, err)
+	}
+	return e.JSON(http.StatusOK, helpers.Response(consts.STEP_SuccessDeleteRecipeStep))
+}

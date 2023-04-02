@@ -72,3 +72,16 @@ func (s *StepSerivce) DeleteStepById(entity *steps.StepEntity) error {
 	}
 	return nil
 }
+
+func (s *StepSerivce) DeleteStepByRecipeId(entity *steps.StepEntity) error {
+	isEntitled := s.stepData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
+	err := s.stepData.DeleteStepByRecipeId(entity)
+	if err != nil {
+		return err
+	}
+	return nil
+}

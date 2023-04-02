@@ -22,7 +22,11 @@ func New(db *gorm.DB) steps.StepData_ {
 
 func (d *StepData) ActionValidator(id, recipeId, userId uint) bool {
 	tempGorm := _stepModel.Step{}
-	d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = steps.recipe_id").Where("steps.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	if id != 0 {
+		d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = steps.recipe_id").Where("steps.id = ? AND rs.id = ? AND rs.user_id = ?", id, recipeId, userId).Find(&tempGorm)
+	} else {
+		d.db.Model(&tempGorm).Joins("left join recipes rs on rs.id = steps.recipe_id").Where("steps.recipe_id = ? AND rs.user_id = ?", recipeId, userId).First(&tempGorm)
+	}
 
 	return tempGorm.ID != 0
 }
@@ -52,6 +56,17 @@ func (d *StepData) UpdateStepById(entity *steps.StepEntity) error {
 
 func (d *StepData) DeleteStepById(entity *steps.StepEntity) error {
 	tx := d.db.Where("id = ?", entity.ID).Delete(ConvertToGorm(entity))
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0{
+		return errors.New(consts.GORM_RecordNotFound)
+	}
+	return nil
+}
+
+func (d *StepData) DeleteStepByRecipeId(entity *steps.StepEntity) error {
+	tx := d.db.Where("recipe_id = ?", entity.RecipeID).Delete(ConvertToGorm(entity))
 	if tx.Error != nil {
 		return tx.Error
 	}
