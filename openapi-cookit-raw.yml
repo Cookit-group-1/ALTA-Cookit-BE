@@ -752,7 +752,7 @@ paths:
               example:
                 message: internal server error
 
-  /users/followers/{id}:
+  /users/unfollow/{id}:
     delete:
       tags:
         - Followers
