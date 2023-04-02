@@ -72,3 +72,16 @@ func (s *IngredientService) DeleteIngredientById(entity *ingredients.IngredientE
 	}
 	return nil
 }
+
+func (s *IngredientService) DeleteIngredientByRecipeId(entity *ingredients.IngredientEntity) error {
+	isEntitled := s.ingredientData.ActionValidator(entity.ID, entity.RecipeID, entity.UserID)
+	if !isEntitled {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
+
+	err := s.ingredientData.DeleteIngredientByRecipeId(entity)
+	if err != nil {
+		return err
+	}
+	return nil
+}
