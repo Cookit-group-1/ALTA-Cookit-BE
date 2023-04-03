@@ -223,6 +223,16 @@ func (uh *userHandler) ShowAnotherUserByID() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
 		}
+
+		followingAmount, _ := uh.flwSrv.ShowAllFollowing(uint(anotherUserID))
+		// err handling
+
+		followerAmmount, _ := uh.flwSrv.ShowAllFollower(uint(anotherUserID))
+		// err handling
+
+		profileRes := ToProfileResponse(dataCore)
+		profileRes.FollowersAmount = uint(len(followerAmmount))
+		profileRes.FollowingAmount = uint(len(followingAmount))
 		return c.JSON(http.StatusOK, helpers.ResponseWithData(consts.USER_SuccessGetProfile, ToProfileResponse(dataCore)))
 	}
 }

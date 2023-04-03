@@ -15,8 +15,13 @@ type followService struct {
 func (fs *followService) Follow(userID uint, followingID uint) error {
 	err := fs.qry.Follow(userID, followingID)
 	if err != nil {
-		log.Println("query error", err.Error())
-		return errors.New("query error, data not found")
+		msg := ""
+		if strings.Contains(err.Error(), "already") {
+			msg = "you already follow this account"
+		} else {
+			msg = "data not found"
+		}
+		return errors.New(msg)
 	}
 	return nil
 }

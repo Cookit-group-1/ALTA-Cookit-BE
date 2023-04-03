@@ -24,11 +24,16 @@ func (fq *FollowQuery) Follow(userID, followingID uint) error {
 		FromUserID: userID,
 		ToUserID:   followingID,
 	}
+
+	alreadyErr := fq.db.Where("to_user_id = ?", followingID).First(&following).Error
+	if alreadyErr == nil {
+		return errors.New("you already follow this account")
+	}
+
 	followQry := fq.db.Create(&following)
 	rowAffect := followQry.RowsAffected
 	if rowAffect <= 0 {
-		log.Println("no data processed")
-		return errors.New("your already followed this user")
+		return errors.New("no data processed, data not found")
 	}
 
 	err := followQry.Error

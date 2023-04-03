@@ -5,6 +5,7 @@ import (
 	"alta-cookit-be/middlewares"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -23,14 +24,19 @@ func (fh *followHander) Follow() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "error from server"})
 		}
 		if role == "Admin" {
-			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot acces credentials data"})
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot access credentials data"})
 		}
-		err = fh.srv.Follow(id, uint(followingID))
+
 		if id == uint(followingID) {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you cannot follow your self"})
 		}
+		err = fh.srv.Follow(id, uint(followingID))
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you already follow this user"})
+			if strings.Contains(err.Error(), "already") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you already follow this user"})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+			}
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "success follow this user",
