@@ -769,7 +769,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success unfollowing an user
           content:
             application/json:
@@ -1523,7 +1523,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success updating user's recipe
           content:
             application/json:
@@ -1581,7 +1581,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting user's recipe
           content:
             application/json:
@@ -2309,7 +2309,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success like user's recipe
           content:
             application/json:
@@ -2368,7 +2368,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success unlike user's recipe
           content:
             application/json:
@@ -2485,6 +2485,61 @@ paths:
               example:
                 message: internal server error
 
+    delete:
+      tags:
+        - Images
+      summary: delete recipe's images
+      description: feature for deleting recipe's images
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: images of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: success deleting recipe's images
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's images"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
+
   /recipes/{recipe_id}/images/{image_id}:
     put:
       tags:
@@ -2522,7 +2577,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success updating recipe's image
           content:
             application/json:
@@ -2587,7 +2642,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting recipe's image
           content:
             application/json:
@@ -2842,7 +2897,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success updating recipe's comment
           content:
             application/json:
@@ -2910,7 +2965,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting recipe's comment
           content:
             application/json:
@@ -3026,6 +3081,64 @@ paths:
                     type: string
               example:
                 message: internal server error
+    
+    delete:
+      tags:
+        - Steps
+      summary: delete recipe's steps
+      description: feature for deleting recipe's steps
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: steps of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: success deleting recipe's steps
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's steps"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: internal server error
 
   /recipes/{recipe_id}/steps/{step_id}:
     put:
@@ -3064,7 +3177,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success updating recipe's step
           content:
             application/json:
@@ -3132,7 +3245,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting recipe's step
           content:
             application/json:
@@ -3255,6 +3368,64 @@ paths:
                   example:
                       message: internal server error
 
+    delete:
+      tags:
+        - Ingredients
+      summary: delete recipe's ingredients
+      description: feature for deleting recipe's ingredients
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: recipe_id
+          in: path
+          description: ingredients of recipe's id to be deleted
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: success deleting recipe's ingredients
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succesfully delete recipe's ingredients"
+        400:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Invalid Id param:
+                  value:
+                    message: invalid id param
+                Record Not Found:
+                  value:
+                    message: record not found
+                Foridden Request:
+                  value:
+                    message: forbidden request
+        500:
+          description: "internal server error"
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                example:
+                  message: internal server error
+
   /recipes/{recipe_id}/ingredients/{ingredient_id}:
     put:
       tags:
@@ -3296,7 +3467,7 @@ paths:
               name: "Paket Couple"
               price: 125000
       responses:
-        201:
+        200:
           description: success updating recipe's ingredient
           content:
             application/json:
@@ -3363,7 +3534,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting recipe's ingredient
           content:
             application/json:
@@ -3542,7 +3713,7 @@ paths:
               name: "Gula Aren"
               price: 50g
       responses:
-        201:
+        200:
           description: success updating ingredient's detail
           content:
             application/json:
@@ -3609,7 +3780,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting ingredient's detail
           content:
             application/json:
@@ -3849,7 +4020,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success updating user's cart
           content:
             application/json:
@@ -3907,7 +4078,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success deleting user's cart
           content:
             application/json:
@@ -4177,7 +4348,7 @@ paths:
             type: integer
             example: 1
       responses:
-        201:
+        200:
           description: success update user's status transaction
           content:
             application/json:
