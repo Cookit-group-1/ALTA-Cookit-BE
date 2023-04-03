@@ -40,6 +40,9 @@ func (s *RecipeService) UpdateRecipeById(entity *recipes.RecipeEntity) error {
 	if entity.Name == "" || entity.Description == "" {
 		return errors.New(consts.VALIDATION_InvalidInput)
 	}
+	if entity.Status == "OpenForSale" && entity.UserRole == consts.USER_E_User {
+		return errors.New(consts.SERVER_ForbiddenRequest)
+	}
 
 	isEntitled := s.recipeData.ActionValidator(entity.ID, entity.UserID)
 	if !isEntitled {
