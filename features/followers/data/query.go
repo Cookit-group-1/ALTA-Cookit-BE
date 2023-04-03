@@ -87,16 +87,23 @@ func (fq *FollowQuery) ShowAllFollowing(userID uint) ([]followers.FollowCore, er
 
 // Unfollow implements followers.FollowData
 func (fq *FollowQuery) Unfollow(userID, followingID uint) error {
-	res := Follower{
+	unfollow := Follower{
 		FromUserID: userID,
 		ToUserID:   followingID,
 	}
-	unfollowQry := fq.db.Unscoped().Where("from_user_id = ? AND to_user_id = ?", userID, followingID).Delete(&res)
 
+	// cek apakah akun yang mau di unfollow ada
+	notFollowErr := fq.db.Where("to_user_id = ?", followingID).First(&unfollow).Error
+	if notFollowErr != nil {
+		return errors.New("invalid user id, data not found")
+	}
+
+	// hard delete
+	unfollowQry := fq.db.Unscoped().Where("to_user_id = ?", followingID).Delete(&unfollow)
 	rowAffect := unfollowQry.RowsAffected
 	if rowAffect <= 0 {
 		log.Println("no data processed")
-		return errors.New("no user to unfollow")
+		return errors.New("data not found")
 	}
 
 	err := unfollowQry.Error

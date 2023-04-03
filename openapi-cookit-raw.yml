@@ -790,15 +790,22 @@ paths:
                   message:
                     type: string
               examples:
-                Invalid Id param:
+                unfollow yourself:
                   value:
-                    message: invalid id param
-                Record Not Found:
+                    message: you cant not unfollow your self
+        404:
+          description: "not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                invalid id param:
                   value:
-                    message: record not found
-                already unfollow:
-                  value:
-                    message: please follow this users first to unfollow or user not found
+                    message: invalid user id, data not found
         500:
           description: "internal server error"
           content:
