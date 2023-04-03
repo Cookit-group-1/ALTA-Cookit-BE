@@ -222,7 +222,7 @@ func (d *RecipeData) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]rec
 func (d *RecipeData) SelectRecipesTrending(entity *recipes.RecipeEntity) (*[]recipes.RecipeEntity, error) {
 	gorms := []_recipeModel.Recipe{}
 
-	tx := d.db.Preload("Recipe").Select("*, recipes.id as id, recipes.user_id as user_id, COUNT(DISTINCT lk.id) as total_like, COUNT(DISTINCT cs.id) as total_comment").Joins("left join likes lk on lk.recipe_id = recipes.id").Joins("left join comments cs on cs.recipe_id = recipes.id").Order("total_like desc, total_comment desc").Group("recipes.id").Group("lk.id").Group("cs.id").Where("recipes.type = 'Original' AND recipes.created_at >= DATE(NOW() - INTERVAL 7 DAY)").Order("recipes.created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Preload("Recipe").Select("*, recipes.id as id, recipes.user_id as user_id, COUNT(DISTINCT lk.user_id) as total_like, COUNT(DISTINCT cs.user_id) as total_comment").Joins("left join likes lk on lk.recipe_id = recipes.id").Joins("left join comments cs on cs.recipe_id = recipes.id").Order("total_like desc, total_comment desc").Group("recipes.id").Group("lk.id").Group("cs.id").Where("recipes.type = 'Original' AND recipes.created_at >= DATE(NOW() - INTERVAL 7 DAY)").Order("recipes.created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
