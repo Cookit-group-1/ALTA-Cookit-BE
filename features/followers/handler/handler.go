@@ -5,12 +5,19 @@ import (
 	"alta-cookit-be/middlewares"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
 
 type followHander struct {
 	srv followers.FollowService
+}
+
+func New(srv followers.FollowService) followers.FollowHandler {
+	return &followHander{
+		srv: srv,
+	}
 }
 
 // Follow implements followers.FollowHandler
@@ -23,14 +30,19 @@ func (fh *followHander) Follow() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "error from server"})
 		}
 		if role == "Admin" {
-			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot acces credentials data"})
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot access credentials data"})
 		}
-		err = fh.srv.Follow(id, uint(followingID))
+
 		if id == uint(followingID) {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you cannot follow your self"})
 		}
+		err = fh.srv.Follow(id, uint(followingID))
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you already follow this user"})
+			if strings.Contains(err.Error(), "already") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you already follow this user"})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "data not found"})
+			}
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "success follow this user",
@@ -92,23 +104,20 @@ func (fh *followHander) Unfollow() echo.HandlerFunc {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "error from server"})
 		}
 		if role == "Admin" {
-			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot acces credentials data"})
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{"message": "cannot access credentials data"})
 		}
-		err = fh.srv.Unfollow(id, uint(followingID))
 		if id == uint(followingID) {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "you cannot unfollow your self"})
 		}
+
+		err = fh.srv.Unfollow(id, uint(followingID))
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "please follow this users first to unfollow or user not found"})
+			if strings.Contains(err.Error(), "invalid") {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "invalid user id, data not found"})
+			}
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"message": "success unfollow this user",
 		})
-	}
-}
-
-func New(srv followers.FollowService) followers.FollowHandler {
-	return &followHander{
-		srv: srv,
 	}
 }

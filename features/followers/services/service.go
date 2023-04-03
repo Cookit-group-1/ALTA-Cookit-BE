@@ -3,7 +3,6 @@ package services
 import (
 	"alta-cookit-be/features/followers"
 	"errors"
-	"log"
 	"strings"
 )
 
@@ -15,8 +14,13 @@ type followService struct {
 func (fs *followService) Follow(userID uint, followingID uint) error {
 	err := fs.qry.Follow(userID, followingID)
 	if err != nil {
-		log.Println("query error", err.Error())
-		return errors.New("query error, data not found")
+		msg := ""
+		if strings.Contains(err.Error(), "already") {
+			msg = "you already follow this account"
+		} else {
+			msg = "data not found"
+		}
+		return errors.New(msg)
 	}
 	return nil
 }
@@ -53,8 +57,11 @@ func (fs *followService) ShowAllFollowing(userID uint) ([]followers.FollowCore, 
 func (fs *followService) Unfollow(userID uint, followingID uint) error {
 	err := fs.qry.Unfollow(userID, followingID)
 	if err != nil {
-		log.Println("query error", err.Error())
-		return errors.New("query error, following account fail")
+		msg := ""
+		if strings.Contains(err.Error(), "invalid user id") {
+			msg = "invalid user id, data not found"
+		}
+		return errors.New(msg)
 	}
 	return nil
 }

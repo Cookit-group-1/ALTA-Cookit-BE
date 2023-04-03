@@ -28,9 +28,9 @@ func (uq *UserQuery) SelectUserById(user users.Core) *users.Core {
 
 // Register implements users.UserData
 func (uq *UserQuery) Register(newUser users.Core) (users.Core, error) {
-	if newUser.Username == "" || newUser.Password == "" {
+	if newUser.Username == "" || newUser.Password == "" || newUser.Email == ""{
 		log.Println("data empty")
-		return users.Core{}, errors.New("username or password is empty")
+		return users.Core{}, errors.New("username, email and password is empty")
 	}
 
 	dupUser := CoreToModel(newUser)
@@ -53,10 +53,10 @@ func (uq *UserQuery) Register(newUser users.Core) (users.Core, error) {
 }
 
 // Login implements users.UserData
-func (uq *UserQuery) Login(username string) (users.Core, error) {
-	if username == "" {
+func (uq *UserQuery) Login(username, password string) (users.Core, error) {
+	if username == "" || password == ""{
 		log.Println("data empty, query error")
-		return users.Core{}, errors.New("username is empty")
+		return users.Core{}, errors.New("username and password cannot be empty")
 	}
 
 	res := User{}
