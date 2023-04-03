@@ -92,7 +92,7 @@ func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.IMAGE_SuccesUpdateRecipeImage, ConvertToResponse(output)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.IMAGE_SuccesUpdateRecipeImage, ConvertToResponse(output)))
 }
 
 func (d *ImageDelivery) DeleteImageById(e echo.Context) error {

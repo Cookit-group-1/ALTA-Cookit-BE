@@ -38,7 +38,7 @@ func (d *RecipeDelivery) SelectRecipes(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
 }
 
 func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
@@ -86,7 +86,7 @@ func (d *RecipeDelivery) UpdateRecipeById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.RECIPE_SuccessUpdateUserRecipe))
+	return e.JSON(http.StatusOK, helpers.Response(consts.RECIPE_SuccessUpdateUserRecipe))
 }
 
 func (d *RecipeDelivery) DeleteRecipeById(e echo.Context) error {
@@ -108,7 +108,7 @@ func (d *RecipeDelivery) DeleteRecipeById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.RECIPE_SucessDeleteUserRecipe))
+	return e.JSON(http.StatusOK, helpers.Response(consts.RECIPE_SucessDeleteUserRecipe))
 }
 
 func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
@@ -129,7 +129,7 @@ func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
 }
 
 func (d *RecipeDelivery) SelectRecipesTrending(e echo.Context) error {
@@ -150,7 +150,7 @@ func (d *RecipeDelivery) SelectRecipesTrending(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.RECIPE_SuccessReadListOfRecipes, ConvertToResponses(outputs)))
 }
 
 func (d *RecipeDelivery) SelectRecipeDetailById(e echo.Context) error {
@@ -170,5 +170,5 @@ func (d *RecipeDelivery) SelectRecipeDetailById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.RECIPE_SuccessReadDetailsOfRecipe, ConvertToResponse(output)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.RECIPE_SuccessReadDetailsOfRecipe, ConvertToResponse(output)))
 }

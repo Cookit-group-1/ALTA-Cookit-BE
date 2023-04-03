@@ -40,7 +40,7 @@ func (d *LikeDelivery) LikeRecipe(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.LIKE_SuccessLikeUserRecipe))
+	return e.JSON(http.StatusOK, helpers.Response(consts.LIKE_SuccessLikeUserRecipe))
 }
 
 func (d *LikeDelivery) UnlikeRecipe(e echo.Context) error {
@@ -62,5 +62,5 @@ func (d *LikeDelivery) UnlikeRecipe(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.Response(consts.LIKE_SuccessUnlikeUserRecipe))
+	return e.JSON(http.StatusOK, helpers.Response(consts.LIKE_SuccessUnlikeUserRecipe))
 }

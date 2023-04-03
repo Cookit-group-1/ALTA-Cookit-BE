@@ -25,6 +25,10 @@ func (s *RecipeService) SelectRecipes(entity *recipes.RecipeEntity) (*[]recipes.
 }
 
 func (s *RecipeService) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.RecipeEntity, error) {
+	if entity.Name == "" || entity.Description == "" {
+		return nil, errors.New(consts.VALIDATION_InvalidInput)
+	}
+
 	output, err := s.recipeData.InsertRecipe(entity)
 	if err != nil {
 		return nil, err
@@ -33,6 +37,10 @@ func (s *RecipeService) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Rec
 }
 
 func (s *RecipeService) UpdateRecipeById(entity *recipes.RecipeEntity) error {
+	if entity.Name == "" || entity.Description == "" {
+		return errors.New(consts.VALIDATION_InvalidInput)
+	}
+
 	isEntitled := s.recipeData.ActionValidator(entity.ID, entity.UserID)
 	if !isEntitled {
 		return errors.New(consts.SERVER_ForbiddenRequest)
