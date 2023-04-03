@@ -185,7 +185,7 @@ func (d *RecipeData) SelectRecipesTimeline(entity *recipes.RecipeEntity) (*[]rec
 	gorms := []_recipeModel.Recipe{}
 
 	subQuery := d.db.Table("followers").Distinct("to_user_id").Where("from_user_id = ?", entity.UserID).Select("to_user_id")
-	tx := d.db.Preload("Recipe").Where("user_id IN (?)", subQuery).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
+	tx := d.db.Preload("Images").Preload("Recipe").Preload("Recipe.Images").Where("user_id IN (?)", subQuery).Order("created_at desc").Limit(entity.DataLimit).Offset(entity.DataOffset).Find(&gorms)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
