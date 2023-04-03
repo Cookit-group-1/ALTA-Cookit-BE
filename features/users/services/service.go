@@ -28,7 +28,7 @@ func New(ud users.UserData) users.UserService {
 // Login implements users.UserService
 func (us *userService) Login(username string, password string) (string, users.Core, error) {
 
-	res, err := us.qry.Login(username)
+	res, err := us.qry.Login(username, password)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "empty") {
@@ -41,7 +41,7 @@ func (us *userService) Login(username string, password string) (string, users.Co
 
 	if err := helpers.CheckPassword(res.Password, password); err != nil {
 		log.Println("login compare", err.Error())
-		return "", users.Core{}, errors.New("password not matched")
+		return "", users.Core{}, errors.New("password do not match")
 	}
 
 	useToken, _ := middlewares.CreateToken(int(res.ID), res.Role)

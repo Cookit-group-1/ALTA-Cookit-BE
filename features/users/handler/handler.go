@@ -32,12 +32,18 @@ func (uh *userHandler) Login() echo.HandlerFunc {
 		input := LoginReq{}
 		errBind := c.Bind(&input)
 		if errBind != nil {
-			return c.JSON(http.StatusBadRequest, helpers.Response(consts.AUTH_ErrorBind))
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email or password cannot be empty"})
 		}
 
 		token, res, errLogin := uh.srv.Login(input.Username, input.Password)
 		if errLogin != nil {
-			return c.JSON(helpers.ErrorResponse(errLogin))
+			if strings.Contains(errLogin.Error(), "empty") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email or password cannot be empty"})
+			} else if strings.Contains(errLogin.Error(), "password do not match") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "password do not match"})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
+			}
 		}
 		dataResponse := map[string]any{
 			"id":       res.ID,
