@@ -32,7 +32,7 @@ func ReturnBadResponse(e echo.Context, err error) error {
 		return e.JSON(http.StatusInternalServerError, Response(err.Error()))
 
 	case consts.ECHO_ErrorBindData:
-		return e.JSON(http.StatusInternalServerError, Response(err.Error()))
+		return e.JSON(http.StatusBadRequest, Response(err.Error()))
 
 	case consts.ECHO_InvaildIdParam:
 		return e.JSON(http.StatusBadRequest, Response(err.Error()))

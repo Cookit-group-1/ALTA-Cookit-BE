@@ -42,7 +42,7 @@ func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.COMMENT_SuccessReadRecipeCommentList, ConvertToResponses(output)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.COMMENT_SuccessReadRecipeCommentList, ConvertToResponses(output)))
 }
 
 func (d *CommentDelivery) InsertComment(e echo.Context) error {
@@ -103,7 +103,7 @@ func (d *CommentDelivery) UpdateCommentById(e echo.Context) error {
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.COMMENT_SuccessUpdateRecipeComment, ConvertToResponse(output)))
+	return e.JSON(http.StatusOK, helpers.ResponseWithData(consts.COMMENT_SuccessUpdateRecipeComment, ConvertToResponse(output)))
 }
 
 func (d *CommentDelivery) DeleteCommentById(e echo.Context) error {
