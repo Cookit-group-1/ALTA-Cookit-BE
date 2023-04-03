@@ -26,13 +26,13 @@ func (d *CommentDelivery) SelectCommentsByRecipeId(e echo.Context) error {
 	limit, offset := helpers.LimitOffsetConvert(page, limit)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	commentRequest := comments.CommentRequest{}
 	err = e.Bind(&commentRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	commentRequest.RecipeID = recipeId
 	commentRequest.DataLimit = limit
@@ -49,13 +49,13 @@ func (d *CommentDelivery) InsertComment(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	commentRequest := comments.CommentRequest{}
 	err = e.Bind(&commentRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 
 	file, fileName, err := helpers.ExtractImageFile(e, "image")
@@ -78,18 +78,18 @@ func (d *CommentDelivery) UpdateCommentById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	commentRequest := comments.CommentRequest{}
 	err = e.Bind(&commentRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 
 	file, fileName, _ := helpers.ExtractImageFile(e, "image")
@@ -110,17 +110,17 @@ func (d *CommentDelivery) DeleteCommentById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	commentRequest := comments.CommentRequest{}
 	err = e.Bind(&commentRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	commentRequest.ID = id
 	commentRequest.RecipeID = recipeId

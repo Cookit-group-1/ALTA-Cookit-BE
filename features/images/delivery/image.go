@@ -25,13 +25,13 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	imageRequests := []images.ImageRequest{}
 	err = e.Bind(&imageRequests)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 
 	// file, fileName, _ := helpers.ExtractImageFile(e, "image")
@@ -47,9 +47,9 @@ func (d *ImageDelivery) InsertImage(e echo.Context) error {
 	}
 	for index, file := range files {
 		imageRequests = append(imageRequests, images.ImageRequest{
-			UserID: userId,
-			RecipeID: recipeId,
-			Image: file,
+			UserID:    userId,
+			RecipeID:  recipeId,
+			Image:     file,
 			ImageName: fileNames[index],
 		})
 	}
@@ -65,17 +65,17 @@ func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_ImageId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	imageRequest := images.ImageRequest{}
 	err = e.Bind(&imageRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 
 	file, fileName, _ := helpers.ExtractImageFile(e, "image")
@@ -99,17 +99,17 @@ func (d *ImageDelivery) DeleteImageById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	imageRequest := images.ImageRequest{}
 	err = e.Bind(&imageRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	imageRequest.ID = id
 	imageRequest.RecipeID = recipeId
@@ -126,13 +126,13 @@ func (d *ImageDelivery) DeleteImageByRecipeId(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	imageRequest := images.ImageRequest{}
 	err = e.Bind(&imageRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	imageRequest.RecipeID = recipeId
 	imageRequest.UserID = userId

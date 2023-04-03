@@ -29,7 +29,7 @@ func (d *CartDeliery) SelectCartsByUserId(e echo.Context) error {
 	cartRequest := carts.CartRequest{}
 	err := e.Bind(&cartRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	cartRequest.UserID = userId
 	cartRequest.DataLimit = limit
@@ -48,7 +48,7 @@ func (d *CartDeliery) InsertCart(e echo.Context) error {
 	cartRequest := carts.CartRequest{}
 	err := e.Bind(&cartRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	cartRequest.UserID = userId
 
@@ -63,13 +63,13 @@ func (d *CartDeliery) UpdateCartById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CartId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	cartRequest := carts.CartRequest{}
 	err = e.Bind(&cartRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	cartRequest.ID = id
 	cartRequest.UserID = userId
@@ -85,13 +85,13 @@ func (d *CartDeliery) DeleteCartById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CartId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	cartRequest := carts.CartRequest{}
 	err = e.Bind(&cartRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	cartRequest.ID = id
 	cartRequest.UserID = userId

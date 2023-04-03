@@ -21,21 +21,21 @@ func New(ingredientDetailService ingredient_details.IngredientDetailService_) in
 	}
 }
 
-func (d *IngredientDetailDelivery) InsertIngredientDetail (e echo.Context) error {
+func (d *IngredientDetailDelivery) InsertIngredientDetail(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	ingredientId, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	ingredientDetailRequest := ingredient_details.IngredientDetailRequest{}
 	err = e.Bind(&ingredientDetailRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	ingredientDetailRequest.RecipeID = recipeId
 	ingredientDetailRequest.IngredientID = ingredientId
@@ -48,21 +48,21 @@ func (d *IngredientDetailDelivery) InsertIngredientDetail (e echo.Context) error
 	return e.JSON(http.StatusCreated, helpers.ResponseWithData(consts.INGREDIENT_DETAIL_SuccessInsertIngredientDetail, ConvertToResponse(output)))
 }
 
-func (d *IngredientDetailDelivery) UpdateIngredientDetailById (e echo.Context) error {
+func (d *IngredientDetailDelivery) UpdateIngredientDetailById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientDetailId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	ingredientDetailRequest := ingredient_details.IngredientDetailRequest{}
 	err = e.Bind(&ingredientDetailRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	ingredientDetailRequest.ID = id
 	ingredientDetailRequest.RecipeID = recipeId
@@ -79,17 +79,17 @@ func (d *IngredientDetailDelivery) DeleteIngredientDetailById(e echo.Context) er
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_IngredientDetailId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	ingredientDetailRequest := ingredient_details.IngredientDetailRequest{}
 	err = e.Bind(&ingredientDetailRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	ingredientDetailRequest.ID = id
 	ingredientDetailRequest.RecipeID = recipeId

@@ -29,7 +29,7 @@ func (d *TransactionDelivery) SelectTransactionsByUserId(e echo.Context) error {
 	transactionRequest := transactions.TransactionRequest{}
 	err := e.Bind(&transactionRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	transactionRequest.CustomerUserId = userId
 	transactionRequest.DataLimit = limit
@@ -49,7 +49,7 @@ func (d *TransactionDelivery) InsertTransaction(e echo.Context) error {
 	transactionRequest := transactions.TransactionRequest{}
 	err := e.Bind(&transactionRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	transactionRequest.CustomerUserId = userId
 
@@ -64,13 +64,13 @@ func (d *TransactionDelivery) UpdateTransactionStatusById(e echo.Context) error 
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_TransactionId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	transactionRequest := transactions.TransactionRequest{}
 	err = e.Bind(&transactionRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	transactionRequest.ID = id
 	transactionRequest.CustomerUserId = userId
@@ -86,7 +86,7 @@ func (d *TransactionDelivery) UpdateTransactionStatusByMidtrans(e echo.Context) 
 	transactionRequest := transactions.TransactionRequest{}
 	err := e.Bind(&transactionRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 
 	err = d.transactionService.UpdateTransactionStatusByMidtrans(ConvertToEntity(&transactionRequest))

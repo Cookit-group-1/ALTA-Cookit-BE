@@ -28,7 +28,7 @@ func (d *RecipeDelivery) SelectRecipes(e echo.Context) error {
 	recipeRequest := recipes.RecipeRequest{}
 	err := e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	recipeRequest.DataLimit = limit
 	recipeRequest.DataOffset = offset
@@ -46,14 +46,14 @@ func (d *RecipeDelivery) InsertRecipe(e echo.Context) error {
 	recipeRequest := recipes.RecipeRequest{}
 	err := e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 
 	files, fileNames, err := helpers.ExtractMultipleImageFiles(e, "image")
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
-	
+
 	for index, file := range files {
 		recipeRequest.Image = append(recipeRequest.Image, file)
 		recipeRequest.ImageName = append(recipeRequest.ImageName, fileNames[index])
@@ -71,13 +71,13 @@ func (d *RecipeDelivery) UpdateRecipeById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	recipeRequest := recipes.RecipeRequest{}
 	err = e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	recipeRequest.ID = recipeId
 	recipeRequest.UserID = userId
@@ -93,13 +93,13 @@ func (d *RecipeDelivery) DeleteRecipeById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	recipeRequest := recipes.RecipeRequest{}
 	err = e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	recipeRequest.ID = recipeId
 	recipeRequest.UserID = userId
@@ -119,7 +119,7 @@ func (d *RecipeDelivery) SelectRecipesTimeline(e echo.Context) error {
 	recipeRequest := recipes.RecipeRequest{}
 	err := e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	recipeRequest.UserID = userId
 	recipeRequest.DataLimit = limit
@@ -140,7 +140,7 @@ func (d *RecipeDelivery) SelectRecipesTrending(e echo.Context) error {
 	recipeRequest := recipes.RecipeRequest{}
 	err := e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	recipeRequest.UserID = userId
 	recipeRequest.DataLimit = limit
@@ -156,13 +156,13 @@ func (d *RecipeDelivery) SelectRecipesTrending(e echo.Context) error {
 func (d *RecipeDelivery) SelectRecipeDetailById(e echo.Context) error {
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	recipeRequest := recipes.RecipeRequest{}
 	err = e.Bind(&recipeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	recipeRequest.ID = recipeId
 
