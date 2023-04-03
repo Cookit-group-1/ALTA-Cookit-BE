@@ -25,13 +25,13 @@ func (d *TransactionDetailDelivery) SelectTransactionDetailById(e echo.Context) 
 	userId, _, _ := middlewares.ExtractToken(e)
 	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_TransactionDetailId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	transactionDetailRequest := transaction_details.TransactionDetailRequest{}
 	err = e.Bind(&transactionDetailRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	transactionDetailRequest.ID = id
 	transactionDetailRequest.LoggedInUserID = userId

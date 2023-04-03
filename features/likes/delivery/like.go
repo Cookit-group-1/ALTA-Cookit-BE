@@ -25,13 +25,13 @@ func (d *LikeDelivery) LikeRecipe(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	likeRequest := likes.LikeRequest{}
 	err = e.Bind(&likeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	likeRequest.RecipeID = recipeId
 	likeRequest.UserID = userId
@@ -47,13 +47,13 @@ func (d *LikeDelivery) UnlikeRecipe(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
 	recipeId, err := helpers.ExtractIDParam(e, consts.ECHO_P_RecipeId)
 	if err != nil {
-		return errors.New(consts.ECHO_InvaildIdParam)
+		return helpers.ReturnBadResponse(e, err)
 	}
 
 	likeRequest := likes.LikeRequest{}
 	err = e.Bind(&likeRequest)
 	if err != nil {
-		return helpers.ReturnBadResponse(e, err)
+		return helpers.ReturnBadResponse(e, errors.New(consts.ECHO_ErrorBindData))
 	}
 	likeRequest.RecipeID = recipeId
 	likeRequest.UserID = userId
