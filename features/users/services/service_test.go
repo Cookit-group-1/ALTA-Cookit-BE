@@ -186,3 +186,28 @@ func TestLogin(t *testing.T) {
 		data.AssertExpectations(t)
 	})
 }
+
+func TestProfile(t *testing.T) {
+	data := mocks.NewUserData(t)
+	resData := users.Core{ID: 1, Username: "griffin", Bio: "I love cooking", Email: "grf@gmail.com", Role: "User"}
+	srv := New(data)
+
+	t.Run("success show profile", func(t *testing.T) {
+		data.On("Profile", uint(1)).Return(resData, nil).Once()
+
+		res, err := srv.Profile(uint(1))
+		assert.Nil(t, err)
+		assert.Equal(t, resData.Username, res.Username)
+		data.AssertExpectations(t)
+	})
+
+	t.Run("internal server error", func(t *testing.T) {
+		data.On("Profile", uint(1)).Return(users.Core{}, errors.New("query error, problem with server")).Once()
+
+		res, err := srv.Profile(uint(1))
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "error")
+		assert.Equal(t, users.Core{}, res)
+		data.AssertExpectations(t)
+	})
+}
