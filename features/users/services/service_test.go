@@ -17,7 +17,7 @@ import (
 
 func TestRegister(t *testing.T) {
 	data := mocks.NewUserData(t)
-	input := users.Core{Username: "griffin", Email: "grf29@gmail.com", Password: "Alf12345", Role: "guest"}
+	input := users.Core{Username: "griffin", Email: "grf29@gmail.com", Password: "Alf12345"}
 	resData := users.Core{ID: uint(1), Username: "griffin", Email: "grf29@gmail.com"}
 	srv := New(data)
 
