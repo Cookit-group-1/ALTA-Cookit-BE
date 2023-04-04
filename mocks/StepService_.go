@@ -27,6 +27,20 @@ func (_m *StepService_) DeleteStepById(stepEntity *steps.StepEntity) error {
 	return r0
 }
 
+// DeleteStepByRecipeId provides a mock function with given fields: stepEntity
+func (_m *StepService_) DeleteStepByRecipeId(stepEntity *steps.StepEntity) error {
+	ret := _m.Called(stepEntity)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*steps.StepEntity) error); ok {
+		r0 = rf(stepEntity)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // InsertStep provides a mock function with given fields: stepEntity
 func (_m *StepService_) InsertStep(stepEntity *steps.StepEntity) (*steps.StepEntity, error) {
 	ret := _m.Called(stepEntity)
