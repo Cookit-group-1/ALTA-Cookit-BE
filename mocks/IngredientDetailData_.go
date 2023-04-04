@@ -13,13 +13,13 @@ type IngredientDetailData_ struct {
 	mock.Mock
 }
 
-// ActionValidator provides a mock function with given fields: id, ingredientId, recipeId, userId
-func (_m *IngredientDetailData_) ActionValidator(id uint, ingredientId uint, recipeId uint, userId uint) bool {
-	ret := _m.Called(id, ingredientId, recipeId, userId)
+// ActionValidator provides a mock function with given fields: id, recipeId, userId
+func (_m *IngredientDetailData_) ActionValidator(id uint, recipeId uint, userId uint) bool {
+	ret := _m.Called(id, recipeId, userId)
 
 	var r0 bool
-	if rf, ok := ret.Get(0).(func(uint, uint, uint, uint) bool); ok {
-		r0 = rf(id, ingredientId, recipeId, userId)
+	if rf, ok := ret.Get(0).(func(uint, uint, uint) bool); ok {
+		r0 = rf(id, recipeId, userId)
 	} else {
 		r0 = ret.Get(0).(bool)
 	}

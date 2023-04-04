@@ -27,6 +27,20 @@ func (_m *ImageService_) DeleteImageById(imageEntity *images.ImageEntity) error 
 	return r0
 }
 
+// DeleteImageByRecipeId provides a mock function with given fields: imageEntity
+func (_m *ImageService_) DeleteImageByRecipeId(imageEntity *images.ImageEntity) error {
+	ret := _m.Called(imageEntity)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*images.ImageEntity) error); ok {
+		r0 = rf(imageEntity)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // InsertImage provides a mock function with given fields: imageEntity
 func (_m *ImageService_) InsertImage(imageEntity *[]images.ImageEntity) (*[]images.ImageEntity, error) {
 	ret := _m.Called(imageEntity)
