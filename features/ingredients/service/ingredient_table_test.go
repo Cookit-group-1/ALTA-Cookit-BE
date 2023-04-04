@@ -1,7 +1,7 @@
 package service
 
 import (
-	"alta-cookit-be/features/steps"
+	"alta-cookit-be/features/ingredients"
 	"alta-cookit-be/utils/consts"
 	"errors"
 )
@@ -9,27 +9,28 @@ import (
 type TestTable struct {
 	Name  string
 	Input struct {
-		stepEntity steps.StepEntity
+		ingredientEntity ingredients.IngredientEntity
 	}
 	Output struct {
 		isErrValidate bool
 		isEntitled    bool
 		IsError       bool
-		result        *steps.StepEntity
+		result        *ingredients.IngredientEntity
 		errResult     error
 	}
 }
 
-func InsertStepTestTable() []TestTable {
-	tname := "test insert step"
+func InsertIngredientTestTable() []TestTable {
+	tname := "test insert ingredient "
 	return []TestTable{
 		{
 			Name: tname + "expect failed - empty step name",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
 				},
 			},
@@ -37,7 +38,7 @@ func InsertStepTestTable() []TestTable {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: true,
@@ -50,19 +51,20 @@ func InsertStepTestTable() []TestTable {
 		{
 			Name: tname + "expect success - filled step name",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -75,19 +77,20 @@ func InsertStepTestTable() []TestTable {
 		{
 			Name: tname + "expect failed - is not entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -100,19 +103,20 @@ func InsertStepTestTable() []TestTable {
 		{
 			Name: tname + "expect success - is entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -125,19 +129,20 @@ func InsertStepTestTable() []TestTable {
 		{
 			Name: tname + "expect failed",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -150,29 +155,31 @@ func InsertStepTestTable() []TestTable {
 		{
 			Name: tname + "expect success",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
 				isEntitled:    true,
 				IsError:       false,
-				result: &steps.StepEntity{
+				result: &ingredients.IngredientEntity{
 					ID:       1,
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 				errResult: nil,
 			},
@@ -180,17 +187,17 @@ func InsertStepTestTable() []TestTable {
 	}
 }
 
-func UpdateStepByIdTestTable() []TestTable {
-	tname := "test update step by id"
+func UpdateIngredientByIdTestTable() []TestTable {
+	tname := "test update ingredient by id "
 	return []TestTable{
 		{
 			Name: tname + "expect failed - empty step name",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
 				},
 			},
@@ -198,7 +205,7 @@ func UpdateStepByIdTestTable() []TestTable {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: true,
@@ -211,20 +218,20 @@ func UpdateStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success - filled step name",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -237,20 +244,20 @@ func UpdateStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect failed - is not entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -263,20 +270,20 @@ func UpdateStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success - is entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -289,20 +296,20 @@ func UpdateStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect failed",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -315,30 +322,31 @@ func UpdateStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
 				isEntitled:    true,
 				IsError:       false,
-				result: &steps.StepEntity{
+				result: &ingredients.IngredientEntity{
 					ID:       1,
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 				errResult: nil,
 			},
@@ -346,26 +354,26 @@ func UpdateStepByIdTestTable() []TestTable {
 	}
 }
 
-func DeleteStepByIdTestTable() []TestTable {
-	tname := "test delete step by id "
+func DeleteIngredientByIdTestTable() []TestTable {
+	tname := "test delete ingredinet by id "
 	return []TestTable{
 		{
 			Name: tname + "expect failed - is not entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -378,20 +386,20 @@ func DeleteStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success - is entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -404,20 +412,20 @@ func DeleteStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect failed",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -430,20 +438,20 @@ func DeleteStepByIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -456,26 +464,26 @@ func DeleteStepByIdTestTable() []TestTable {
 	}
 }
 
-func DeleteStepByRecipeIdTestTable() []TestTable {
-	tname := "test delete step by recipe id "
+func DeleteIngredientByRecipeIdTestTable() []TestTable {
+	tname := "test delete ingredient by recipe id"
 	return []TestTable{
 		{
 			Name: tname + "expect failed - is not entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -488,20 +496,20 @@ func DeleteStepByRecipeIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success - is entitled",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -514,20 +522,20 @@ func DeleteStepByRecipeIdTestTable() []TestTable {
 		{
 			Name: tname + "expect failed",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
@@ -540,20 +548,20 @@ func DeleteStepByRecipeIdTestTable() []TestTable {
 		{
 			Name: tname + "expect success",
 			Input: struct {
-				stepEntity steps.StepEntity
+				ingredientEntity ingredients.IngredientEntity
 			}{
-				stepEntity: steps.StepEntity{
-					ID:       1,
+				ingredientEntity: ingredients.IngredientEntity{
 					UserID:   1,
+					UserRole: "User",
 					RecipeID: 1,
-					Name:     "Masukan air ke dalam wadah sebanyak 100mL",
+					Name:     "Original",
 				},
 			},
 			Output: struct {
 				isErrValidate bool
 				isEntitled    bool
 				IsError       bool
-				result        *steps.StepEntity
+				result        *ingredients.IngredientEntity
 				errResult     error
 			}{
 				isErrValidate: false,
