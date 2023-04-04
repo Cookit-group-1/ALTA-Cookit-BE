@@ -15,7 +15,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-
 func TestRegister(t *testing.T) {
 	data := mocks.NewUserData(t)
 	input := users.Core{Username: "griffin", Email: "grf29@gmail.com", Password: "Alf12345", Role: "guest"}
@@ -208,6 +207,96 @@ func TestUpdate(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "not found")
 		assert.Equal(t, users.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+}
+
+func TestDeactive(t *testing.T) {
+	repo := mocks.NewUserData(t)
+	t.Run("deleting account successful", func(t *testing.T) {
+		repo.On("Deactive", uint(1)).Return(nil).Once()
+		srv := New(repo)
+
+		err := srv.Deactive(uint(1))
+		assert.Nil(t, err)
+		repo.AssertExpectations(t)
+	})
+	t.Run("internal server error, account fail to deactive", func(t *testing.T) {
+		repo.On("Deactive", uint(1)).Return(errors.New("no user has deactive")).Once()
+		srv := New(repo)
+		err := srv.Deactive(uint(1))
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "error")
+		repo.AssertExpectations(t)
+	})
+}
+
+// func TestUpdatePassword(t *testing.T) {
+// 	data := mocks.NewUserData(t)
+// 	inputData := users.Core{Password: "Alfian123", NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
+// 	comparePass, _ := helpers.CheckPassword(inputData.Password)
+// 	hashPass, _ := helpers.GeneratePassword("Alterra123")
+// 	checkPass, _ := helpers.CheckPassword(inputData.PasswordConfirmation)
+// 	// resData := users.Core{ID: uint(1), Password: "Alfian123", NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
+// 	resData := users.Core{ID: uint(1), Password: com, NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
+
+// 	t.Run("success update password", func(t *testing.T) {
+// 		data.On("Profile", mock.Anything).Return(resData, nil).Once()
+// 		data.On("UpdatePassword", uint(1), mock.Anything).Return(resData, nil).Once()
+// 		srv := New(data)
+// 		err := srv.UpdatePassword(uint(1), inputData)
+// 		assert.Nil(t, err)
+// 		data.AssertExpectations(t)
+// 	})
+
+// }
+
+func TestSearchUser(t *testing.T) {
+	repo := mocks.NewUserData(t)
+	filePath := filepath.Join("..", "..", "..", "test.jpg")
+	imageTrue, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	imageTrueCnv := &multipart.FileHeader{
+		Filename: imageTrue.Name(),
+	}
+
+	resData := []users.Core{{
+		ID:             1,
+		Username:       "abu",
+		Role:           "User",
+		Bio:            "i love cook",
+		ProfilePicture: imageTrueCnv.Filename,
+	}}
+	q := "alfian"
+
+	t.Run("success get all users", func(t *testing.T) {
+		repo.On("SearchUser", uint(1), q).Return(resData, nil).Once()
+		srv := New(repo)
+		res, err := srv.SearchUser(uint(1), q)
+		assert.Nil(t, err)
+		assert.Equal(t, len(resData), len(res))
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("users not found", func(t *testing.T) {
+		repo.On("SearchUser", uint(1), q).Return([]users.Core{}, errors.New("users not found")).Once()
+		srv := New(repo)
+		res, err := srv.SearchUser(uint(1), q)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "not found")
+		assert.Equal(t, 0, len(res))
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("server problem", func(t *testing.T) {
+		repo.On("SearchUser", uint(1), q).Return([]users.Core{}, errors.New("server problem")).Once()
+		srv := New(repo)
+		res, err := srv.SearchUser(uint(1), q)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "server")
+		assert.Equal(t, 0, len(res))
 		repo.AssertExpectations(t)
 	})
 }
