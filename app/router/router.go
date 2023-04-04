@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	"alta-cookit-be/app/payment"
 	_cartData "alta-cookit-be/features/carts/data"
 	_cartDelivery "alta-cookit-be/features/carts/delivery"
 	_cartService "alta-cookit-be/features/carts/service"
@@ -197,7 +198,8 @@ func initTransactionRouter(db *gorm.DB, e *echo.Echo) {
 	recipeData := _recipeData.New(db, userData, imageData)
 	ingredientData := _ingredientData.New(db)
 	data := _transactionData.New(db, userData, recipeData, imageData, ingredientData)
-	service := _transactionService.New(data)
+	paymentGateway :=  payment.NewCoreMidtrans()
+	service := _transactionService.New(data, paymentGateway)
 	handler := _transactionDelivery.New(service)
 
 	e.GET("/users/transactions", handler.SelectTransactionsByUserId, middlewares.JWTMiddleware())

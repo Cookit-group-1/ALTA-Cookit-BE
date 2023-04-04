@@ -15,7 +15,7 @@ var (
 	AWS_REGION                 = ""
 	ACCESS_KEY_ID              = ""
 	ACCESS_KEY_SECRET          = ""
-	MIDTRANS_SERVER_KEY string = ""
+	MIDTRANS_SERVER_KEY string = "SB-Mid-server-apUkhbdCbaWpgwZ1_6i2Fat8"
 )
 
 type AppConfig struct {
