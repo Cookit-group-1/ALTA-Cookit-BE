@@ -16,7 +16,7 @@ type TransactionService struct {
 	validate        *validator.Validate
 }
 
-func New(transactionData transactions.TransactionData_) transactions.TransactionService_ {
+func New(transactionData transactions.TransactionData_, paymentGateway payment.PaymentGateway) transactions.TransactionService_ {
 	return &TransactionService{
 		transactionData: transactionData,
 		paymentGateway:  payment.NewCoreMidtrans(),
