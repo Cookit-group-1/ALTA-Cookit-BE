@@ -33,7 +33,7 @@ func TestInsertCart(t *testing.T) {
 	for index, v := range table {
 		t.Run(v.Name, func(t *testing.T) {
 			mCart := new(mocks.CartData_)
-			mCart.On("InsertCart", mock.Anything).Return(v.Output.results, v.Output.errResult)
+			mCart.On("InsertCart", mock.Anything).Return(v.Output.result, v.Output.errResult)
 
 			service := New(mCart)
 			_, err := service.InsertCart(&v.Input.cartEntity)
