@@ -5,77 +5,16 @@ import (
 	"alta-cookit-be/mocks"
 	"alta-cookit-be/utils/helpers"
 	"errors"
+	"log"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
-// func TestRegister(t *testing.T) {
-// 	repo := mocks.NewUserData(t)
-// 	newUser := users.Core{
-// 		Email: "alfian12345@gmail.com",
-
-// 		Username: "alfianad",
-// 		Password: "Alf12345",
-// 	}
-// 	expectedData := users.Core{
-// 		Email:    "alfian12345@gmail.com",
-// 		Username: "alfianad",
-// 		Password: "$2a$10$ONzXu6wvVIUm0wzYCRinOO3c5qnKOLpx07OUh5njkMKqpR1phjGO",
-// 	}
-
-// 	t.Run("success register", func(t *testing.T) {
-// 		// newUser.Password = hash
-// 		repo.On("Register", newUser).Return(expectedData, nil).Once()
-// 		srv := New(repo)
-// 		// newUser.Password = password
-// 		res, err := srv.Register(newUser)
-// 		assert.Nil(t, err)
-// 		assert.Equal(t, expectedData.ID, res.ID)
-// 		assert.Equal(t, expectedData.Username, res.Username)
-// 		assert.Equal(t, expectedData.Email, res.Email)
-// 		repo.AssertExpectations(t)
-// 	})
-
-// 	t.Run("Duplicate email", func(t *testing.T) {
-// 		// newUser.Password = hash
-// 		repo.On("Register", newUser).Return(users.Core{}, errors.New("Duplicate users.email")).Once()
-// 		srv := New(repo)
-// 		// newUser.Password = password
-// 		res, err := srv.Register(newUser)
-// 		assert.NotNil(t, err)
-// 		assert.ErrorContains(t, err, "email already exist")
-// 		assert.Equal(t, res.Email, "")
-// 		repo.AssertExpectations(t)
-
-// 	})
-
-// 	t.Run("server problem", func(t *testing.T) {
-// 		// newUser.Password = hash
-// 		repo.On("Register", newUser).Return(users.Core{}, errors.New("server error")).Once()
-// 		srv := New(repo)
-// 		// newUser.Password = password
-// 		res, err := srv.Register(newUser)
-// 		assert.NotNil(t, err)
-// 		assert.ErrorContains(t, err, "server")
-// 		assert.Equal(t, res.Username, "")
-// 		repo.AssertExpectations(t)
-
-// 	})
-
-// 	t.Run("validation problem", func(t *testing.T) {
-// 		// newUser.Password = hash
-// 		srv := New(repo)
-// 		// newUser.Password = password
-// 		res, err := srv.Register(newUser)
-// 		assert.NotNil(t, err)
-// 		assert.ErrorContains(t, err, "validation")
-// 		assert.Equal(t, res.Username, "")
-
-// 	})
-
-// }
 
 func TestRegister(t *testing.T) {
 	data := mocks.NewUserData(t)
@@ -209,5 +148,66 @@ func TestProfile(t *testing.T) {
 		assert.ErrorContains(t, err, "error")
 		assert.Equal(t, users.Core{}, res)
 		data.AssertExpectations(t)
+	})
+}
+
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewUserData(t)
+	filePath := filepath.Join("..", "..", "..", "test.jpg")
+	imageTrue, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	imageTrueCnv := &multipart.FileHeader{
+		Filename: imageTrue.Name(),
+	}
+
+	inputData := users.Core{ID: 1, Email: "pian@gmail.com", Username: "alpian", Bio: "i love cooking"}
+	resData := users.Core{ID: 1, Email: "pian@gmail.com", Username: "alpian", Bio: "i love cooking"}
+
+	t.Run("success updating account", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(resData, nil).Once()
+		srv := New(repo)
+		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
+		assert.Nil(t, err)
+		assert.Equal(t, resData.ID, res.ID)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("fail updating account", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("user not found")).Once()
+		srv := New(repo)
+		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "not registered")
+		assert.Equal(t, users.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+	t.Run("email duplicated", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("email duplicated")).Once()
+		srv := New(repo)
+		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "email duplicated")
+		assert.Equal(t, users.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+	t.Run("account not registered", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("access denied")).Once()
+		srv := New(repo)
+		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "access denied")
+		assert.Equal(t, users.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+	t.Run("account not registered", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("account not registered")).Once()
+		srv := New(repo)
+		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "not found")
+		assert.Equal(t, users.Core{}, res)
+		repo.AssertExpectations(t)
 	})
 }
