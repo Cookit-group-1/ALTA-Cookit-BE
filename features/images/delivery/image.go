@@ -97,7 +97,7 @@ func (d *ImageDelivery) UpdateImageById(e echo.Context) error {
 
 func (d *ImageDelivery) DeleteImageById(e echo.Context) error {
 	userId, _, _ := middlewares.ExtractToken(e)
-	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_CommentId)
+	id, err := helpers.ExtractIDParam(e, consts.ECHO_P_ImageId)
 	if err != nil {
 		return helpers.ReturnBadResponse(e, err)
 	}
