@@ -78,7 +78,7 @@ func TestUpdateIngredientById(t *testing.T) {
 	}
 }
 
-func TestDeleteIngredientStepById(t *testing.T) {
+func TestDeleteIngredientById(t *testing.T) {
 	table := DeleteIngredientByIdTestTable()
 	for index, v := range table {
 		t.Run(v.Name, func(t *testing.T) {
