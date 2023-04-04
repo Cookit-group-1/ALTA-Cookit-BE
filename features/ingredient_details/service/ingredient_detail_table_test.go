@@ -24,7 +24,7 @@ func InsertIngredientDetailTestTable() []TestTable {
 	tname := "test insert ingredient detail "
 	return []TestTable{
 		{
-			Name: tname + "expect failed - empty step name",
+			Name: tname + "expect failed - empty ingredient detail name",
 			Input: struct {
 				ingredientDetailEntity ingredient_details.IngredientDetailEntity
 			}{
@@ -51,7 +51,7 @@ func InsertIngredientDetailTestTable() []TestTable {
 			},
 		},
 		{
-			Name: tname + "expect failed - empty step quantity",
+			Name: tname + "expect failed - empty ingredient detail quantity",
 			Input: struct {
 				ingredientDetailEntity ingredient_details.IngredientDetailEntity
 			}{
@@ -78,7 +78,7 @@ func InsertIngredientDetailTestTable() []TestTable {
 			},
 		},
 		{
-			Name: tname + "expect success - filled step name and unit",
+			Name: tname + "expect success - filled ingredient detail name and unit",
 			Input: struct {
 				ingredientDetailEntity ingredient_details.IngredientDetailEntity
 			}{
@@ -231,7 +231,7 @@ func UpdateIngredientDetailByIdTestTable() []TestTable {
 	tname := "test update ingredient detail by id "
 	return []TestTable{
 		{
-			Name: tname + "expect failed - empty step name",
+			Name: tname + "expect failed - empty ingredient detail name",
 			Input: struct {
 				ingredientDetailEntity ingredient_details.IngredientDetailEntity
 			}{
@@ -258,7 +258,7 @@ func UpdateIngredientDetailByIdTestTable() []TestTable {
 			},
 		},
 		{
-			Name: tname + "expect failed - empty step quantity",
+			Name: tname + "expect failed - empty ingredient detail quantity",
 			Input: struct {
 				ingredientDetailEntity ingredient_details.IngredientDetailEntity
 			}{
@@ -285,7 +285,7 @@ func UpdateIngredientDetailByIdTestTable() []TestTable {
 			},
 		},
 		{
-			Name: tname + "expect success - filled step name and unit",
+			Name: tname + "expect success - filled ingredient detail name and unit",
 			Input: struct {
 				ingredientDetailEntity ingredient_details.IngredientDetailEntity
 			}{
