@@ -69,12 +69,12 @@ alta-cookit-be/features/users/services/service.go:117.9,117.60 1 1
 alta-cookit-be/features/users/services/service.go:117.60,119.4 1 1
 alta-cookit-be/features/users/services/service.go:120.3,120.39 1 1
 alta-cookit-be/features/users/services/service.go:122.2,122.17 1 1
-alta-cookit-be/features/users/services/service.go:126.85,127.116 1 0
+alta-cookit-be/features/users/services/service.go:126.85,127.116 1 1
 alta-cookit-be/features/users/services/service.go:127.116,129.3 1 0
-alta-cookit-be/features/users/services/service.go:130.2,131.22 2 0
+alta-cookit-be/features/users/services/service.go:130.2,131.22 2 1
 alta-cookit-be/features/users/services/service.go:131.22,133.3 1 0
-alta-cookit-be/features/users/services/service.go:135.2,135.86 1 0
-alta-cookit-be/features/users/services/service.go:135.86,137.3 1 0
+alta-cookit-be/features/users/services/service.go:135.2,135.86 1 1
+alta-cookit-be/features/users/services/service.go:135.86,137.3 1 1
 alta-cookit-be/features/users/services/service.go:139.2,139.71 1 0
 alta-cookit-be/features/users/services/service.go:139.71,141.3 1 0
 alta-cookit-be/features/users/services/service.go:143.2,144.20 2 0

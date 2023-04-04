@@ -222,25 +222,25 @@ func TestDeactive(t *testing.T) {
 	})
 }
 
-// func TestUpdatePassword(t *testing.T) {
-// 	data := mocks.NewUserData(t)
-// 	inputData := users.Core{Password: "Alfian123", NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
-// 	comparePass, _ := helpers.CheckPassword(inputData.Password)
-// 	hashPass, _ := helpers.GeneratePassword("Alterra123")
-// 	checkPass, _ := helpers.CheckPassword(inputData.PasswordConfirmation)
-// 	// resData := users.Core{ID: uint(1), Password: "Alfian123", NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
-// 	resData := users.Core{ID: uint(1), Password: com, NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
+func TestUpdatePassword(t *testing.T) {
+	data := mocks.NewUserData(t)
+	// inputData := users.Core{Password: "Alfian123", NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
+	inputData := users.Core{Password: "Alfian123", NewPassword: "Alterra1234", PasswordConfirmation: "Alterra1234"}
+	// comparePass, _ := helpers.CheckPassword(inputData.Password)
+	// hashPass, _ := helpers.GeneratePassword("Alterra123")
+	// checkPass, _ := helpers.CheckPassword(inputData.PasswordConfirmation)
+	resData := users.Core{ID: uint(1), Username: "griffin", Bio: "I love cooking", Email: "grf@gmail.com", Role: "User", Password: "Alfian123", NewPassword: "Alterra123", PasswordConfirmation: "Alterra123"}
 
-// 	t.Run("success update password", func(t *testing.T) {
-// 		data.On("Profile", mock.Anything).Return(resData, nil).Once()
-// 		data.On("UpdatePassword", uint(1), mock.Anything).Return(resData, nil).Once()
-// 		srv := New(data)
-// 		err := srv.UpdatePassword(uint(1), inputData)
-// 		assert.Nil(t, err)
-// 		data.AssertExpectations(t)
-// 	})
+	t.Run("success update password", func(t *testing.T) {
+		data.On("Profile", mock.Anything).Return(resData, nil).Once()
+		data.On("UpdatePassword", mock.Anything, mock.Anything).Return(nil).Once()
+		srv := New(data)
+		err := srv.UpdatePassword(uint(1), inputData)
+		assert.Nil(t, err)
+		data.AssertExpectations(t)
+	})
 
-// }
+}
 
 func TestSearchUser(t *testing.T) {
 	data := mocks.NewUserData(t)
