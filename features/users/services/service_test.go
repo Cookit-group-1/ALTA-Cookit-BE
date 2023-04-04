@@ -151,7 +151,7 @@ func TestProfile(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	repo := mocks.NewUserData(t)
+	data := mocks.NewUserData(t)
 	filePath := filepath.Join("..", "..", "..", "test.jpg")
 	imageTrue, err := os.Open(filePath)
 	if err != nil {
@@ -165,69 +165,60 @@ func TestUpdate(t *testing.T) {
 	resData := users.Core{ID: 1, Email: "pian@gmail.com", Username: "alpian", Bio: "i love cooking"}
 
 	t.Run("success updating account", func(t *testing.T) {
-		repo.On("Update", uint(1), mock.Anything).Return(resData, nil).Once()
-		srv := New(repo)
+		data.On("Update", uint(1), mock.Anything).Return(resData, nil).Once()
+		srv := New(data)
 		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
 		assert.Nil(t, err)
 		assert.Equal(t, resData.ID, res.ID)
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 
 	t.Run("fail updating account", func(t *testing.T) {
-		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("user not found")).Once()
-		srv := New(repo)
+		data.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("user not found")).Once()
+		srv := New(data)
 		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "not registered")
 		assert.Equal(t, users.Core{}, res)
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 	t.Run("email duplicated", func(t *testing.T) {
-		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("email duplicated")).Once()
-		srv := New(repo)
+		data.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("email duplicated")).Once()
+		srv := New(data)
 		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "email duplicated")
 		assert.Equal(t, users.Core{}, res)
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 	t.Run("account not registered", func(t *testing.T) {
-		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("access denied")).Once()
-		srv := New(repo)
+		data.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("access denied")).Once()
+		srv := New(data)
 		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "access denied")
 		assert.Equal(t, users.Core{}, res)
-		repo.AssertExpectations(t)
-	})
-	t.Run("account not registered", func(t *testing.T) {
-		repo.On("Update", uint(1), mock.Anything).Return(users.Core{}, errors.New("account not registered")).Once()
-		srv := New(repo)
-		res, err := srv.Update(uint(1), *imageTrueCnv, inputData)
-		assert.NotNil(t, err)
-		assert.ErrorContains(t, err, "not found")
-		assert.Equal(t, users.Core{}, res)
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 }
 
 func TestDeactive(t *testing.T) {
-	repo := mocks.NewUserData(t)
+	data := mocks.NewUserData(t)
 	t.Run("deleting account successful", func(t *testing.T) {
-		repo.On("Deactive", uint(1)).Return(nil).Once()
-		srv := New(repo)
+		data.On("Deactive", uint(1)).Return(nil).Once()
+		srv := New(data)
 
 		err := srv.Deactive(uint(1))
 		assert.Nil(t, err)
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 	t.Run("internal server error, account fail to deactive", func(t *testing.T) {
-		repo.On("Deactive", uint(1)).Return(errors.New("no user has deactive")).Once()
-		srv := New(repo)
+		data.On("Deactive", uint(1)).Return(errors.New("no user has deactive")).Once()
+		srv := New(data)
 		err := srv.Deactive(uint(1))
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "error")
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 }
 
@@ -252,7 +243,7 @@ func TestDeactive(t *testing.T) {
 // }
 
 func TestSearchUser(t *testing.T) {
-	repo := mocks.NewUserData(t)
+	data := mocks.NewUserData(t)
 	filePath := filepath.Join("..", "..", "..", "test.jpg")
 	imageTrue, err := os.Open(filePath)
 	if err != nil {
@@ -272,31 +263,117 @@ func TestSearchUser(t *testing.T) {
 	q := "alfian"
 
 	t.Run("success get all users", func(t *testing.T) {
-		repo.On("SearchUser", uint(1), q).Return(resData, nil).Once()
-		srv := New(repo)
+		data.On("SearchUser", uint(1), q).Return(resData, nil).Once()
+		srv := New(data)
 		res, err := srv.SearchUser(uint(1), q)
 		assert.Nil(t, err)
 		assert.Equal(t, len(resData), len(res))
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 
 	t.Run("users not found", func(t *testing.T) {
-		repo.On("SearchUser", uint(1), q).Return([]users.Core{}, errors.New("users not found")).Once()
-		srv := New(repo)
+		data.On("SearchUser", uint(1), q).Return([]users.Core{}, errors.New("users not found")).Once()
+		srv := New(data)
 		res, err := srv.SearchUser(uint(1), q)
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "not found")
 		assert.Equal(t, 0, len(res))
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
 	})
 
 	t.Run("server problem", func(t *testing.T) {
-		repo.On("SearchUser", uint(1), q).Return([]users.Core{}, errors.New("server problem")).Once()
-		srv := New(repo)
+		data.On("SearchUser", uint(1), q).Return([]users.Core{}, errors.New("server problem")).Once()
+		srv := New(data)
 		res, err := srv.SearchUser(uint(1), q)
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "server")
 		assert.Equal(t, 0, len(res))
-		repo.AssertExpectations(t)
+		data.AssertExpectations(t)
+	})
+}
+
+func TestListUserRequest(t *testing.T) {
+	data := mocks.NewUserData(t)
+	filePath := filepath.Join("..", "..", "..", "test.jpg")
+	imageTrue, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	imageTrueCnv := &multipart.FileHeader{
+		Filename: imageTrue.Name(),
+	}
+
+	resData := []users.Core{{
+		ID:             1,
+		Username:       "abu",
+		Role:           "VerifiedUser",
+		Bio:            "i love cook",
+		ProfilePicture: imageTrueCnv.Filename,
+		Approvement:    "Requested",
+	}}
+
+	t.Run("success get all users", func(t *testing.T) {
+		data.On("ListUserRequest", uint(1)).Return(resData, nil).Once()
+		srv := New(data)
+		res, err := srv.ListUserRequest(uint(1))
+		assert.Nil(t, err)
+		assert.Equal(t, len(resData), len(res))
+		data.AssertExpectations(t)
+	})
+
+	t.Run("users not found", func(t *testing.T) {
+		data.On("ListUserRequest", uint(1)).Return([]users.Core{}, errors.New("users not found")).Once()
+		srv := New(data)
+		res, err := srv.ListUserRequest(uint(1))
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "not found")
+		assert.Equal(t, 0, len(res))
+		data.AssertExpectations(t)
+	})
+
+	t.Run("server problem", func(t *testing.T) {
+		data.On("ListUserRequest", uint(1)).Return([]users.Core{}, errors.New("server problem")).Once()
+		srv := New(data)
+		res, err := srv.ListUserRequest(uint(1))
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "server")
+		assert.Equal(t, 0, len(res))
+		data.AssertExpectations(t)
+	})
+}
+
+func TestUpgradeUser(t *testing.T) {
+	data := mocks.NewUserData(t)
+
+	inputData := users.Core{Approvement: ""}
+
+	resData := users.Core{ID: 1, Approvement: "requested"}
+
+	t.Run("success send your request to admin", func(t *testing.T) {
+		data.On("UpgradeUser", uint(1), inputData).Return(resData, nil).Once()
+		srv := New(data)
+		_, err := srv.UpgradeUser(uint(1), inputData)
+		assert.Nil(t, err)
+		data.AssertExpectations(t)
+	})
+
+	t.Run("access denied", func(t *testing.T) {
+		data.On("UpgradeUser", uint(1), inputData).Return(resData, errors.New("access denied")).Once()
+		srv := New(data)
+		res, err := srv.UpgradeUser(uint(1), inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "access denied")
+		assert.Equal(t, uint(0), res.ID)
+		data.AssertExpectations(t)
+	})
+
+	t.Run("email duplicated", func(t *testing.T) {
+		data.On("UpgradeUser", uint(1), inputData).Return(resData, errors.New("email duplicated")).Once()
+		srv := New(data)
+		res, err := srv.UpgradeUser(uint(1), inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "email duplicated")
+		assert.Equal(t, uint(0), res.ID)
+		data.AssertExpectations(t)
 	})
 }
