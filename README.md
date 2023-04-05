@@ -128,3 +128,12 @@
 | PUT        | /recipes/(recipe_id)/ingredients/(ingredient_id)      | -           |- recipe_id and ingredient_id                 | YES         | Update ingredients in recipe        |
 | DELETE        | /recipes/(recipe_id)/ingredients/(ingredient_id)      | -           |- recipe_id and ingredient_id                  | YES         | Delete ingredients in recipes        |
 </details>
+
+<details> 
+    <summary>🥕 Ingredients Detail</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /recipes/(recipe_id)/ingredients/(ingredient_id)/ingredientDetails          | -           |- recipe_id and ingredient_id                  | YES         | Create new ingredients detail               |
+| PUT        | /recipes/(recipe_id)/ingredients/ingredientDetails/(ingredient_detail_id)      | -           |- recipe_id and ingredient_detail_id                 | YES         | Update ingredients detail        |
+| DELETE        | /recipes/(recipe_id)/ingredients/ingredientDetails/(ingredient_detail_id)      | -           |- recipe_id and ingredient_detail_id                  | YES         | Delete ingredients detail        |
+</details>
