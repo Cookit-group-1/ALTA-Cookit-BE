@@ -116,5 +116,15 @@
 | POST        | /recipes/(recipe_id)/steps          | -           |- recipe_id                  | YES         | Create new recipes step               |
 | DELETE        | /recipes/(recipe_id)/steps      | -           |- recipe_id                  | YES         | Delete recipes steps        |
 | PUT        | /recipes/(recipe_id)/steps/(step_id)      | -           |- recipe_id and step_id                 | YES         | Update steps in recipe        |
-| DELETE        | /recipes/(recipe_id)/steps/(step_id)      | -           |- recipe_id and step_id                  | YES         | Get list steps in recipes        |
+| DELETE        | /recipes/(recipe_id)/steps/(step_id)      | -           |- recipe_id and step_id                  | YES         | Delete steps in recipes        |
+</details>
+
+<details> 
+    <summary>🍅 Ingredients</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /recipes/(recipe_id)/ingredients          | -           |- recipe_id                  | YES         | Create new recipes ingredient               |
+| DELETE        | /recipes/(recipe_id)/ingredients      | -           |- recipe_id                  | YES         | Delete recipes ingredients        |
+| PUT        | /recipes/(recipe_id)/ingredients/(ingredient_id)      | -           |- recipe_id and ingredient_id                 | YES         | Update ingredients in recipe        |
+| DELETE        | /recipes/(recipe_id)/ingredients/(ingredient_id)      | -           |- recipe_id and ingredient_id                  | YES         | Delete ingredients in recipes        |
 </details>
