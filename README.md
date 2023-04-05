@@ -108,3 +108,13 @@
 | PUT        | /recipes/(recipe_id)/comments/(comment_id)      | -           |- recipe_id and comment_id                 | YES         | Update comment in recipe        |
 | GET        | /recipes/(recipe_id)/comments      | -           |- recipe_id                  | YES         | Get list comment in recipes        |
 </details>
+
+<details> 
+    <summary>🪜 Steps</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /recipes/(recipe_id)/steps          | -           |- recipe_id                  | YES         | Create new recipes step               |
+| DELETE        | /recipes/(recipe_id)/steps      | -           |- recipe_id                  | YES         | Delete recipes steps        |
+| PUT        | /recipes/(recipe_id)/steps/(step_id)      | -           |- recipe_id and step_id                 | YES         | Update steps in recipe        |
+| DELETE        | /recipes/(recipe_id)/steps/(step_id)      | -           |- recipe_id and step_id                  | YES         | Get list steps in recipes        |
+</details>
