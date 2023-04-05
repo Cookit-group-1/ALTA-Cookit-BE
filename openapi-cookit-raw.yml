@@ -1045,6 +1045,9 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              required:
+                - name
+                - description
               properties:
                 recipe_id:
                   description: "Replied recipe's id"
