@@ -186,7 +186,7 @@ $ go run .
 - Voila! 🪄
 
 # UNIT TEST COVERAGE ALL
-<img src="UNITTEST_All.png">
+<img src="UNITTEST_COOKIT.png">
 
 ## Authors 👑
 
