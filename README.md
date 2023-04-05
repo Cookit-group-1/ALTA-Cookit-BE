@@ -81,12 +81,12 @@
 
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
-| GET        | /recipes           | -           |-                   | NO         | Show list recepies                |
+| GET        | /recipes           | -           |page, limit, id, user_id, name, type                   | NO         | Show list recepies                |
 | POST        | /recipes      | -           |-                   | YES         | Insert new recipe        |
 | PUT        | /recipes(recipe_id)      | recipe_id           |                   | YES         | Update recipe        |
 | DELETE        | /recipes(recipe_id)      | recipe_id           |-                 | YES         | Delete recipe by recipe_id        |
-| GET        | /users/recipes/timeline      | -           |                   | YES         | Show timeline recipes        |
-| GET        | /recipes/trending      | -           |-                   | YES         | Show trending recipes        |
+| GET        | /users/recipes/timeline      | -           |page, limit                   | YES         | Show timeline recipes        |
+| GET        | /recipes/trending      | -           |page, limit                   | YES         | Show trending recipes        |
 | GET        | /recipes/(recipe_id)/detail      | recipe_id           |-                 | NO         | Show detail recipes        |
 | POST        | /recipes/(recipe_id)/like      | recipe_id           |-                | YES         | Like recipes        |
 | DELETE        | /recipes/(recipe_id)/unlike      | recipe_id           |-                | YES         | Unlike recipes        |
@@ -111,7 +111,7 @@
 | POST        | /recipes/(recipe_id)/comments           |  recipe_id           |-                  | YES         | Create comment in recipes                |
 | DELETE        | /recipes/(recipe_id)/comments/(comment_id)      |  recipe_id and comment_id           |-                  | YES         | Delete comment in recipes        |
 | PUT        | /recipes/(recipe_id)/comments/(comment_id)      |  recipe_id and comment_id          |-                 | YES         | Update comment in recipe        |
-| GET        | /recipes/(recipe_id)/comments      |  recipe_id           |-                  | NO         | Get list comment in recipes        |
+| GET        | /recipes/(recipe_id)/comments      |  recipe_id           |page, limit                  | NO         | Get list comment in recipes        |
 </details>
 
 <details> 
@@ -151,7 +151,7 @@
 
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
-| GET        | /users/carts      | -           |-                   | YES         | Get list carts        |
+| GET        | /users/carts      | -           |page, limit                   | YES         | Get list carts        |
 | POST        | /users/carts           | -           |-                   | YES         | Create new cart                |
 | PUT        | /users/carts/(cart_id)      |  cart_id           |-                 | YES         | Update users cart        |
 | DELETE        | /users/carts/(cart_id)      |  cart_id           |-                  | YES         | Delete users cart        |
@@ -161,7 +161,7 @@
     <summary>🛍️ Transactions</summary>
 
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
-| GET        | /users/transactions      | -           |-                   | YES         | Get list transactions        |
+| GET        | /users/transactions      | -           |page, limit, status                   | YES         | Get list transactions        |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
 | POST        | /users/transactions           | -           |-                   | YES         | Create new transactions                 |
 | PUT        | /users/transactions/(transaction_id)/status      | cart_id          |-                 | YES         | Update users status transactions        |
