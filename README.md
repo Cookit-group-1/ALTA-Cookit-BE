@@ -88,3 +88,13 @@
 | POST        | /recipes/(ID)/like      | -           |-  ID                 | YES         | Like recipes        |
 | DELETE        | /recipes/(ID)/unlike      | -           |-  ID                 | YES         | Unlike recipes        |
 </details>
+
+<details> 
+    <summary>🖼️ Images</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /recipes/(recipe_id)/images           | -           |- recipe_id                  | YES         | Insert new recipes image                |
+| DELETE        | /recipes/(recipe_id)/images      | -           |- recipe_id                  | YES         | Delete recipes image        |
+| PUT        | /recipes/(recipe_id)/images/(image_id)      | -           |- recipe_id and image_id                 | YES         | Update recipes image        |
+| DELETE        | /recipes/(recipe_id)/images/(image_id)      | -           |- recipe_id and image_id                  | YES         | Delete recipes image        |
+</details>
