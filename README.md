@@ -59,9 +59,18 @@
 </details>
 
 <details> 
-    <summary>👨‍💻 Admin </summary>
+    <summary>👮 Admin </summary>
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
 | GET        | /users/listverify           | -           |-                   | YES         | Show list for user request upgrading account                |
 | PUT        | /users/approval/(id)      | -           |- ID                  | YES         | Accepting or deny user request upgrade account for admin        |
 </details>
+
+<details> 
+    <summary>🙋‍♂️ Followers </summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /users/follow/(id)           | -           |- ID                  | YES         | Following another user                |
+| DELETE        | /users/unfollow/(id)      | -           |- ID                  | YES         | Unfollow users        |
+</details>
+
