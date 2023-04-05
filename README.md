@@ -52,7 +52,7 @@
 | DELETE        | /users      | -           |-                   | YES         | Delete user data        |
 | GET        | /users/search      | -           |-                   | YES         | Search another users with username        |
 | PUT        | /users/password      | -           |-                   | YES         | Update password account        |
-| GET        | /users/(id)      | -           |- ID                  | YES         | Show another user profile        |
+| GET        | /users/(ID)      | -           |- ID                  | YES         | Show another user profile        |
 | GET        | /users/follower      | -           |-                   | YES         | Show list follower        |
 | GET        | /users/following      | -           |-                   | YES         | Show list following        |
 | GET        | /users/upgrade      | -           |-                   | YES         | Request upgrade account        |
@@ -63,14 +63,28 @@
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
 | GET        | /users/listverify           | -           |-                   | YES         | Show list for user request upgrading account                |
-| PUT        | /users/approval/(id)      | -           |- ID                  | YES         | Accepting or deny user request upgrade account for admin        |
+| PUT        | /users/approval/(ID)      | -           |- ID                  | YES         | Accepting or deny user request upgrade account for admin        |
 </details>
 
 <details> 
     <summary>🙋‍♂️ Followers </summary>
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
-| POST        | /users/follow/(id)           | -           |- ID                  | YES         | Following another user                |
-| DELETE        | /users/unfollow/(id)      | -           |- ID                  | YES         | Unfollow users        |
+| POST        | /users/follow/(ID)           | -           |- ID                  | YES         | Following another user                |
+| DELETE        | /users/unfollow/(ID)      | -           |- ID                  | YES         | Unfollow users        |
 </details>
 
+<details> 
+    <summary>🍳 Recipes</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| GET        | /recipes           | -           |-                   | YES         | Show list recepies                |
+| POST        | /recipes      | -           |-                   | YES         | Insert new recipe        |
+| PUT        | /recipes(ID)      | -           |-  ID                 | YES         | Update recipe        |
+| DELETE        | /recipes(ID)      | -           |-  ID                 | YES         | Delete recipe by ID        |
+| GET        | /users/recipes/timeline      | -           |-                   | YES         | Show timeline recipes        |
+| GET        | /recipes/trending      | -           |-                   | YES         | Show trending recipes        |
+| GET        | /recipes/(ID)/detail      | -           |-  ID                 | YES         | Show detail recipes        |
+| POST        | /recipes/(ID)/like      | -           |-  ID                 | YES         | Like recipes        |
+| DELETE        | /recipes/(ID)/unlike      | -           |-  ID                 | YES         | Unlike recipes        |
+</details>
