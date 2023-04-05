@@ -163,3 +163,39 @@
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
 | GET        | /users/transactions/transaction_detail/(transaction_detail_id)      | -           |-                   | YES         | Get list users transaction detail       |
 </details>
+
+## How to Install To Your Local And Run
+
+- Clone it
+
+```
+$ git clone https://github.com/Cookit-group-1/ALTA-Cookit-BE.git
+```
+
+- Go to directory
+
+```
+$ cd ALTA-Cookit-BE
+```
+- Run the project
+
+```
+$ go run .
+```
+
+- Voila! 🪄
+
+# UNIT TEST COVERAGE ALL
+<img src="UNITTEST_All.png">
+
+## Authors 👑
+
+-   Andreas <br> [![GitHub](https://img.shields.io/badge/Andreas-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Velocyes)
+
+-  Alfian Aditya <br> [![GitHub](https://img.shields.io/badge/alfian-aditya-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alfianadityads)
+
+ <p align="right">(<a href="#top">back to top</a>)</p>
+<h3>
+<p align="center">Built with ❤️ by Cookit Team ©️ 2023</p>
+<p align="center">:copyright: April 2023 </p>
+</h3>
