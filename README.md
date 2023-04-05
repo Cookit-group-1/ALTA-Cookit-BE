@@ -137,3 +137,13 @@
 | PUT        | /recipes/(recipe_id)/ingredients/ingredientDetails/(ingredient_detail_id)      | -           |- recipe_id and ingredient_detail_id                 | YES         | Update ingredients detail        |
 | DELETE        | /recipes/(recipe_id)/ingredients/ingredientDetails/(ingredient_detail_id)      | -           |- recipe_id and ingredient_detail_id                  | YES         | Delete ingredients detail        |
 </details>
+
+<details> 
+    <summary>🛒 Carts</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| GET        | /users/carts      | -           |-                   | YES         | Get list carts        |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /users/carts           | -           |-                   | YES         | Create new cart                |
+| PUT        | /users/carts/(cart_id)      | -           |- cart_id                 | YES         | Update users cart        |
+| DELETE        | /users/carts/(cart_id)      | -           |- cart_id                  | YES         | Delete users cart        |
+</details>
