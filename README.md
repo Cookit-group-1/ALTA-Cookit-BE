@@ -141,9 +141,25 @@
 <details> 
     <summary>🛒 Carts</summary>
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
-| GET        | /users/carts      | -           |-                   | YES         | Get list carts        |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| GET        | /users/carts      | -           |-                   | YES         | Get list carts        |
 | POST        | /users/carts           | -           |-                   | YES         | Create new cart                |
 | PUT        | /users/carts/(cart_id)      | -           |- cart_id                 | YES         | Update users cart        |
 | DELETE        | /users/carts/(cart_id)      | -           |- cart_id                  | YES         | Delete users cart        |
+</details>
+
+<details> 
+    <summary>🛍️ Transactions</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| GET        | /users/transactions      | -           |-                   | YES         | Get list transactions        |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| POST        | /users/transactions           | -           |-                   | YES         | Create new transactions                 |
+| PUT        | /users/transactions/(transaction_id)/status      | -           |- cart_id                 | YES         | Update users status transactions        |
+</details>
+
+<details> 
+    <summary>🛍️ Transactions Details</summary>
+| Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
+| ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
+| GET        | /users/transactions/transaction_detail/(transaction_detail_id)      | -           |-                   | YES         | Get list users transaction detail       |
 </details>
