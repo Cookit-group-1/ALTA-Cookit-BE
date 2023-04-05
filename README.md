@@ -52,7 +52,7 @@
 | DELETE        | /users      | -           |-                   | YES         | Delete user data        |
 | GET        | /users/search      | -           |-                   | YES         | Search another users with username        |
 | PUT        | /users/password      | -           |-                   | YES         | Update password account        |
-| GET        | /users/(ID)      | -           |- ID                  | YES         | Show another user profile        |
+| GET        | /users/(user_id)      | -           |- user_id                  | YES         | Show another user profile        |
 | GET        | /users/follower      | -           |-                   | YES         | Show list follower        |
 | GET        | /users/following      | -           |-                   | YES         | Show list following        |
 | GET        | /users/upgrade      | -           |-                   | YES         | Request upgrade account        |
@@ -63,30 +63,30 @@
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
 | GET        | /users/listverify           | -           |-                   | YES         | Show list for user request upgrading account                |
-| PUT        | /users/approval/(ID)      | -           |- ID                  | YES         | Accepting or deny user request upgrade account for admin        |
+| PUT        | /users/approval/(user_id)      | -           |- user_id                  | YES         | Accepting or deny user request upgrade account for admin        |
 </details>
 
 <details> 
     <summary>🙋‍♂️ Followers </summary>
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
-| POST        | /users/follow/(ID)           | -           |- ID                  | YES         | Following another user                |
-| DELETE        | /users/unfollow/(ID)      | -           |- ID                  | YES         | Unfollow users        |
+| POST        | /users/follow/(user_id)           | -           |- user_id                  | YES         | Following another user                |
+| DELETE        | /users/unfollow/(user_id)      | -           |- user_id                  | YES         | Unfollow users        |
 </details>
 
 <details> 
     <summary>🍳 Recipes</summary>
 | Method      | Endpoint            | Params      |q-Params            | JWT Token   | Function                                |
 | ----------- | ------------------- | ----------- |--------------------| ----------- | --------------------------------------- |
-| GET        | /recipes           | -           |-                   | YES         | Show list recepies                |
+| GET        | /recipes           | -           |-                   | NO         | Show list recepies                |
 | POST        | /recipes      | -           |-                   | YES         | Insert new recipe        |
-| PUT        | /recipes(ID)      | -           |-  ID                 | YES         | Update recipe        |
-| DELETE        | /recipes(ID)      | -           |-  ID                 | YES         | Delete recipe by ID        |
+| PUT        | /recipes(recipe_id)      | -           |-  recipe_id                 | YES         | Update recipe        |
+| DELETE        | /recipes(recipe_id)      | -           |-  recipe_id                 | YES         | Delete recipe by recipe_id        |
 | GET        | /users/recipes/timeline      | -           |-                   | YES         | Show timeline recipes        |
 | GET        | /recipes/trending      | -           |-                   | YES         | Show trending recipes        |
-| GET        | /recipes/(ID)/detail      | -           |-  ID                 | YES         | Show detail recipes        |
-| POST        | /recipes/(ID)/like      | -           |-  ID                 | YES         | Like recipes        |
-| DELETE        | /recipes/(ID)/unlike      | -           |-  ID                 | YES         | Unlike recipes        |
+| GET        | /recipes/(recipe_id)/detail      | -           |-  recipe_id                 | NO         | Show detail recipes        |
+| POST        | /recipes/(recipe_id)/like      | -           |-  recipe_id                 | YES         | Like recipes        |
+| DELETE        | /recipes/(recipe_id)/unlike      | -           |-  recipe_id                 | YES         | Unlike recipes        |
 </details>
 
 <details> 
@@ -106,7 +106,7 @@
 | POST        | /recipes/(recipe_id)/comments           | -           |- recipe_id                  | YES         | Create comment in recipes                |
 | DELETE        | /recipes/(recipe_id)/comments/(comment_id)      | -           |- recipe_id and comment_id                  | YES         | Delete comment in recipes        |
 | PUT        | /recipes/(recipe_id)/comments/(comment_id)      | -           |- recipe_id and comment_id                 | YES         | Update comment in recipe        |
-| GET        | /recipes/(recipe_id)/comments      | -           |- recipe_id                  | YES         | Get list comment in recipes        |
+| GET        | /recipes/(recipe_id)/comments      | -           |- recipe_id                  | NO         | Get list comment in recipes        |
 </details>
 
 <details> 
@@ -177,6 +177,7 @@ $ git clone https://github.com/Cookit-group-1/ALTA-Cookit-BE.git
 ```
 $ cd ALTA-Cookit-BE
 ```
+
 - Run the project
 
 ```
@@ -186,16 +187,17 @@ $ go run .
 - Voila! 🪄
 
 # UNIT TEST COVERAGE ALL
+
 <img src="UNITTEST_COOKIT.png">
 
 ## Authors 👑
 
--   Andreas <br> [![GitHub](https://img.shields.io/badge/Andreas-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Velocyes)
+- Andreas <br> [![GitHub](https://img.shields.io/badge/Andreas-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Velocyes)
 
--  Alfian Aditya <br> [![GitHub](https://img.shields.io/badge/alfian-aditya-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alfianadityads)
+- Alfian Aditya <br> [![GitHub](https://img.shields.io/badge/alfian-aditya-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/alfianadityads)
 
  <p align="right">(<a href="#top">back to top</a>)</p>
 <h3>
-<p align="center">Built with ❤️ by Cookit Team ©️ 2023</p>
-<p align="center">:copyright: April 2023 </p>
+<p align="center">Built with ❤️ by Cookit Team</p>
+<p align="center">©️ April 2023 </p>
 </h3>
