@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="">
-    <img src="" width="304" height="297">
+    <img src="Cookit_Logo.png" width="304" height="297">
   </a>
 
   <p align="center">
