@@ -11,7 +11,7 @@ import (
 
 func main() {
 	cfg := config.InitConfig()
-	db := database.InitDB(*cfg)
+	db := database.InitMySqlDB(*cfg)
 	database.InitialMigration(db)
 
 	e := echo.New()
