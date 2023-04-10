@@ -38,7 +38,7 @@ func New(db *gorm.DB, userData users.UserData, recipeData recipes.RecipeData_, i
 
 func (d *TransactionDetailData) ActionValidator(id, loggedInUserId uint) bool {
 	tempGorm := _transactionDetailModel.TransactionDetail{}
-	d.db.Model(&tempGorm).Where("id = ? AND user_id = ?", id, loggedInUserId).Find(&tempGorm)
+	d.db.Model(&tempGorm).Joins("left join transactions ts on ts.id = transaction_details.transaction_id").Where("transaction_details.id = ? AND ts.user_id = ?", id, loggedInUserId).Find(&tempGorm)
 
 	return tempGorm.ID != 0
 }
