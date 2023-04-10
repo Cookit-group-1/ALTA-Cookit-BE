@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
 	"alta-cookit-be/app/config"
@@ -23,10 +24,23 @@ import (
 	"alta-cookit-be/utils/helpers"
 )
 
-func InitDB(cfg config.AppConfig) *gorm.DB {
+func InitMySqlDB(cfg config.AppConfig) *gorm.DB {
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		cfg.DB_USERNAME, cfg.DB_PASSWORD, cfg.DB_HOSTNAME, cfg.DB_PORT, cfg.DB_NAME)
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
+
+	if err != nil {
+		log.Println("error connect to DB", err.Error())
+		return nil
+	}
+
+	return db
+}
+
+func InitPostgreSqlDB(cfg config.AppConfig) *gorm.DB {
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Jakarta",
+		cfg.DB_HOSTNAME, cfg.DB_USERNAME, cfg.DB_PASSWORD, cfg.DB_NAME, cfg.DB_PORT)
+	db, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
 
 	if err != nil {
 		log.Println("error connect to DB", err.Error())
