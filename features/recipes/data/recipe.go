@@ -101,7 +101,12 @@ func (d *RecipeData) InsertRecipe(entity *recipes.RecipeEntity) (*recipes.Recipe
 	gorm := *ConvertToGorm(entity)
 
 	for index, file := range entity.Image {
-		urlImage, err := storage.GetStorageClient().UploadFile(file, entity.ImageName[index])
+		// Local
+		urlImage, err := storage.UploadFile(file, entity.ImageName[index])
+
+		// Google Cloud Storage
+		// urlImage, err := storage.GetStorageClient().UploadFile(file, entity.ImageName[index])
+
 		if err != nil {
 			return nil, err
 		}
@@ -160,7 +165,11 @@ func (d *RecipeData) DeleteRecipeById(entity *recipes.RecipeEntity) error {
 	gorm, imageGorms := ConvertToGorm(entity), d.imageData.SelectImagesByRecipeId(entity.ID)
 
 	for _, imageGorm := range *imageGorms {
-		err := storage.GetStorageClient().DeleteFile(imageGorm.UrlImage)
+		// Local
+		err := storage.DeleteFile(imageGorm.UrlImage)
+
+		// Google Cloud Storage
+		// err := storage.GetStorageClient().DeleteFile(imageGorm.UrlImage)
 		if err != nil {
 			return err
 		}
