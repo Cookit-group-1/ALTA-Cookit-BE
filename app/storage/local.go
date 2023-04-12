@@ -5,10 +5,12 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 const (
-	UPLOAD_PATH string = "static/images/"
+	LOCAL_BASE_URL string = "http://localhost:8083/"
+	UPLOAD_PATH    string = "static/images/"
 )
 
 // UploadFile uploads an object
@@ -25,14 +27,14 @@ func UploadFile(file multipart.File, objectName string) (fileLocation string, er
 		return "", err
 	}
 
-	return UPLOAD_PATH + objectName, nil
+	return LOCAL_BASE_URL + UPLOAD_PATH + objectName, nil
 }
 
 func DeleteFile(objectName string) error {
-	err := os.Remove(objectName)
+	err := os.Remove(strings.Replace(objectName, LOCAL_BASE_URL, "", 1))
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
