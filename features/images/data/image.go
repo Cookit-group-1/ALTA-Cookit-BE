@@ -44,7 +44,12 @@ func (d *ImageData) InsertImage(entities *[]images.ImageEntity) (*[]images.Image
 
 	for index, entity := range *entities {
 		if entity.Image != nil {
-			urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+			// Local
+			urlImage, err := storage.UploadFile(entity.Image, entity.ImageName)
+
+			// Google Cloud Storage
+			// urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+		
 			if err != nil {
 				return nil, err
 			}
@@ -74,13 +79,23 @@ func (d *ImageData) UpdateImageById(entity *images.ImageEntity) (*images.ImageEn
 
 	if entity.Image != nil {
 		if gorm.UrlImage != "" {
-			err := storage.GetStorageClient().DeleteFile(gorm.UrlImage)
+			// Local
+			err := storage.DeleteFile(gorm.UrlImage)
+
+			// Google Cloud Storage
+			// err := storage.GetStorageClient().DeleteFile(gorm.UrlImage)
+			
 			if err != nil {
 				return nil, err
 			}
 		}
 
-		urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+		// Local
+		urlImage, err := storage.UploadFile(entity.Image, entity.ImageName)
+
+		// Google Cloud Storage
+		// urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+		
 		if err != nil {
 			return nil, err
 		}

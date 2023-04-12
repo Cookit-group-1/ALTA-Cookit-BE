@@ -64,7 +64,12 @@ func (d *CommentData) InsertComment(entity *comments.CommentEntity) (*comments.C
 	gorm := ConvertToGorm(entity)
 
 	if entity.Image != nil {
-		urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+		// Local
+		urlImage, err := storage.UploadFile(entity.Image, entity.ImageName)
+
+		// Google Cloud Storage
+		// urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+
 		if err != nil {
 			return nil, err
 		}
@@ -92,13 +97,23 @@ func (d *CommentData) UpdateCommentById(entity *comments.CommentEntity) (*commen
 	}
 	if entity.Image != nil {
 		if tempGorm.UrlImage != "" {
-			err := storage.GetStorageClient().DeleteFile(tempGorm.UrlImage)
+			// Local
+			err := storage.DeleteFile(tempGorm.UrlImage)
+
+			// Google Cloud Storage
+			// err := storage.GetStorageClient().DeleteFile(tempGorm.UrlImage)
+			
 			if err != nil {
 				return nil, err
 			}
 		}
 
-		urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+		// Local
+		urlImage, err := storage.UploadFile(entity.Image, entity.ImageName)
+
+		// Google Cloud Storage
+		// urlImage, err := storage.GetStorageClient().UploadFile(entity.Image, entity.ImageName)
+		
 		if err != nil {
 			return nil, err
 		}
