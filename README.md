@@ -16,7 +16,10 @@
 
 ## 🧑‍💻 About the Project
 
-<p align="justify">COOKIT is a web application-based social media that is useful for finding food recipes online. You can get food recipes from all over the world at COOKIT. Users can not only upload homemade recipes but can also upload re-cooking results. Users can also like recipes and follow other users. Users can also sell ingredients at COOKIT, but only verified users can sell them.</p>
+<p align="justify">COOKIT is a web application-based social media that is useful for finding food recipes online. Users can 
+share food recipes and re-cooking results with each other. There are several other social media supporting 
+features such as followers on user and like, comment on post. To make this application more useful and have 
+more selling points, there is also a feature to sell food ingredients and products from a recipe.</p>
 
 ## 🛠 Technology Stack
 
